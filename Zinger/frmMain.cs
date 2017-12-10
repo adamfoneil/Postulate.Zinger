@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Zinger.Forms;
 
 namespace Zinger
 {
@@ -15,6 +9,12 @@ namespace Zinger
         public frmMain()
         {
             InitializeComponent();
+        }
+
+        private void btnConnections_Click(object sender, EventArgs e)
+        {
+            frmConnections dlg = new frmConnections();
+            dlg.ShowDialog();
         }
     }
 }

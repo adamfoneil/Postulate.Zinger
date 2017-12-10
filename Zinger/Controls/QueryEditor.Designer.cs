@@ -36,14 +36,14 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.chkParams = new System.Windows.Forms.CheckBox();
             this.dgvParams = new System.Windows.Forms.DataGridView();
+            this.dgvResults = new System.Windows.Forms.DataGridView();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.tslQueryMetrics = new System.Windows.Forms.ToolStripStatusLabel();
             this.colParamName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colParamType = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.colParamNullable = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colExpression = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colParamValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.splcQueryAndResults)).BeginInit();
             this.splcQueryAndResults.Panel1.SuspendLayout();
             this.splcQueryAndResults.Panel2.SuspendLayout();
@@ -55,7 +55,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbQuery)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvParams)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,7 +72,7 @@
             // 
             // splcQueryAndResults.Panel2
             // 
-            this.splcQueryAndResults.Panel2.Controls.Add(this.dataGridView1);
+            this.splcQueryAndResults.Panel2.Controls.Add(this.dgvResults);
             this.splcQueryAndResults.Panel2.Controls.Add(this.statusStrip1);
             this.splcQueryAndResults.Size = new System.Drawing.Size(471, 494);
             this.splcQueryAndResults.SplitterDistance = 338;
@@ -167,9 +167,37 @@
             this.dgvParams.Size = new System.Drawing.Size(471, 106);
             this.dgvParams.TabIndex = 0;
             // 
+            // dgvResults
+            // 
+            this.dgvResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvResults.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvResults.Location = new System.Drawing.Point(0, 0);
+            this.dgvResults.Name = "dgvResults";
+            this.dgvResults.ReadOnly = true;
+            this.dgvResults.Size = new System.Drawing.Size(471, 130);
+            this.dgvResults.TabIndex = 0;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tslQueryMetrics});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 130);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(471, 22);
+            this.statusStrip1.TabIndex = 1;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // tslQueryMetrics
+            // 
+            this.tslQueryMetrics.Name = "tslQueryMetrics";
+            this.tslQueryMetrics.Size = new System.Drawing.Size(102, 17);
+            this.tslQueryMetrics.Text = "{0} records, {1} ms";
+            // 
             // colParamName
             // 
             this.colParamName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colParamName.DataPropertyName = "Name";
             this.colParamName.HeaderText = "Param Name";
             this.colParamName.MinimumWidth = 110;
             this.colParamName.Name = "colParamName";
@@ -178,13 +206,15 @@
             // colParamType
             // 
             this.colParamType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colParamType.DataPropertyName = "DataType";
             this.colParamType.HeaderText = "Data Type";
             this.colParamType.Name = "colParamType";
-            this.colParamType.Width = 40;
+            this.colParamType.Width = 71;
             // 
             // colParamNullable
             // 
             this.colParamNullable.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colParamNullable.DataPropertyName = "IsOptional";
             this.colParamNullable.HeaderText = "N";
             this.colParamNullable.Name = "colParamNullable";
             this.colParamNullable.Width = 21;
@@ -192,42 +222,17 @@
             // colExpression
             // 
             this.colExpression.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colExpression.DataPropertyName = "Expression";
             this.colExpression.HeaderText = "Expression";
             this.colExpression.Name = "colExpression";
             // 
             // colParamValue
             // 
             this.colParamValue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colParamValue.DataPropertyName = "Value";
             this.colParamValue.HeaderText = "Value";
             this.colParamValue.Name = "colParamValue";
             this.colParamValue.Width = 63;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(471, 130);
-            this.dataGridView1.TabIndex = 0;
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 130);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(471, 22);
-            this.statusStrip1.TabIndex = 1;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(102, 17);
-            this.toolStripStatusLabel1.Text = "{0} records, {1} ms";
             // 
             // QueryEditor
             // 
@@ -250,7 +255,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvParams)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -265,13 +270,13 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox chkParams;
         private System.Windows.Forms.DataGridView dgvParams;
+        private System.Windows.Forms.DataGridView dgvResults;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel tslQueryMetrics;
         private System.Windows.Forms.DataGridViewTextBoxColumn colParamName;
         private System.Windows.Forms.DataGridViewComboBoxColumn colParamType;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colParamNullable;
         private System.Windows.Forms.DataGridViewTextBoxColumn colExpression;
         private System.Windows.Forms.DataGridViewTextBoxColumn colParamValue;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }

@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,16 +52,30 @@
     <Compile Include="Controls\QueryEditor.Designer.cs">
       <DependentUpon>QueryEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmConnections.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmConnections.Designer.cs">
+      <DependentUpon>frmConnections.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\IXmlElement.cs" />
+    <Compile Include="Models\MySqlQueryProvider.cs" />
+    <Compile Include="Models\QueryProvider.cs" />
+    <Compile Include="Models\SavedConnection.cs" />
+    <Compile Include="Models\SqlServerQueryProvider.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\QueryEditor.resx">
       <DependentUpon>QueryEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmConnections.resx">
+      <DependentUpon>frmConnections.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
@@ -91,9 +106,21 @@
     <PackageReference Include="AoOptions">
       <Version>1.5.10</Version>
     </PackageReference>
+    <PackageReference Include="AoWinFormsExt">
+      <Version>1.0.13</Version>
+    </PackageReference>
+    <PackageReference Include="AoXmlSerializer">
+      <Version>1.0.12</Version>
+    </PackageReference>
     <PackageReference Include="FCTB">
       <Version>2.16.21</Version>
     </PackageReference>
+    <PackageReference Include="MySql.Data">
+      <Version>6.10.5</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
