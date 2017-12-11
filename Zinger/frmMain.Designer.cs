@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnConnections = new System.Windows.Forms.ToolStripButton();
@@ -40,14 +41,30 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.queryEditor1 = new Zinger.Controls.QueryEditor();
+            this.tabControl2 = new System.Windows.Forms.TabControl();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.tbQueryName = new System.Windows.Forms.ToolStripTextBox();
+            this.btnCopy = new System.Windows.Forms.ToolStripButton();
+            this.tbResultClass = new FastColoredTextBoxNS.FastColoredTextBox();
+            this.tbQueryClass = new FastColoredTextBoxNS.FastColoredTextBox();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splcQueryAndSourceTree)).BeginInit();
             this.splcQueryAndSourceTree.Panel1.SuspendLayout();
             this.splcQueryAndSourceTree.Panel2.SuspendLayout();
             this.splcQueryAndSourceTree.SuspendLayout();
             this.tabNavigation.SuspendLayout();
+            this.tabControl2.SuspendLayout();
+            this.tabPage5.SuspendLayout();
+            this.tabPage6.SuspendLayout();
+            this.toolStrip2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbResultClass)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbQueryClass)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -103,6 +120,8 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.tabControl2);
+            this.tabPage2.Controls.Add(this.toolStrip2);
             this.tabPage2.Location = new System.Drawing.Point(4, 26);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -170,6 +189,137 @@
             this.queryEditor1.Size = new System.Drawing.Size(485, 425);
             this.queryEditor1.TabIndex = 0;
             // 
+            // tabControl2
+            // 
+            this.tabControl2.Controls.Add(this.tabPage5);
+            this.tabControl2.Controls.Add(this.tabPage6);
+            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl2.Location = new System.Drawing.Point(3, 28);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(485, 400);
+            this.tabControl2.TabIndex = 0;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.tbResultClass);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(477, 374);
+            this.tabPage5.TabIndex = 0;
+            this.tabPage5.Text = "Result Class";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.tbQueryClass);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(477, 374);
+            this.tabPage6.TabIndex = 1;
+            this.tabPage6.Text = "Query Class";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // toolStrip2
+            // 
+            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLabel1,
+            this.tbQueryName,
+            this.btnCopy});
+            this.toolStrip2.Location = new System.Drawing.Point(3, 3);
+            this.toolStrip2.Name = "toolStrip2";
+            this.toolStrip2.Size = new System.Drawing.Size(485, 25);
+            this.toolStrip2.TabIndex = 1;
+            this.toolStrip2.Text = "toolStrip2";
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(77, 22);
+            this.toolStripLabel1.Text = "Query Name:";
+            // 
+            // tbQueryName
+            // 
+            this.tbQueryName.Name = "tbQueryName";
+            this.tbQueryName.Size = new System.Drawing.Size(200, 25);
+            // 
+            // btnCopy
+            // 
+            this.btnCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnCopy.Image = ((System.Drawing.Image)(resources.GetObject("btnCopy.Image")));
+            this.btnCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCopy.Name = "btnCopy";
+            this.btnCopy.Size = new System.Drawing.Size(23, 22);
+            this.btnCopy.Text = "Copy";
+            // 
+            // tbResultClass
+            // 
+            this.tbResultClass.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.tbResultClass.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.tbResultClass.BackBrush = null;
+            this.tbResultClass.CharHeight = 14;
+            this.tbResultClass.CharWidth = 8;
+            this.tbResultClass.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbResultClass.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.tbResultClass.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbResultClass.Font = new System.Drawing.Font("Courier New", 9.75F);
+            this.tbResultClass.IsReplaceMode = false;
+            this.tbResultClass.Language = FastColoredTextBoxNS.Language.CSharp;
+            this.tbResultClass.Location = new System.Drawing.Point(3, 3);
+            this.tbResultClass.Name = "tbResultClass";
+            this.tbResultClass.Paddings = new System.Windows.Forms.Padding(0);
+            this.tbResultClass.ReadOnly = true;
+            this.tbResultClass.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.tbResultClass.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("tbResultClass.ServiceColors")));
+            this.tbResultClass.Size = new System.Drawing.Size(471, 368);
+            this.tbResultClass.TabIndex = 0;
+            this.tbResultClass.Zoom = 100;
+            // 
+            // tbQueryClass
+            // 
+            this.tbQueryClass.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.tbQueryClass.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.tbQueryClass.BackBrush = null;
+            this.tbQueryClass.CharHeight = 14;
+            this.tbQueryClass.CharWidth = 8;
+            this.tbQueryClass.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbQueryClass.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.tbQueryClass.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbQueryClass.Font = new System.Drawing.Font("Courier New", 9.75F);
+            this.tbQueryClass.IsReplaceMode = false;
+            this.tbQueryClass.Language = FastColoredTextBoxNS.Language.CSharp;
+            this.tbQueryClass.Location = new System.Drawing.Point(3, 3);
+            this.tbQueryClass.Name = "tbQueryClass";
+            this.tbQueryClass.Paddings = new System.Windows.Forms.Padding(0);
+            this.tbQueryClass.ReadOnly = true;
+            this.tbQueryClass.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.tbQueryClass.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("tbQueryClass.ServiceColors")));
+            this.tbQueryClass.Size = new System.Drawing.Size(471, 368);
+            this.tbQueryClass.TabIndex = 0;
+            this.tbQueryClass.Zoom = 100;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -188,11 +338,20 @@
             this.toolStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.splcQueryAndSourceTree.Panel1.ResumeLayout(false);
             this.splcQueryAndSourceTree.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splcQueryAndSourceTree)).EndInit();
             this.splcQueryAndSourceTree.ResumeLayout(false);
             this.tabNavigation.ResumeLayout(false);
+            this.tabControl2.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage6.ResumeLayout(false);
+            this.toolStrip2.ResumeLayout(false);
+            this.toolStrip2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbResultClass)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbQueryClass)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -211,6 +370,15 @@
         private Controls.QueryEditor queryEditor1;
         private System.Windows.Forms.ToolStripButton btnConnections;
         private System.Windows.Forms.ToolStripComboBox cbConnection;
+        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.ToolStrip toolStrip2;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripTextBox tbQueryName;
+        private System.Windows.Forms.ToolStripButton btnCopy;
+        private FastColoredTextBoxNS.FastColoredTextBox tbResultClass;
+        private FastColoredTextBoxNS.FastColoredTextBox tbQueryClass;
     }
 }
 

@@ -26,8 +26,7 @@ namespace Zinger.Controls
         public QueryProvider Provider
         {
             get
-            {
-                if (_queryProvider == null) throw new NullReferenceException("Please set the QueryEditor.Provider property.");
+            {                
                 return _queryProvider;
             }
             set
