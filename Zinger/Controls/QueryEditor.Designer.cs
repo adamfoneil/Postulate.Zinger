@@ -36,14 +36,15 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.chkParams = new System.Windows.Forms.CheckBox();
             this.dgvParams = new System.Windows.Forms.DataGridView();
-            this.dgvResults = new System.Windows.Forms.DataGridView();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.tslQueryMetrics = new System.Windows.Forms.ToolStripStatusLabel();
             this.colParamName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colParamType = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.colParamNullable = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colExpression = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colParamValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvResults = new System.Windows.Forms.DataGridView();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.tslQueryMetrics = new System.Windows.Forms.ToolStripStatusLabel();
+            this.pbExecuting = new System.Windows.Forms.ToolStripProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.splcQueryAndResults)).BeginInit();
             this.splcQueryAndResults.Panel1.SuspendLayout();
             this.splcQueryAndResults.Panel2.SuspendLayout();
@@ -119,6 +120,7 @@
             this.tbQuery.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbQuery.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.tbQuery.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbQuery.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.tbQuery.IsReplaceMode = false;
             this.tbQuery.Language = FastColoredTextBoxNS.Language.SQL;
             this.tbQuery.LeftBracket = '(';
@@ -167,33 +169,6 @@
             this.dgvParams.Size = new System.Drawing.Size(471, 106);
             this.dgvParams.TabIndex = 0;
             // 
-            // dgvResults
-            // 
-            this.dgvResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvResults.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvResults.Location = new System.Drawing.Point(0, 0);
-            this.dgvResults.Name = "dgvResults";
-            this.dgvResults.ReadOnly = true;
-            this.dgvResults.Size = new System.Drawing.Size(471, 130);
-            this.dgvResults.TabIndex = 0;
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tslQueryMetrics});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 130);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(471, 22);
-            this.statusStrip1.TabIndex = 1;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // tslQueryMetrics
-            // 
-            this.tslQueryMetrics.Name = "tslQueryMetrics";
-            this.tslQueryMetrics.Size = new System.Drawing.Size(102, 17);
-            this.tslQueryMetrics.Text = "{0} records, {1} ms";
-            // 
             // colParamName
             // 
             this.colParamName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -209,7 +184,7 @@
             this.colParamType.DataPropertyName = "DataType";
             this.colParamType.HeaderText = "Data Type";
             this.colParamType.Name = "colParamType";
-            this.colParamType.Width = 71;
+            this.colParamType.Width = 40;
             // 
             // colParamNullable
             // 
@@ -233,6 +208,41 @@
             this.colParamValue.HeaderText = "Value";
             this.colParamValue.Name = "colParamValue";
             this.colParamValue.Width = 63;
+            // 
+            // dgvResults
+            // 
+            this.dgvResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvResults.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvResults.Location = new System.Drawing.Point(0, 0);
+            this.dgvResults.Name = "dgvResults";
+            this.dgvResults.ReadOnly = true;
+            this.dgvResults.Size = new System.Drawing.Size(471, 130);
+            this.dgvResults.TabIndex = 0;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tslQueryMetrics,
+            this.pbExecuting});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 130);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(471, 22);
+            this.statusStrip1.TabIndex = 1;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // tslQueryMetrics
+            // 
+            this.tslQueryMetrics.Name = "tslQueryMetrics";
+            this.tslQueryMetrics.Size = new System.Drawing.Size(102, 17);
+            this.tslQueryMetrics.Text = "{0} records, {1} ms";
+            // 
+            // pbExecuting
+            // 
+            this.pbExecuting.Name = "pbExecuting";
+            this.pbExecuting.Size = new System.Drawing.Size(100, 16);
+            this.pbExecuting.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.pbExecuting.Visible = false;
             // 
             // QueryEditor
             // 
@@ -278,5 +288,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn colParamNullable;
         private System.Windows.Forms.DataGridViewTextBoxColumn colExpression;
         private System.Windows.Forms.DataGridViewTextBoxColumn colParamValue;
+        private System.Windows.Forms.ToolStripProgressBar pbExecuting;
     }
 }

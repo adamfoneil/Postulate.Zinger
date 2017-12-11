@@ -1,5 +1,6 @@
 ﻿using AdamOneilSoftware;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using Zinger.Forms;
@@ -56,8 +57,41 @@ namespace Zinger
 
         private void FillConnectionDropdown()
         {
+            cbConnection.SelectedIndexChanged -= cbConnection_SelectedIndexChanged;
             cbConnection.Items.Clear();
             foreach (SavedConnection sc in GetSavedConnections()) cbConnection.Items.Add(sc);
+            cbConnection.SelectedIndexChanged += cbConnection_SelectedIndexChanged;
+        }
+
+        private void cbConnection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbConnection.SelectedItem != null)
+            {                
+                SavedConnection sc = cbConnection.SelectedItem as SavedConnection;
+
+                Dictionary<ProviderType, QueryProvider> providers = new Dictionary<ProviderType, QueryProvider>()
+                {
+                    { ProviderType.SqlServer, new SqlServerQueryProvider(sc.ConnectionString) },
+                    { ProviderType.MySql, new MySqlQueryProvider(sc.ConnectionString) }
+                };
+
+                queryEditor1.Enabled = true;
+                queryEditor1.Provider = providers[sc.ProviderType];
+            }
+            else
+            {
+                queryEditor1.Enabled = false;
+            }            
+        }
+
+        private void frmMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.F5:
+                    queryEditor1.Execute();
+                    break;
+            }
         }
     }
 }

@@ -13,6 +13,16 @@ namespace Zinger.Controls
             InitializeComponent();
         }
 
+        public new bool Enabled
+        {
+            get { return tbQuery.Enabled; }
+            set
+            {
+                tbQuery.Enabled = value;
+                dgvParams.Enabled = value;
+            }
+        }
+
         public QueryProvider Provider
         {
             get
@@ -29,8 +39,11 @@ namespace Zinger.Controls
 
         public void Execute()
         {
+            if (!Enabled) return;
+
             try
             {
+                pbExecuting.Visible = true;
                 tslQueryMetrics.Text = "Executing...";
                 var results = Provider.Execute(tbQuery.Text);
                 tslQueryMetrics.Text = $"{results.Rows.Count} records, {_queryProvider.Milleseconds}ms";
@@ -38,8 +51,13 @@ namespace Zinger.Controls
             }
             catch (Exception exc)
             {
+                tslQueryMetrics.Text = $"Error: {exc.Message}";
                 MessageBox.Show(exc.Message);
-            }            
+            }   
+            finally
+            {
+                pbExecuting.Visible = false;
+            }
         }
 
         private void chkParams_CheckedChanged(object sender, EventArgs e)

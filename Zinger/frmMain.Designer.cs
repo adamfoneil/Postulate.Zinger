@@ -76,6 +76,7 @@
             this.cbConnection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbConnection.Name = "cbConnection";
             this.cbConnection.Size = new System.Drawing.Size(150, 25);
+            this.cbConnection.SelectedIndexChanged += new System.EventHandler(this.cbConnection_SelectedIndexChanged);
             // 
             // tabControl1
             // 
@@ -162,6 +163,7 @@
             // queryEditor1
             // 
             this.queryEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.queryEditor1.Enabled = false;
             this.queryEditor1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.queryEditor1.Location = new System.Drawing.Point(3, 3);
             this.queryEditor1.Name = "queryEditor1";
@@ -176,10 +178,12 @@
             this.Controls.Add(this.splcQueryAndSourceTree);
             this.Controls.Add(this.toolStrip1);
             this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.KeyPreview = true;
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Zinger";
             this.Load += new System.EventHandler(this.frmMain_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);

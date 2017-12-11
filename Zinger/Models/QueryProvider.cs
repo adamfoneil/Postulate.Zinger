@@ -66,7 +66,7 @@ namespace Zinger.Models
 
         private string ResolveParameters(string query, out Parameter[] parameters)
         {
-            parameters = Parameters.Where(p => p.Value != null).ToArray();
+            parameters = Parameters?.Where(p => p.Value != null).ToArray() ?? Enumerable.Empty<Parameter>().ToArray();
 
             string result = query;
 
