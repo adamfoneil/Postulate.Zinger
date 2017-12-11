@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.btnConnections = new System.Windows.Forms.ToolStripButton();
+            this.cbConnection = new System.Windows.Forms.ToolStripComboBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -38,8 +40,6 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.queryEditor1 = new Zinger.Controls.QueryEditor();
-            this.cbConnection = new System.Windows.Forms.ToolStripComboBox();
-            this.btnConnections = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -60,6 +60,22 @@
             this.toolStrip1.Size = new System.Drawing.Size(725, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // btnConnections
+            // 
+            this.btnConnections.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnConnections.Image = ((System.Drawing.Image)(resources.GetObject("btnConnections.Image")));
+            this.btnConnections.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnConnections.Name = "btnConnections";
+            this.btnConnections.Size = new System.Drawing.Size(23, 22);
+            this.btnConnections.Text = "Connections";
+            this.btnConnections.Click += new System.EventHandler(this.btnConnections_Click);
+            // 
+            // cbConnection
+            // 
+            this.cbConnection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbConnection.Name = "cbConnection";
+            this.cbConnection.Size = new System.Drawing.Size(150, 25);
             // 
             // tabControl1
             // 
@@ -152,22 +168,6 @@
             this.queryEditor1.Size = new System.Drawing.Size(485, 425);
             this.queryEditor1.TabIndex = 0;
             // 
-            // cbConnection
-            // 
-            this.cbConnection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbConnection.Name = "cbConnection";
-            this.cbConnection.Size = new System.Drawing.Size(121, 25);
-            // 
-            // btnConnections
-            // 
-            this.btnConnections.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnConnections.Image = ((System.Drawing.Image)(resources.GetObject("btnConnections.Image")));
-            this.btnConnections.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnConnections.Name = "btnConnections";
-            this.btnConnections.Size = new System.Drawing.Size(23, 22);
-            this.btnConnections.Text = "Connections";
-            this.btnConnections.Click += new System.EventHandler(this.btnConnections_Click);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -179,6 +179,7 @@
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Zinger";
+            this.Load += new System.EventHandler(this.frmMain_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);

@@ -12,13 +12,7 @@ namespace Zinger.Forms
     {
         private SavedConnections _data;
 
-        private string SavedConnectionFilename()
-        {
-            string result = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Zinger", "SavedConnections.xml");
-            string folder = Path.GetDirectoryName(result);
-            if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
-            return result;
-        }
+        public SavedConnections SavedConnections { get; internal set; }
 
         public frmConnections()
         {
@@ -30,15 +24,8 @@ namespace Zinger.Forms
         {
             try
             {
-                colProvider.FillFromEnum<ProviderType>();
-
-                string fileName = SavedConnectionFilename();
-
-                _data = (File.Exists(fileName)) ? 
-                    XmlSerializerHelper.Load<SavedConnections>(SavedConnectionFilename()) :
-                    new SavedConnections();
-                                
-                dataGridView1.DataSource = new BindingList<SavedConnection>(_data);
+                colProvider.FillFromEnum<ProviderType>();                                                
+                dataGridView1.DataSource = new BindingList<SavedConnection>(SavedConnections);
             }
             catch (Exception exc)
             {
@@ -48,8 +35,7 @@ namespace Zinger.Forms
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            var data = dataGridView1.DataSource as BindingList<SavedConnection>;
-            XmlSerializerHelper.Save(data, SavedConnectionFilename());
+            var data = dataGridView1.DataSource as BindingList<SavedConnection>;            
             DialogResult = DialogResult.OK;
         }
 
@@ -61,6 +47,36 @@ namespace Zinger.Forms
         private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             // ignore
+        }
+
+        private async void btnTest_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                bool anyErrors = false;
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (row.IsNewRow) continue;
+
+                    row.ErrorText = null;
+                    SavedConnection sc = row.DataBoundItem as SavedConnection;
+                    var result = await sc.TestAsync();
+                    if (!result.OpenedSuccessfully)
+                    {
+                        anyErrors = true;
+                        row.ErrorText = result.ErrorMessage;
+                    }
+                }
+
+                if (!anyErrors)
+                {
+                    MessageBox.Show("All connections opened successfully.");
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
         }
     }
 }
