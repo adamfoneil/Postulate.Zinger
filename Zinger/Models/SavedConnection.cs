@@ -1,8 +1,5 @@
 ﻿using AdamOneilSoftware;
-using System;
 using System.Collections.Generic;
-using System.Xml;
-using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace Zinger.Models
@@ -14,41 +11,8 @@ namespace Zinger.Models
     }
 
     [XmlRoot(ElementName = "ArrayOfSavedConnection")]
-    public class SavedConnections : List<SavedConnection>, IXmlSerializable
+    public class SavedConnections : List<SavedConnection>
     {
-        public XmlSchema GetSchema()
-        {
-            return null;
-        }
-
-        public void ReadXml(XmlReader reader)
-        {
-            reader.ReadStartElement();
-            while (reader.Read())
-            {
-                reader.Read();
-
-                SavedConnection sc = new SavedConnection();
-                sc.Name = reader.ReadContentAsString();
-                reader.Read();
-                reader.Read();
-
-                sc.ProviderType = (ProviderType)Enum.Parse(typeof(ProviderType), reader.ReadContentAsString());
-                reader.Read();
-                reader.Read();
-
-                sc.ConnectionString = reader.ReadContentAsString().Decrypt();
-                reader.Read();
-                reader.Read();
-                
-                Add(sc);
-            }
-        }
-
-        public void WriteXml(XmlWriter writer)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     public class SavedConnection

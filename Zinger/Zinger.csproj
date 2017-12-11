@@ -64,7 +64,6 @@
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\IXmlElement.cs" />
     <Compile Include="Models\MySqlQueryProvider.cs" />
     <Compile Include="Models\QueryProvider.cs" />
     <Compile Include="Models\SavedConnection.cs" />
@@ -119,8 +118,6 @@
       <Version>6.10.5</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
