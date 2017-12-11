@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 
 namespace Zinger.Models
 {
@@ -19,15 +20,17 @@ namespace Zinger.Models
 
         protected abstract IDbCommand GetCommand(string query, IDbConnection connection);
 
-        protected abstract IDbDataAdapter GetAdapter(IDbCommand command);
+        protected abstract IDbDataAdapter GetAdapter(IDbCommand command);        
 
         public long Milleseconds { get; private set; }
 
         public string ResolvedQuery { get; private set; }
 
+        public string CSharpResultClass { get; private set; }
+
         public BindingList<Parameter> Parameters { get; set; }
 
-        public DataTable Execute(string query)
+        public DataTable Execute(string query, string queryName)
         {
             using (var cn = GetConnection())
             {
@@ -46,6 +49,12 @@ namespace Zinger.Models
                         cmd.Parameters.Add(param);
                     }
 
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        var schemaTable = reader.GetSchemaTable();
+                        CSharpResultClass = GetCSharpClass(schemaTable, queryName);
+                    }
+
                     var adapter = GetAdapter(cmd);
                     try
                     {
@@ -62,6 +71,27 @@ namespace Zinger.Models
                     }
                 }
             }
+        }
+
+        private static string GetCSharpClass(DataTable schemaTable, string queryName)
+        {
+            StringBuilder output = new StringBuilder();
+
+            output.AppendLine($"public class {queryName}Result\r\n{{");
+
+            foreach (DataRow row in schemaTable.Rows)
+            {
+                output.AppendLine($"\tpublic {CLRType(row)} {row.Field<string>("ColumnName")} {{ get; set; }}");
+            }
+
+            output.AppendLine("}"); // end class
+
+            return output.ToString();
+        }
+
+        private static string CLRType(DataRow row)
+        {
+            throw new NotImplementedException();
         }
 
         private string ResolveParameters(string query, out Parameter[] parameters)

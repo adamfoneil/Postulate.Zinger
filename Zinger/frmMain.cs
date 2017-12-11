@@ -93,5 +93,10 @@ namespace Zinger
                     break;
             }
         }
+
+        private void tbQueryName_TextChanged(object sender, EventArgs e)
+        {
+            queryEditor1.QueryName = tbQueryName.Text;
+        }
     }
 }

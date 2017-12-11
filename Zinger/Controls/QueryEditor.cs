@@ -23,6 +23,8 @@ namespace Zinger.Controls
             }
         }
 
+        public string QueryName { get; set; }
+
         public QueryProvider Provider
         {
             get
@@ -32,7 +34,7 @@ namespace Zinger.Controls
             set
             {
                 _queryProvider = value;
-                dgvParams.DataSource = _queryProvider.Parameters;
+                dgvParams.DataSource = _queryProvider?.Parameters;
             }
         }
 
@@ -44,7 +46,7 @@ namespace Zinger.Controls
             {
                 pbExecuting.Visible = true;
                 tslQueryMetrics.Text = "Executing...";
-                var results = Provider.Execute(tbQuery.Text);
+                var results = Provider.Execute(tbQuery.Text, QueryName);
                 tslQueryMetrics.Text = $"{results.Rows.Count} records, {_queryProvider.Milleseconds}ms";
                 dgvResults.DataSource = results;
             }
