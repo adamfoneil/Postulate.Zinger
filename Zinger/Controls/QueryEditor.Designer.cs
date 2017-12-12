@@ -168,6 +168,7 @@
             this.dgvParams.Name = "dgvParams";
             this.dgvParams.Size = new System.Drawing.Size(471, 106);
             this.dgvParams.TabIndex = 0;
+            this.dgvParams.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvParams_DataError);
             // 
             // colParamName
             // 
@@ -254,6 +255,7 @@
             this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "QueryEditor";
             this.Size = new System.Drawing.Size(471, 494);
+            this.Load += new System.EventHandler(this.QueryEditor_Load);
             this.splcQueryAndResults.Panel1.ResumeLayout(false);
             this.splcQueryAndResults.Panel2.ResumeLayout(false);
             this.splcQueryAndResults.Panel2.PerformLayout();

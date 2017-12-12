@@ -1,14 +1,16 @@
-﻿using System;
+﻿using AdamOneilSoftware;
+using System;
+using System.Data;
 using System.Windows.Forms;
 using Zinger.Models;
 
 namespace Zinger.Controls
 {
     public partial class QueryEditor : UserControl
-    {
-        private QueryProvider _queryProvider;
-
+    {        
         public event EventHandler Executed;
+
+        private QueryProvider _provider;
 
         public QueryEditor()
         {
@@ -29,14 +31,11 @@ namespace Zinger.Controls
 
         public QueryProvider Provider
         {
-            get
-            {                
-                return _queryProvider;
-            }
+            get { return _provider; }
             set
             {
-                _queryProvider = value;
-                dgvParams.DataSource = _queryProvider?.Parameters;
+                _provider = value;
+                dgvParams.DataSource = _provider?.Parameters;
             }
         }
 
@@ -49,7 +48,7 @@ namespace Zinger.Controls
                 pbExecuting.Visible = true;
                 tslQueryMetrics.Text = "Executing...";
                 var result = Provider.Execute(tbQuery.Text, QueryName);
-                tslQueryMetrics.Text = $"{result.DataTable.Rows.Count} records, {_queryProvider.Milleseconds}ms";
+                tslQueryMetrics.Text = $"{result.DataTable.Rows.Count} records, {Provider.Milleseconds:n0}ms";
                 dgvResults.DataSource = result.DataTable;
                 Executed?.Invoke(result, new EventArgs());
             }
@@ -67,6 +66,17 @@ namespace Zinger.Controls
         private void chkParams_CheckedChanged(object sender, EventArgs e)
         {
             splcQueryAndParams.Panel2Collapsed = !chkParams.Checked;
+        }
+
+        private void QueryEditor_Load(object sender, EventArgs e)
+        {
+            if (DesignMode) return;
+            colParamType.FillFromEnum<DbType>();            
+        }
+
+        private void dgvParams_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            // ignore
         }
     }
 }

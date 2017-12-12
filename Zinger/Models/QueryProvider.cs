@@ -17,6 +17,7 @@ namespace Zinger.Models
         public QueryProvider(string connectionString)
         {
             _connectionString = connectionString;
+            Parameters = new BindingList<Parameter>();
         }
 
         protected abstract IDbConnection GetConnection();
@@ -38,17 +39,16 @@ namespace Zinger.Models
             using (var cn = GetConnection())
             {
                 cn.Open();
-
-                Parameter[] parameters;
-                ResolvedQuery = ResolveParameters(query, out parameters);
+                
+                ResolvedQuery = BuildWhereClause(query);
                 using (var cmd = GetCommand(ResolvedQuery, cn))
                 {
-                    foreach (var p in parameters)
+                    foreach (var p in Parameters)
                     {
                         var param = cmd.CreateParameter();
                         param.ParameterName = p.Name;
                         param.DbType = p.DataType;
-                        param.Value = p.Value;
+                        param.Value = p.Value ?? DBNull.Value;
                         cmd.Parameters.Add(param);
                     }
 
@@ -97,15 +97,15 @@ namespace Zinger.Models
             return output.ToString();
         }
 
-        private string ResolveParameters(string query, out Parameter[] parameters)
+        private string BuildWhereClause(string query)
         {
-            parameters = Parameters?.Where(p => p.Value != null).ToArray() ?? Enumerable.Empty<Parameter>().ToArray();
-
+            var expressionParams = Parameters?.Where(p => p.Value != null && p.Expression != null).ToArray() ?? Enumerable.Empty<Parameter>().ToArray();         
+            
             string result = query;
 
-            string whereClause = string.Join(" AND ", parameters.Select(p => p.Expression));
+            string whereClause = string.Join(" AND ", expressionParams.Select(p => p.Expression));
             result = result.Replace("{where}", whereClause);
-            result = result.Replace("{andWhere}", " AND " + whereClause);
+            result = result.Replace("{andWhere}", (!string.IsNullOrEmpty(whereClause)) ? " AND " + whereClause : string.Empty);
 
             return result;
         }
