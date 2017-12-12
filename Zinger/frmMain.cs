@@ -98,5 +98,11 @@ namespace Zinger
         {
             queryEditor1.QueryName = tbQueryName.Text;
         }
+
+        private void queryEditor1_Executed(object sender, EventArgs e)
+        {
+            var results = sender as QueryProvider.ExecuteResult;
+            tbResultClass.Text = results.ResultClass;
+        }
     }
 }

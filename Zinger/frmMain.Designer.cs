@@ -126,8 +126,10 @@
             this.queryEditor1.Location = new System.Drawing.Point(3, 3);
             this.queryEditor1.Name = "queryEditor1";
             this.queryEditor1.Provider = null;
+            this.queryEditor1.QueryName = null;
             this.queryEditor1.Size = new System.Drawing.Size(485, 425);
             this.queryEditor1.TabIndex = 0;
+            this.queryEditor1.Executed += new System.EventHandler(this.queryEditor1_Executed);
             // 
             // tabPage2
             // 
@@ -178,7 +180,7 @@
         '\''};
             this.tbResultClass.AutoIndentCharsPatterns = "\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;]+);\n^\\s*(case|default)\\s*[^:]*(" +
     "?<range>:)\\s*(?<range>[^;]+);\n";
-            this.tbResultClass.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.tbResultClass.AutoScrollMinSize = new System.Drawing.Size(2, 14);
             this.tbResultClass.BackBrush = null;
             this.tbResultClass.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
             this.tbResultClass.CharHeight = 14;
@@ -345,7 +347,7 @@
             this.KeyPreview = true;
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Zinger";
+            this.Text = "Postulate Query Helper";
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
             this.toolStrip1.ResumeLayout(false);

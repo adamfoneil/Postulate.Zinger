@@ -8,6 +8,8 @@ namespace Zinger.Controls
     {
         private QueryProvider _queryProvider;
 
+        public event EventHandler Executed;
+
         public QueryEditor()
         {
             InitializeComponent();
@@ -46,9 +48,10 @@ namespace Zinger.Controls
             {
                 pbExecuting.Visible = true;
                 tslQueryMetrics.Text = "Executing...";
-                var results = Provider.Execute(tbQuery.Text, QueryName);
-                tslQueryMetrics.Text = $"{results.Rows.Count} records, {_queryProvider.Milleseconds}ms";
-                dgvResults.DataSource = results;
+                var result = Provider.Execute(tbQuery.Text, QueryName);
+                tslQueryMetrics.Text = $"{result.DataTable.Rows.Count} records, {_queryProvider.Milleseconds}ms";
+                dgvResults.DataSource = result.DataTable;
+                Executed?.Invoke(result, new EventArgs());
             }
             catch (Exception exc)
             {

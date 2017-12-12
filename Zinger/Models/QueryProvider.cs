@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.CSharp;
+using System;
+using System.CodeDom;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
@@ -25,13 +28,13 @@ namespace Zinger.Models
         public long Milleseconds { get; private set; }
 
         public string ResolvedQuery { get; private set; }
-
-        public string CSharpResultClass { get; private set; }
-
+        
         public BindingList<Parameter> Parameters { get; set; }
 
-        public DataTable Execute(string query, string queryName)
+        public ExecuteResult Execute(string query, string queryName)
         {
+            var result = new ExecuteResult();
+
             using (var cn = GetConnection())
             {
                 cn.Open();
@@ -52,7 +55,7 @@ namespace Zinger.Models
                     using (var reader = cmd.ExecuteReader())
                     {
                         var schemaTable = reader.GetSchemaTable();
-                        CSharpResultClass = GetCSharpClass(schemaTable, queryName);
+                        result.ResultClass = GetCSharpClass(schemaTable, queryName);
                     }
 
                     var adapter = GetAdapter(cmd);
@@ -63,7 +66,7 @@ namespace Zinger.Models
                         adapter.Fill(dataSet);
                         sw.Stop();
                         Milleseconds = sw.ElapsedMilliseconds;
-                        return dataSet.Tables[0];
+                        result.DataTable = dataSet.Tables[0];
                     }
                     catch (Exception exc)
                     {
@@ -71,6 +74,8 @@ namespace Zinger.Models
                     }
                 }
             }
+
+            return result;
         }
 
         private static string GetCSharpClass(DataTable schemaTable, string queryName)
@@ -79,19 +84,17 @@ namespace Zinger.Models
 
             output.AppendLine($"public class {queryName}Result\r\n{{");
 
+            var columnInfo = GetColumnInfo(schemaTable).ToDictionary(row => row.Name);
+
             foreach (DataRow row in schemaTable.Rows)
             {
-                output.AppendLine($"\tpublic {CLRType(row)} {row.Field<string>("ColumnName")} {{ get; set; }}");
+                string columnName = row.Field<string>("ColumnName");
+                output.AppendLine($"\tpublic {columnInfo[columnName].CSharpType} {columnName} {{ get; set; }}");
             }
 
             output.AppendLine("}"); // end class
 
             return output.ToString();
-        }
-
-        private static string CLRType(DataRow row)
-        {
-            throw new NotImplementedException();
         }
 
         private string ResolveParameters(string query, out Parameter[] parameters)
@@ -105,6 +108,45 @@ namespace Zinger.Models
             result = result.Replace("{andWhere}", " AND " + whereClause);
 
             return result;
+        }
+
+        private static IEnumerable<ColumnInfo> GetColumnInfo(DataTable schemaTable)
+        {
+            List<ColumnInfo> results = new List<ColumnInfo>();
+
+            using (CSharpCodeProvider provider = new CSharpCodeProvider())
+            {
+                foreach (DataRow row in schemaTable.Rows)
+                {
+                    ColumnInfo columnInfo = new ColumnInfo()
+                    {
+                        Name = row.Field<string>("ColumnName"),
+                        CSharpType = CSharpTypeName(provider, row.Field<Type>("DataType")),
+                        IsNullable = row.Field<bool>("AllowDBNull")
+                    };
+
+                    if (columnInfo.IsNullable && !columnInfo.CSharpType.ToLower().Equals("string")) columnInfo.CSharpType += "?";
+                    if (columnInfo.CSharpType.ToLower().Equals("string") && row.Field<int>("ColumnSize") < int.MaxValue) columnInfo.Size = row.Field<int>("ColumnSize");
+
+                    results.Add(columnInfo);
+                }
+            }
+
+            return results;
+        }
+
+        private static string CSharpTypeName(CSharpCodeProvider provider, Type type)
+        {
+            CodeTypeReference typeRef = new CodeTypeReference(type);
+            return provider.GetTypeOutput(typeRef).Replace("System.", string.Empty);
+        }
+
+        public class ColumnInfo
+        {
+            public string Name { get; set; }
+            public string CSharpType { get; set; }
+            public int? Size { get; set; }
+            public bool IsNullable { get; set; }
         }
 
         public class Parameter
@@ -123,6 +165,12 @@ namespace Zinger.Models
             public string Expression { get; set; }
 
             public object Value { get; set; }
+        }
+
+        public class ExecuteResult
+        {
+            public DataTable DataTable { get; set; }
+            public string ResultClass { get; set; }
         }
     }
 }
