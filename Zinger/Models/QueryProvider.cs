@@ -84,12 +84,11 @@ namespace Zinger.Models
 
             output.AppendLine($"public class {queryName}Result\r\n{{");
 
-            var columnInfo = GetColumnInfo(schemaTable).ToDictionary(row => row.Name);
+            var columnInfo = CSharpPropertiesFromSchemaTable(schemaTable);
 
-            foreach (DataRow row in schemaTable.Rows)
+            foreach (var column in columnInfo)
             {
-                string columnName = row.Field<string>("ColumnName");
-                output.AppendLine($"\tpublic {columnInfo[columnName].CSharpType} {columnName} {{ get; set; }}");
+                output.AppendLine($"\tpublic {column.CSharpType} {column.PropertyName} {{ get; set; }}");
             }
 
             output.AppendLine("}"); // end class
@@ -110,19 +109,29 @@ namespace Zinger.Models
             return result;
         }
 
-        private static IEnumerable<ColumnInfo> GetColumnInfo(DataTable schemaTable)
+        private static IEnumerable<ColumnInfo> CSharpPropertiesFromSchemaTable(DataTable schemaTable)
         {
+            // find duplicate column names so we can append an incremental digit to the end of the name
+            var dupColumns = schemaTable.AsEnumerable()
+                .GroupBy(row => row.Field<string>("ColumnName"))
+                .Where(grp => grp.Count() > 1)
+                .Select(grp => grp.Key)
+                .ToDictionary(name => name, name => 0);
+
             List<ColumnInfo> results = new List<ColumnInfo>();
 
             using (CSharpCodeProvider provider = new CSharpCodeProvider())
             {
                 foreach (DataRow row in schemaTable.Rows)
                 {
+                    string columnName = row.Field<string>("ColumnName");
+                    if (dupColumns.ContainsKey(columnName)) dupColumns[columnName]++;
                     ColumnInfo columnInfo = new ColumnInfo()
                     {
-                        Name = row.Field<string>("ColumnName"),
+                        Name = columnName,
                         CSharpType = CSharpTypeName(provider, row.Field<Type>("DataType")),
-                        IsNullable = row.Field<bool>("AllowDBNull")
+                        IsNullable = row.Field<bool>("AllowDBNull"),
+                        Index = (dupColumns.ContainsKey(columnName)) ? dupColumns[columnName] : 0
                     };
 
                     if (columnInfo.IsNullable && !columnInfo.CSharpType.ToLower().Equals("string")) columnInfo.CSharpType += "?";
@@ -147,6 +156,12 @@ namespace Zinger.Models
             public string CSharpType { get; set; }
             public int? Size { get; set; }
             public bool IsNullable { get; set; }
+            public int Index { get; set; }
+
+            public string PropertyName
+            {
+                get { return (Index > 0) ? $"{Name}{Index}" : Name; }
+            }
         }
 
         public class Parameter
