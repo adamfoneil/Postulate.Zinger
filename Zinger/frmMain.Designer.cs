@@ -50,6 +50,7 @@
             this.tabNavigation = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.btnRunQuery = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -71,7 +72,8 @@
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnConnections,
-            this.cbConnection});
+            this.cbConnection,
+            this.btnRunQuery});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(725, 25);
@@ -188,6 +190,7 @@
             this.tbResultClass.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbResultClass.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.tbResultClass.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbResultClass.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.tbResultClass.IsReplaceMode = false;
             this.tbResultClass.Language = FastColoredTextBoxNS.Language.CSharp;
             this.tbResultClass.LeftBracket = '(';
@@ -238,6 +241,7 @@
             this.tbQueryClass.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbQueryClass.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.tbQueryClass.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbQueryClass.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.tbQueryClass.IsReplaceMode = false;
             this.tbQueryClass.Language = FastColoredTextBoxNS.Language.CSharp;
             this.tbQueryClass.LeftBracket = '(';
@@ -336,6 +340,16 @@
             this.tabPage4.Text = "Source Files";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // btnRunQuery
+            // 
+            this.btnRunQuery.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnRunQuery.Image = ((System.Drawing.Image)(resources.GetObject("btnRunQuery.Image")));
+            this.btnRunQuery.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnRunQuery.Name = "btnRunQuery";
+            this.btnRunQuery.Size = new System.Drawing.Size(23, 22);
+            this.btnRunQuery.Text = "Run Query";
+            this.btnRunQuery.Click += new System.EventHandler(this.btnRunQuery_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -395,6 +409,7 @@
         private System.Windows.Forms.ToolStripButton btnCopy;
         private FastColoredTextBoxNS.FastColoredTextBox tbResultClass;
         private FastColoredTextBoxNS.FastColoredTextBox tbQueryClass;
+        private System.Windows.Forms.ToolStripButton btnRunQuery;
     }
 }
 

@@ -104,5 +104,17 @@ namespace Zinger
             var results = sender as QueryProvider.ExecuteResult;
             tbResultClass.Text = results.ResultClass;
         }
+
+        private void btnRunQuery_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                queryEditor1.Execute();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+        }
     }
 }
