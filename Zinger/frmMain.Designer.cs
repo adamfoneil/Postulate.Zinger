@@ -35,13 +35,13 @@
 			this.btnRunQuery = new System.Windows.Forms.ToolStripButton();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.queryEditor1 = new Zinger.Controls.QueryEditor();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.resultClassBuilder1 = new Zinger.Controls.ResultClassBuilder();
 			this.splcQueryAndSourceTree = new System.Windows.Forms.SplitContainer();
 			this.tabNavigation = new System.Windows.Forms.TabControl();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.tabPage4 = new System.Windows.Forms.TabPage();
-			this.queryEditor1 = new Zinger.Controls.QueryEditor();
-			this.resultClassBuilder1 = new Zinger.Controls.ResultClassBuilder();
 			this.toolStrip1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
@@ -115,6 +115,19 @@
 			this.tabPage1.Text = "SQL";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
+			// queryEditor1
+			// 
+			this.queryEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.queryEditor1.Enabled = false;
+			this.queryEditor1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.queryEditor1.Location = new System.Drawing.Point(3, 3);
+			this.queryEditor1.Name = "queryEditor1";
+			this.queryEditor1.Provider = null;
+			this.queryEditor1.QueryName = null;
+			this.queryEditor1.Size = new System.Drawing.Size(485, 425);
+			this.queryEditor1.TabIndex = 0;
+			this.queryEditor1.Executed += new System.EventHandler(this.queryEditor1_Executed);
+			// 
 			// tabPage2
 			// 
 			this.tabPage2.Controls.Add(this.resultClassBuilder1);
@@ -125,6 +138,18 @@
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "C#";
 			this.tabPage2.UseVisualStyleBackColor = true;
+			// 
+			// resultClassBuilder1
+			// 
+			this.resultClassBuilder1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.resultClassBuilder1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.resultClassBuilder1.Location = new System.Drawing.Point(3, 3);
+			this.resultClassBuilder1.Name = "resultClassBuilder1";
+			this.resultClassBuilder1.QueryName = "";
+			this.resultClassBuilder1.ResultClass = "";
+			this.resultClassBuilder1.Size = new System.Drawing.Size(485, 425);
+			this.resultClassBuilder1.TabIndex = 0;
+			this.resultClassBuilder1.QueryNameChanged += new System.EventHandler(this.resultClassBuilder1_QueryNameChanged);
 			// 
 			// splcQueryAndSourceTree
 			// 
@@ -174,30 +199,6 @@
 			this.tabPage4.TabIndex = 1;
 			this.tabPage4.Text = "Source Files";
 			this.tabPage4.UseVisualStyleBackColor = true;
-			// 
-			// queryEditor1
-			// 
-			this.queryEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.queryEditor1.Enabled = false;
-			this.queryEditor1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.queryEditor1.Location = new System.Drawing.Point(3, 3);
-			this.queryEditor1.Name = "queryEditor1";
-			this.queryEditor1.Provider = null;
-			this.queryEditor1.QueryName = null;
-			this.queryEditor1.Size = new System.Drawing.Size(485, 425);
-			this.queryEditor1.TabIndex = 0;
-			this.queryEditor1.Executed += new System.EventHandler(this.queryEditor1_Executed);
-			// 
-			// resultClassBuilder1
-			// 
-			this.resultClassBuilder1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.resultClassBuilder1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.resultClassBuilder1.Location = new System.Drawing.Point(3, 3);
-			this.resultClassBuilder1.Name = "resultClassBuilder1";
-			this.resultClassBuilder1.QueryName = "";
-			this.resultClassBuilder1.ResultClass = "";
-			this.resultClassBuilder1.Size = new System.Drawing.Size(485, 425);
-			this.resultClassBuilder1.TabIndex = 0;
 			// 
 			// frmMain
 			// 

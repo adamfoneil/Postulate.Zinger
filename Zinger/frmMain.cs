@@ -116,5 +116,11 @@ namespace Zinger
                 MessageBox.Show(exc.Message);
             }
         }
-    }
+
+		private void resultClassBuilder1_QueryNameChanged(object sender, EventArgs e)
+		{
+			queryEditor1.QueryName = resultClassBuilder1.QueryName;
+			resultClassBuilder1.RenameQuery(queryEditor1.QueryName);			
+		}
+	}
 }

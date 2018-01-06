@@ -7,11 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Zinger.Models;
 
 namespace Zinger.Controls
 {
 	public partial class ResultClassBuilder : UserControl
 	{
+		public event EventHandler QueryNameChanged;
+
 		public ResultClassBuilder()
 		{
 			InitializeComponent();
@@ -27,6 +30,23 @@ namespace Zinger.Controls
 		{
 			get { return tbResultClass.Text; }
 			set { tbResultClass.Text = value; }
+		}
+
+		private void btnCopy_Click(object sender, EventArgs e)
+		{
+			Clipboard.SetText(ResultClass);
+		}
+
+		private void tbQueryName_TextChanged(object sender, EventArgs e)
+		{
+			QueryNameChanged?.Invoke(sender, e);
+		}
+
+		public void RenameQuery(string queryName)
+		{
+			string[] lines = ResultClass.Split('\n');
+			lines[0] = QueryProvider.ClassFirstLine(queryName);
+			ResultClass = string.Join("\n", lines);
 		}
 	}
 }

@@ -78,13 +78,18 @@ namespace Zinger.Models
             return result;
         }
 
+		public static string ClassFirstLine(string queryName)
+		{
+			return $"public class {queryName}Result";
+		}
+
         private static string GetCSharpClass(DataTable schemaTable, string queryName)
         {
             StringBuilder output = new StringBuilder();
 
-            output.AppendLine($"public class {queryName}Result\r\n{{");
+            output.AppendLine(ClassFirstLine(queryName) + "\r\n{");
 
-            var columnInfo = CSharpPropertiesFromSchemaTable(schemaTable);
+			var columnInfo = CSharpPropertiesFromSchemaTable(schemaTable);
 
             foreach (var column in columnInfo)
             {

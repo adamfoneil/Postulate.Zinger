@@ -69,6 +69,7 @@
 			// 
 			this.tbQueryName.Name = "tbQueryName";
 			this.tbQueryName.Size = new System.Drawing.Size(200, 25);
+			this.tbQueryName.TextChanged += new System.EventHandler(this.tbQueryName_TextChanged);
 			// 
 			// btnCopy
 			// 
@@ -78,6 +79,7 @@
 			this.btnCopy.Name = "btnCopy";
 			this.btnCopy.Size = new System.Drawing.Size(23, 22);
 			this.btnCopy.Text = "Copy";
+			this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
 			// 
 			// tabControl2
 			// 
@@ -124,6 +126,7 @@
 			this.tbResultClass.Cursor = System.Windows.Forms.Cursors.IBeam;
 			this.tbResultClass.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
 			this.tbResultClass.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tbResultClass.Font = new System.Drawing.Font("Courier New", 9.75F);
 			this.tbResultClass.IsReplaceMode = false;
 			this.tbResultClass.Language = FastColoredTextBoxNS.Language.CSharp;
 			this.tbResultClass.LeftBracket = '(';
@@ -166,7 +169,7 @@
         '\''};
 			this.tbQueryClass.AutoIndentCharsPatterns = "\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;]+);\n^\\s*(case|default)\\s*[^:]*(" +
     "?<range>:)\\s*(?<range>[^;]+);\n";
-			this.tbQueryClass.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+			this.tbQueryClass.AutoScrollMinSize = new System.Drawing.Size(2, 14);
 			this.tbQueryClass.BackBrush = null;
 			this.tbQueryClass.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
 			this.tbQueryClass.CharHeight = 14;
@@ -174,6 +177,7 @@
 			this.tbQueryClass.Cursor = System.Windows.Forms.Cursors.IBeam;
 			this.tbQueryClass.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
 			this.tbQueryClass.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tbQueryClass.Font = new System.Drawing.Font("Courier New", 9.75F);
 			this.tbQueryClass.IsReplaceMode = false;
 			this.tbQueryClass.Language = FastColoredTextBoxNS.Language.CSharp;
 			this.tbQueryClass.LeftBracket = '(';
