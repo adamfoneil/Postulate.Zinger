@@ -88,7 +88,12 @@ namespace Zinger.Models
 
             foreach (var column in columnInfo)
             {
-                output.AppendLine($"\tpublic {column.CSharpType} {column.PropertyName} {{ get; set; }}");
+				string prettyName;
+				if (IsUglyColumnName(column.PropertyName, out prettyName))
+				{
+					output.AppendLine($"\t[Column(\"{column.PropertyName}\")]");
+				}
+                output.AppendLine($"\tpublic {column.CSharpType} {prettyName} {{ get; set; }}");
             }
 
             output.AppendLine("}"); // end class
@@ -96,7 +101,26 @@ namespace Zinger.Models
             return output.ToString();
         }
 
-        private string BuildWhereClause(string query)
+		private static bool IsUglyColumnName(string propertyName, out string prettyName)
+		{
+			prettyName = propertyName;
+
+			if (propertyName.Contains("_") || propertyName.ToUpper().Equals(propertyName))
+			{
+				string[] parts = propertyName.Split('_');
+				prettyName = string.Join("", parts.Select(s => TitleCase(s)));
+				return true;
+			}
+
+			return false;
+		}
+
+		private static string TitleCase(string input)
+		{
+			return input.Substring(0, 1).ToUpper() + input.Substring(1).ToLower();
+		}
+
+		private string BuildWhereClause(string query)
         {
             var expressionParams = Parameters?.Where(p => p.Value != null && p.Expression != null).ToArray() ?? Enumerable.Empty<Parameter>().ToArray();         
             

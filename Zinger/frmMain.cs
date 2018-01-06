@@ -96,13 +96,13 @@ namespace Zinger
 
         private void tbQueryName_TextChanged(object sender, EventArgs e)
         {
-            queryEditor1.QueryName = tbQueryName.Text;
+			queryEditor1.QueryName = resultClassBuilder1.QueryName;
         }
 
         private void queryEditor1_Executed(object sender, EventArgs e)
         {
             var results = sender as QueryProvider.ExecuteResult;
-            tbResultClass.Text = results.ResultClass;
+			resultClassBuilder1.ResultClass = results.ResultClass;            
         }
 
         private void btnRunQuery_Click(object sender, EventArgs e)

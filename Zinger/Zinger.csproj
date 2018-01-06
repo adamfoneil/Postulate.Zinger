@@ -52,6 +52,12 @@
     <Compile Include="Controls\QueryEditor.Designer.cs">
       <DependentUpon>QueryEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ResultClassBuilder.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ResultClassBuilder.Designer.cs">
+      <DependentUpon>ResultClassBuilder.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmConnections.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +78,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\QueryEditor.resx">
       <DependentUpon>QueryEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ResultClassBuilder.resx">
+      <DependentUpon>ResultClassBuilder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmConnections.resx">
       <DependentUpon>frmConnections.cs</DependentUpon>
