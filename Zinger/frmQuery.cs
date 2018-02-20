@@ -8,10 +8,10 @@ using Zinger.Models;
 
 namespace Zinger
 {
-    public partial class frmMain : Form
+    public partial class frmQuery : Form
     {
-        public frmMain()
-        {
+        public frmQuery()
+        {			
             InitializeComponent();
         }
 
@@ -120,7 +120,8 @@ namespace Zinger
 		private void resultClassBuilder1_QueryNameChanged(object sender, EventArgs e)
 		{
 			queryEditor1.QueryName = resultClassBuilder1.QueryName;
-			resultClassBuilder1.RenameQuery(queryEditor1.QueryName);			
+			resultClassBuilder1.RenameQuery(queryEditor1.QueryName);
+			FindForm().Text = resultClassBuilder1.QueryName;
 		}
 	}
 }
