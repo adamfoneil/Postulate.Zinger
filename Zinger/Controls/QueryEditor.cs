@@ -55,7 +55,8 @@ namespace Zinger.Controls
             catch (Exception exc)
             {
                 tslQueryMetrics.Text = $"Error: {exc.Message}";
-                MessageBox.Show(exc.Message);
+				string fullMessage = GetFullError(exc);
+                MessageBox.Show(fullMessage);
             }   
             finally
             {
@@ -63,7 +64,21 @@ namespace Zinger.Controls
             }
         }
 
-        private void chkParams_CheckedChanged(object sender, EventArgs e)
+		private string GetFullError(Exception exc)
+		{
+			string result = exc.Message;
+
+			Exception inner = exc.InnerException;
+			while (inner != null)
+			{
+				result += "\r\n- " + inner.Message;
+				inner = inner.InnerException;
+			}
+			
+			return result;
+		}
+
+		private void chkParams_CheckedChanged(object sender, EventArgs e)
         {
             splcQueryAndParams.Panel2Collapsed = !chkParams.Checked;
         }
