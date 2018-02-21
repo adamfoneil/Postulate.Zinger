@@ -32,6 +32,8 @@ namespace Zinger.Models
         
         public BindingList<Parameter> Parameters { get; set; }
 
+		public bool BeautifyColumnNames { get; set; }
+
         public ExecuteResult Execute(string query, string queryName)
         {
             var result = new ExecuteResult();
@@ -55,7 +57,7 @@ namespace Zinger.Models
                     using (var reader = cmd.ExecuteReader())
                     {
                         var schemaTable = reader.GetSchemaTable();
-                        result.ResultClass = GetCSharpClass(schemaTable, queryName);
+                        result.ResultClass = GetCSharpClass(schemaTable, queryName, BeautifyColumnNames);
                     }
 
                     var adapter = GetAdapter(cmd);
@@ -83,7 +85,7 @@ namespace Zinger.Models
 			return $"public class {queryName}Result";
 		}
 
-        private static string GetCSharpClass(DataTable schemaTable, string queryName)
+        private static string GetCSharpClass(DataTable schemaTable, string queryName, bool beautifyColumnNames)
         {
             StringBuilder output = new StringBuilder();
 
@@ -93,8 +95,9 @@ namespace Zinger.Models
 
             foreach (var column in columnInfo)
             {
-				string prettyName;
-				if (IsUglyColumnName(column.PropertyName, out prettyName))
+				string prettyName = column.Name;
+
+				if (beautifyColumnNames && IsUglyColumnName(column.PropertyName, out prettyName))
 				{
 					output.AppendLine($"\t[Column(\"{column.PropertyName}\")]");
 				}
