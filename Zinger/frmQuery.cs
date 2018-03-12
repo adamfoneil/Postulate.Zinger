@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Zinger.Forms;
 using Zinger.Models;
@@ -26,7 +27,12 @@ namespace Zinger
             }
         }
 
-        public SavedConnections GetSavedConnections()
+		public void LoadQuery(string fileName)
+		{
+			queryEditor1.LoadQuery(fileName);
+		}
+
+		public SavedConnections GetSavedConnections()
         {
             string fileName = SavedConnectionFilename();
 
@@ -122,6 +128,23 @@ namespace Zinger
 			queryEditor1.QueryName = resultClassBuilder1.QueryName;
 			resultClassBuilder1.RenameQuery(queryEditor1.QueryName);
 			FindForm().Text = resultClassBuilder1.QueryName;
+		}
+
+		public void AutoSave(int index)
+		{
+			string fileName = Path.Combine(AutoSavePath(), $"query{index}.sql");
+			queryEditor1.SaveQuery(fileName);
+		}
+
+		public static string AutoSavePath()
+		{
+			return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Adam O'Neil Software", "Postulate Query Helper", "Auto Save");
+		}
+
+		public static IEnumerable<string> AutoLoadFiles()
+		{
+			if (!Directory.Exists(AutoSavePath())) return Enumerable.Empty<string>();
+			return Directory.GetFiles(AutoSavePath(), "*.sql", SearchOption.TopDirectoryOnly);
 		}
 	}
 }

@@ -42,7 +42,7 @@ namespace Zinger.Models
             {
                 cn.Open();
 
-                ResolvedQuery = BuildWhereClause(query);
+                ResolvedQuery = ResolveQuery(query);
                 using (var cmd = GetCommand(ResolvedQuery, cn))
                 {
                     foreach (var p in Parameters.Where(p => !p.IsArray()))
@@ -128,7 +128,7 @@ namespace Zinger.Models
 			return input.Substring(0, 1).ToUpper() + input.Substring(1).ToLower();
 		}
 
-		private string BuildWhereClause(string query)
+		private string ResolveQuery(string query)
         {
             var expressionParams = Parameters?.Where(p => p.Value != null && p.Expression != null).ToArray() ?? Enumerable.Empty<Parameter>().ToArray();         
             

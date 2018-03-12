@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Zinger
@@ -19,14 +13,23 @@ namespace Zinger
 
 		private void frmContainer_Load(object sender, EventArgs e)
 		{
+			var autoLoadFiles = frmQuery.AutoLoadFiles();
+			foreach (string fileName in autoLoadFiles)
+			{
+				var form = NewQueryWindow();
+				form.LoadQuery(fileName);
+				File.Delete(fileName);
+			}
+
 			NewQueryWindow();
 		}
 
-		private void NewQueryWindow()
+		private frmQuery NewQueryWindow()
 		{
 			frmQuery frm = new frmQuery();
 			frm.MdiParent = this;
 			frm.Show();
+			return frm;
 		}
 
 		private void frmContainer_KeyDown(object sender, KeyEventArgs e)
@@ -35,6 +38,24 @@ namespace Zinger
 			{
 				NewQueryWindow();
 				e.Handled = true;
+			}
+		}
+
+		private void frmContainer_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			try
+			{
+				int index = 0;
+				foreach (var form in MdiChildren)
+				{
+					index++;
+					var qryForm = form as frmQuery;
+					if (qryForm != null) qryForm.AutoSave(index);
+				}
+			}
+			catch (Exception exc)
+			{
+				MessageBox.Show(exc.Message);
 			}
 		}
 	}

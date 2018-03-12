@@ -1,6 +1,7 @@
 ﻿using AdamOneilSoftware;
 using System;
 using System.Data;
+using System.IO;
 using System.Windows.Forms;
 using Zinger.Models;
 
@@ -11,6 +12,7 @@ namespace Zinger.Controls
         public event EventHandler Executed;
 
         private QueryProvider _provider;
+		private string _fileName;
 
         public QueryEditor()
         {
@@ -93,5 +95,44 @@ namespace Zinger.Controls
         {
             // ignore
         }
+
+		public bool SaveQuery(string fileName = null)
+		{
+			_fileName = fileName;
+
+			if (string.IsNullOrEmpty(_fileName))
+			{
+				SaveFileDialog dlg = new SaveFileDialog();
+				dlg.Filter = "*.qry|Query Files|*.sql|SQL Files|*.*|All Files";
+				dlg.DefaultExt = "sql";
+				if (dlg.ShowDialog() == DialogResult.OK)
+				{
+					_fileName = dlg.FileName;
+				}
+				else
+				{
+					return false;
+				}
+			}
+
+			string folder = Path.GetDirectoryName(_fileName);
+			if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
+
+			using (var writer = File.CreateText(_fileName))
+			{
+				writer.Write(tbQuery.Text);
+				return true;
+			}
+		}
+
+		public void LoadQuery(string fileName)
+		{
+			using (var reader = File.OpenText(fileName))
+			{
+				string content = reader.ReadToEnd();
+				tbQuery.Text = content;
+				_fileName = fileName;
+			}
+		}
     }
 }
