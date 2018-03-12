@@ -41,11 +41,11 @@ namespace Zinger.Models
             using (var cn = GetConnection())
             {
                 cn.Open();
-                
+
                 ResolvedQuery = BuildWhereClause(query);
                 using (var cmd = GetCommand(ResolvedQuery, cn))
                 {
-                    foreach (var p in Parameters)
+                    foreach (var p in Parameters.Where(p => !p.IsArray()))
                     {
                         var param = cmd.CreateParameter();
                         param.ParameterName = p.Name;
@@ -138,7 +138,13 @@ namespace Zinger.Models
             result = result.Replace("{where}", whereClause);
             result = result.Replace("{andWhere}", (!string.IsNullOrEmpty(whereClause)) ? " AND " + whereClause : string.Empty);
 
-            return result;
+			var arrayParams = Parameters?.Where(p => p.IsArray()) ?? Enumerable.Empty<Parameter>();
+			foreach (var arrayParam in arrayParams)
+			{
+				result = result.Replace($"@{arrayParam.Name}", "(" + arrayParam.ArrayValueString() + ")");
+			}
+
+			return result;
         }
 
         private static IEnumerable<ColumnInfo> CSharpPropertiesFromSchemaTable(DataTable schemaTable)
@@ -212,7 +218,35 @@ namespace Zinger.Models
             public string Expression { get; set; }
 
             public object Value { get; set; }
-        }
+
+			public bool IsArray()
+			{
+				string valueString = Value?.ToString();
+				if (!string.IsNullOrEmpty(valueString))
+				{
+					return (valueString.StartsWith("[") && valueString.EndsWith("]"));
+				}
+
+				return false;
+			}
+
+			public object GetValue()
+			{
+				return (IsArray()) ? ValueToArray() : Value;
+			}
+
+			public string ArrayValueString()
+			{
+				string valueString = Value.ToString();
+				return valueString.Substring(1, valueString.Length - 2);
+			}
+
+			private string[] ValueToArray()
+			{
+				string arrayString = ArrayValueString();
+				return arrayString.Split(',', ';').Select(s => s.Trim()).ToArray();
+			}
+		}
 
         public class ExecuteResult
         {
