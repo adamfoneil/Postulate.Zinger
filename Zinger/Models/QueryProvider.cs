@@ -32,6 +32,8 @@ namespace Zinger.Models
         
         public BindingList<Parameter> Parameters { get; set; }
 
+		public bool BeautifyColumnNames { get; set; }
+
         public ExecuteResult Execute(string query, string queryName)
         {
             var result = new ExecuteResult();
@@ -39,11 +41,11 @@ namespace Zinger.Models
             using (var cn = GetConnection())
             {
                 cn.Open();
-                
-                ResolvedQuery = BuildWhereClause(query);
+
+                ResolvedQuery = ResolveQuery(query);
                 using (var cmd = GetCommand(ResolvedQuery, cn))
                 {
-                    foreach (var p in Parameters)
+                    foreach (var p in Parameters.Where(p => !p.IsArray()))
                     {
                         var param = cmd.CreateParameter();
                         param.ParameterName = p.Name;
@@ -55,7 +57,7 @@ namespace Zinger.Models
                     using (var reader = cmd.ExecuteReader())
                     {
                         var schemaTable = reader.GetSchemaTable();
-                        result.ResultClass = GetCSharpClass(schemaTable, queryName);
+                        result.ResultClass = GetCSharpClass(schemaTable, queryName, BeautifyColumnNames);
                     }
 
                     var adapter = GetAdapter(cmd);
@@ -83,7 +85,7 @@ namespace Zinger.Models
 			return $"public class {queryName}Result";
 		}
 
-        private static string GetCSharpClass(DataTable schemaTable, string queryName)
+        private static string GetCSharpClass(DataTable schemaTable, string queryName, bool beautifyColumnNames)
         {
             StringBuilder output = new StringBuilder();
 
@@ -93,8 +95,9 @@ namespace Zinger.Models
 
             foreach (var column in columnInfo)
             {
-				string prettyName;
-				if (IsUglyColumnName(column.PropertyName, out prettyName))
+				string prettyName = column.Name;
+
+				if (beautifyColumnNames && IsUglyColumnName(column.PropertyName, out prettyName))
 				{
 					output.AppendLine($"\t[Column(\"{column.PropertyName}\")]");
 				}
@@ -125,7 +128,7 @@ namespace Zinger.Models
 			return input.Substring(0, 1).ToUpper() + input.Substring(1).ToLower();
 		}
 
-		private string BuildWhereClause(string query)
+		private string ResolveQuery(string query)
         {
             var expressionParams = Parameters?.Where(p => p.Value != null && p.Expression != null).ToArray() ?? Enumerable.Empty<Parameter>().ToArray();         
             
@@ -135,7 +138,13 @@ namespace Zinger.Models
             result = result.Replace("{where}", whereClause);
             result = result.Replace("{andWhere}", (!string.IsNullOrEmpty(whereClause)) ? " AND " + whereClause : string.Empty);
 
-            return result;
+			var arrayParams = Parameters?.Where(p => p.IsArray()) ?? Enumerable.Empty<Parameter>();
+			foreach (var arrayParam in arrayParams)
+			{
+				result = result.Replace($"@{arrayParam.Name}", "(" + arrayParam.ArrayValueString() + ")");
+			}
+
+			return result;
         }
 
         private static IEnumerable<ColumnInfo> CSharpPropertiesFromSchemaTable(DataTable schemaTable)
@@ -209,7 +218,35 @@ namespace Zinger.Models
             public string Expression { get; set; }
 
             public object Value { get; set; }
-        }
+
+			public bool IsArray()
+			{
+				string valueString = Value?.ToString();
+				if (!string.IsNullOrEmpty(valueString))
+				{
+					return (valueString.StartsWith("[") && valueString.EndsWith("]"));
+				}
+
+				return false;
+			}
+
+			public object GetValue()
+			{
+				return (IsArray()) ? ValueToArray() : Value;
+			}
+
+			public string ArrayValueString()
+			{
+				string valueString = Value.ToString();
+				return valueString.Substring(1, valueString.Length - 2);
+			}
+
+			private string[] ValueToArray()
+			{
+				string arrayString = ArrayValueString();
+				return arrayString.Split(',', ';').Select(s => s.Trim()).ToArray();
+			}
+		}
 
         public class ExecuteResult
         {

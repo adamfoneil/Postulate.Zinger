@@ -1,6 +1,6 @@
 ﻿namespace Zinger
 {
-    partial class frmMain
+    partial class frmQuery
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmQuery));
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.btnConnections = new System.Windows.Forms.ToolStripButton();
 			this.cbConnection = new System.Windows.Forms.ToolStripComboBox();
