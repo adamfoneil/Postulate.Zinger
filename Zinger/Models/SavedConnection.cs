@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -11,7 +12,8 @@ namespace Zinger.Models
     public enum ProviderType
     {
         MySql,
-        SqlServer
+        SqlServer,
+		OleDb
     }
 
     [XmlRoot(ElementName = "ArrayOfSavedConnection")]
@@ -55,6 +57,13 @@ namespace Zinger.Models
                             await cn.OpenAsync();
                         }
                         break;
+
+					case ProviderType.OleDb:
+						using (var cn = new OleDbConnection(ConnectionString))
+						{
+							await cn.OpenAsync();
+						}
+						break;
                 }
                 result.OpenedSuccessfully = true;
             }

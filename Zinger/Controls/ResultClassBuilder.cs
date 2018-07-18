@@ -45,7 +45,7 @@ namespace Zinger.Controls
 		public void RenameQuery(string queryName)
 		{
 			string[] lines = ResultClass.Split('\n');
-			lines[0] = QueryProvider.ClassFirstLine(queryName);
+			lines[0] = QueryProvider.ResultClassFirstLine(queryName);
 			ResultClass = string.Join("\n", lines);
 		}
 	}

@@ -78,7 +78,7 @@ namespace Zinger.Models
             return result;
         }
 
-		public static string ClassFirstLine(string queryName)
+		public static string ResultClassFirstLine(string queryName)
 		{
 			return $"public class {queryName}Result";
 		}
@@ -87,7 +87,7 @@ namespace Zinger.Models
         {
             StringBuilder output = new StringBuilder();
 
-            output.AppendLine(ClassFirstLine(queryName) + "\r\n{");
+            output.AppendLine(ResultClassFirstLine(queryName) + "\r\n{");
 
 			var columnInfo = CSharpPropertiesFromSchemaTable(schemaTable);
 
