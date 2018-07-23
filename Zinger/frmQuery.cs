@@ -11,6 +11,8 @@ namespace Zinger
 {
     public partial class frmQuery : Form
     {
+		private Options _options = null;
+
         public frmQuery()
         {			
             InitializeComponent();
@@ -53,6 +55,10 @@ namespace Zinger
         {
             try
             {
+				_options = UserOptionsBase.Load<Options>("Options.xml", this);
+				_options.RestoreFormPosition(_options.MainFormPosition, this);
+				_options.TrackFormPosition(this, (fp) => _options.MainFormPosition = fp);
+
                 FillConnectionDropdown();
             }
             catch (Exception exc)

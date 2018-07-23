@@ -81,6 +81,7 @@
     <Compile Include="Models\QueryProvider.cs" />
     <Compile Include="Models\SavedConnection.cs" />
     <Compile Include="Models\SqlServerQueryProvider.cs" />
+    <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\QueryEditor.resx">
