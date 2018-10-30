@@ -1,6 +1,8 @@
 ﻿using AdamOneilSoftware;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Zinger.Forms;
 using Zinger.Models;
@@ -16,6 +18,12 @@ namespace Zinger
 			InitializeComponent();
 		}
 
+		public static IEnumerable<string> AutoLoadFiles()
+		{
+			if (!Directory.Exists(SavedConnectionPath())) return Enumerable.Empty<string>();
+			return Directory.GetFiles(SavedConnectionPath(), "*.sql", SearchOption.TopDirectoryOnly);
+		}
+
 		private void frmContainer_Load(object sender, EventArgs e)
 		{
 			try
@@ -24,7 +32,7 @@ namespace Zinger
 				_options.RestoreFormPosition(_options.MainFormPosition, this);
 				_options.TrackFormPosition(this, (fp) => _options.MainFormPosition = fp);
 
-				var autoLoadFiles = frmQuery.AutoLoadFiles();
+				var autoLoadFiles = AutoLoadFiles();
 				foreach (string fileName in autoLoadFiles)
 				{
 					var form = NewQueryWindow();
@@ -121,6 +129,19 @@ namespace Zinger
 		private string SavedConnectionFilename()
 		{
 			return Path.Combine(SavedConnectionPath(), "SavedConnections.xml");
+		}
+
+		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				frmQuery activeQuery = ActiveForm as frmQuery;
+				activeQuery?.SaveAs();
+			}
+			catch (Exception exc)
+			{
+				MessageBox.Show(exc.Message);
+			}
 		}
 	}
 }

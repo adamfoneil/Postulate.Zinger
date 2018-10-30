@@ -1,15 +1,13 @@
-﻿using AdamOneilSoftware;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 using Zinger.Models;
 
 namespace Zinger
 {
 	public partial class frmQuery : Form
-	{		
+	{
 		public frmQuery()
 		{
 			InitializeComponent();
@@ -34,7 +32,9 @@ namespace Zinger
 
 		public void LoadQuery(string fileName)
 		{
-			queryEditor1.LoadQuery(fileName);
+			var query = queryEditor1.LoadQuery(fileName);
+			cbConnection.SelectedIndex = cbConnection.FindString(query.ConnectionName);
+			FindForm().Text = query.Name;
 		}
 
 		private void frmMain_Load(object sender, EventArgs e)
@@ -125,13 +125,12 @@ namespace Zinger
 		public void AutoSave(int index)
 		{
 			string fileName = Path.Combine(frmContainer.SavedConnectionPath(), $"query{index}.sql");
-			queryEditor1.SaveQuery(fileName);
+			queryEditor1.SaveQuery(resultClassBuilder1.QueryName, fileName);
 		}
 
-		public static IEnumerable<string> AutoLoadFiles()
+		public void SaveAs()
 		{
-			if (!Directory.Exists(frmContainer.SavedConnectionPath())) return Enumerable.Empty<string>();
-			return Directory.GetFiles(frmContainer.SavedConnectionPath(), "*.sql", SearchOption.TopDirectoryOnly);
+			queryEditor1.SaveQuery(resultClassBuilder1.QueryName, cbConnection.SelectedText);
 		}
 	}
 }

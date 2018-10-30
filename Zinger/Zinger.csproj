@@ -80,6 +80,7 @@
     <Compile Include="Models\OleDbQueryProvider.cs" />
     <Compile Include="Models\QueryProvider.cs" />
     <Compile Include="Models\SavedConnection.cs" />
+    <Compile Include="Models\SavedQuery.cs" />
     <Compile Include="Models\SqlServerQueryProvider.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
@@ -122,6 +123,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AoJsonSettings">
+      <Version>1.0.5</Version>
+    </PackageReference>
     <PackageReference Include="AoOptions">
       <Version>1.5.10</Version>
     </PackageReference>

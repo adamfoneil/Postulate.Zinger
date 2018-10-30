@@ -95,16 +95,26 @@ namespace Zinger.Models
 		{
 			StringBuilder output = new StringBuilder();
 
-			output.AppendLine("using Postulate.Lite;\r\n");
-
 			output.AppendLine(QueryClassFirstLine(queryName) + "\r\n{");
 
 			output.AppendLine($"\tpublic {queryName}() : base(");
-			output.AppendLine($"\t\t@\"{query}\")");
+			output.AppendLine($"\t\t@\"{Indent(2, query)}\")\r\n\t\t{{\r\n\t\t}}");
 
 			output.AppendLine("}"); // end class
 
 			return output.ToString();
+		}
+
+		/// <summary>
+		/// Indents lines of the given input except for the first line
+		/// </summary>
+		private static string Indent(int tabCount, string input)
+		{
+			const string separator = "\r\n";
+			string[] lines = input
+				.Split(new string[] { separator }, StringSplitOptions.RemoveEmptyEntries)
+				.Select((line, i) => (i > 0) ? new string('\t', tabCount) + line : line).ToArray();
+			return string.Join(separator, lines);
 		}
 
 		private static string GetCSharpResultClass(DataTable schemaTable, string queryName, bool beautifyColumnNames)

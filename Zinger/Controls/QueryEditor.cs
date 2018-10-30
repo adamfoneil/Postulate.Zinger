@@ -1,5 +1,8 @@
 ﻿using AdamOneilSoftware;
+using JsonSettings;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Windows.Forms;
@@ -96,15 +99,15 @@ namespace Zinger.Controls
             // ignore
         }
 
-		public bool SaveQuery(string fileName = null)
+		public bool SaveQuery(string queryName, string connectionName, string fileName = null)
 		{
 			_fileName = fileName;
 
 			if (string.IsNullOrEmpty(_fileName))
 			{
 				SaveFileDialog dlg = new SaveFileDialog();
-				dlg.Filter = "*.qry|Query Files|*.sql|SQL Files|*.*|All Files";
-				dlg.DefaultExt = "sql";
+				dlg.Filter = "Postulate Query Helper|*.pqh|All Files|*.*";
+				dlg.DefaultExt = "pqh";
 				if (dlg.ShowDialog() == DialogResult.OK)
 				{
 					_fileName = dlg.FileName;
@@ -118,21 +121,36 @@ namespace Zinger.Controls
 			string folder = Path.GetDirectoryName(_fileName);
 			if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
 
-			using (var writer = File.CreateText(_fileName))
+			SavedQuery qry = new SavedQuery()
 			{
-				writer.Write(tbQuery.Text);
-				return true;
-			}
+				ConnectionName = connectionName,
+				Name = queryName,
+				Sql = tbQuery.Text,
+				Parameters = ParametersToArray(_provider.Parameters)
+			};
+
+			JsonFile.Save(_fileName, qry);
+			return true;
 		}
 
-		public void LoadQuery(string fileName)
+		private QueryProvider.Parameter[] ParametersToArray(BindingList<QueryProvider.Parameter> parameters)
 		{
-			using (var reader = File.OpenText(fileName))
-			{
-				string content = reader.ReadToEnd();
-				tbQuery.Text = content;
-				_fileName = fileName;
-			}
+			List<QueryProvider.Parameter> results = new List<QueryProvider.Parameter>(parameters);
+			return results.ToArray();
 		}
-    }
+
+		private BindingList<QueryProvider.Parameter> ParametersFromArray(QueryProvider.Parameter[] parameters)
+		{
+			BindingList<QueryProvider.Parameter> results = new BindingList<QueryProvider.Parameter>(parameters);
+			return results;
+		}
+
+		public SavedQuery LoadQuery(string fileName)
+		{
+			var sq = JsonFile.Load<SavedQuery>(fileName);
+			tbQuery.Text = sq.Sql;
+			dgvParams.DataSource = ParametersFromArray(sq.Parameters);
+			return sq;
+		}
+	}
 }
