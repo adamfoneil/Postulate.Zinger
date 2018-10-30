@@ -1,11 +1,16 @@
-﻿using System;
+﻿using AdamOneilSoftware;
+using System;
 using System.IO;
 using System.Windows.Forms;
+using Zinger.Forms;
+using Zinger.Models;
 
 namespace Zinger
 {
 	public partial class frmContainer : Form
 	{
+		private Options _options = null;
+
 		public frmContainer()
 		{
 			InitializeComponent();
@@ -13,15 +18,26 @@ namespace Zinger
 
 		private void frmContainer_Load(object sender, EventArgs e)
 		{
-			var autoLoadFiles = frmQuery.AutoLoadFiles();
-			foreach (string fileName in autoLoadFiles)
+			try
 			{
-				var form = NewQueryWindow();
-				form.LoadQuery(fileName);
-				File.Delete(fileName);
-			}
+				_options = UserOptionsBase.Load<Options>("Options.xml", this);
+				_options.RestoreFormPosition(_options.MainFormPosition, this);
+				_options.TrackFormPosition(this, (fp) => _options.MainFormPosition = fp);
 
-			NewQueryWindow();
+				var autoLoadFiles = frmQuery.AutoLoadFiles();
+				foreach (string fileName in autoLoadFiles)
+				{
+					var form = NewQueryWindow();
+					form.LoadQuery(fileName);
+					File.Delete(fileName);
+				}
+
+				NewQueryWindow();
+			}
+			catch (Exception exc)
+			{
+				MessageBox.Show(exc.Message);
+			}
 		}
 
 		private frmQuery NewQueryWindow()
@@ -32,13 +48,25 @@ namespace Zinger
 			return frm;
 		}
 
-		private void frmContainer_KeyDown(object sender, KeyEventArgs e)
+		internal bool ShowConnectionDialog()
 		{
-			if (e.KeyCode == Keys.N && e.Control)
+			try
 			{
-				NewQueryWindow();
-				e.Handled = true;
+				frmConnections dlg = new frmConnections();
+				dlg.SavedConnections = GetSavedConnections();
+				dlg.SavedConnectionFolder = SavedConnectionPath();
+				if (dlg.ShowDialog() == DialogResult.OK)
+				{
+					XmlSerializerHelper.Save(dlg.SavedConnections, SavedConnectionFilename());
+					return true;
+				}				
 			}
+			catch (Exception exc)
+			{
+				MessageBox.Show(exc.Message);
+			}
+
+			return false;
 		}
 
 		private void frmContainer_FormClosing(object sender, FormClosingEventArgs e)
@@ -57,6 +85,42 @@ namespace Zinger
 			{
 				MessageBox.Show(exc.Message);
 			}
+		}
+
+		private void newQueryToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			NewQueryWindow();
+		}
+
+		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Close();
+		}
+
+		private void connectionsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ShowConnectionDialog();
+		}
+
+		public SavedConnections GetSavedConnections()
+		{
+			string fileName = SavedConnectionFilename();
+
+			return (File.Exists(fileName)) ?
+				XmlSerializerHelper.Load<SavedConnections>(SavedConnectionFilename()) :
+				new SavedConnections();
+		}
+
+		public static string SavedConnectionPath()
+		{
+			string result = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Postulate Query Helper");
+			if (!Directory.Exists(result)) Directory.CreateDirectory(result);
+			return result;
+		}
+
+		private string SavedConnectionFilename()
+		{
+			return Path.Combine(SavedConnectionPath(), "SavedConnections.xml");
 		}
 	}
 }

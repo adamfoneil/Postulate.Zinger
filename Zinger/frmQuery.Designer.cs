@@ -79,7 +79,7 @@
 			// 
 			this.cbConnection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbConnection.Name = "cbConnection";
-			this.cbConnection.Size = new System.Drawing.Size(150, 25);
+			this.cbConnection.Size = new System.Drawing.Size(200, 25);
 			this.cbConnection.SelectedIndexChanged += new System.EventHandler(this.cbConnection_SelectedIndexChanged);
 			// 
 			// btnRunQuery
@@ -133,7 +133,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 26);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(491, 431);
+			this.tabPage2.Size = new System.Drawing.Size(717, 431);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "C#";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -146,7 +146,7 @@
 			this.resultClassBuilder1.Name = "resultClassBuilder1";
 			this.resultClassBuilder1.QueryName = "";
 			this.resultClassBuilder1.ResultClass = "";
-			this.resultClassBuilder1.Size = new System.Drawing.Size(485, 425);
+			this.resultClassBuilder1.Size = new System.Drawing.Size(711, 425);
 			this.resultClassBuilder1.TabIndex = 0;
 			this.resultClassBuilder1.QueryNameChanged += new System.EventHandler(this.resultClassBuilder1_QueryNameChanged);
 			// 

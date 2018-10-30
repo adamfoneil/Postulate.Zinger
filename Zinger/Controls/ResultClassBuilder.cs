@@ -32,9 +32,32 @@ namespace Zinger.Controls
 			set { tbResultClass.Text = value; }
 		}
 
+		public string QueryClass
+		{
+			get { return tbQueryClass.Text; }
+			set { tbQueryClass.Text = value; }
+		}
+
 		private void btnCopy_Click(object sender, EventArgs e)
 		{
-			Clipboard.SetText(ResultClass);
+			try
+			{
+				switch (tabControl2.SelectedIndex)
+				{
+					case 0:
+						Clipboard.SetText(ResultClass);
+						return;
+
+					case 1:
+						Clipboard.SetText(QueryClass);
+						return;
+				}
+			}
+			catch (Exception exc)
+			{
+				// this fails sometimes for bizarre reasons
+				MessageBox.Show(exc.Message);
+			}
 		}
 
 		private void tbQueryName_TextChanged(object sender, EventArgs e)
@@ -44,9 +67,15 @@ namespace Zinger.Controls
 
 		public void RenameQuery(string queryName)
 		{
-			string[] lines = ResultClass.Split('\n');
-			lines[0] = QueryProvider.ResultClassFirstLine(queryName);
-			ResultClass = string.Join("\n", lines);
+			ResultClass = ReplaceFirstLine(ResultClass, QueryProvider.ResultClassFirstLine(queryName));
+			QueryClass = ReplaceFirstLine(QueryClass, QueryProvider.QueryClassFirstLine(queryName));
+		}
+
+		private string ReplaceFirstLine(string content, string newFirstLine)
+		{
+			string[] lines = content.Split('\n');
+			lines[0] = newFirstLine;
+			return string.Join("\n", lines);
 		}
 	}
 }

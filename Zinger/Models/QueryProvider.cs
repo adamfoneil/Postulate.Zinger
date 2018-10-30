@@ -57,7 +57,8 @@ namespace Zinger.Models
                     using (var reader = cmd.ExecuteReader())
                     {
                         var schemaTable = reader.GetSchemaTable();
-                        result.ResultClass = GetCSharpClass(schemaTable, queryName, BeautifyColumnNames);
+                        result.ResultClass = GetCSharpResultClass(schemaTable, queryName, BeautifyColumnNames);
+						result.QueryClass = GetCSharpQueryClass(query, queryName, Parameters);
                     }
 
                     var adapter = GetAdapter(cmd);
@@ -85,7 +86,28 @@ namespace Zinger.Models
 			return $"public class {queryName}Result";
 		}
 
-        private static string GetCSharpClass(DataTable schemaTable, string queryName, bool beautifyColumnNames)
+		public static string QueryClassFirstLine(string queryName)
+		{
+			return $"public class {queryName} : Query<{queryName}Result>";
+		}
+
+		private static string GetCSharpQueryClass(string query, string queryName, BindingList<Parameter> parameters)
+		{
+			StringBuilder output = new StringBuilder();
+
+			output.AppendLine("using Postulate.Lite;\r\n");
+
+			output.AppendLine(QueryClassFirstLine(queryName) + "\r\n{");
+
+			output.AppendLine($"\tpublic {queryName}() : base(");
+			output.AppendLine($"\t\t@\"{query}\")");
+
+			output.AppendLine("}"); // end class
+
+			return output.ToString();
+		}
+
+		private static string GetCSharpResultClass(DataTable schemaTable, string queryName, bool beautifyColumnNames)
         {
             StringBuilder output = new StringBuilder();
 
@@ -252,6 +274,7 @@ namespace Zinger.Models
         {
             public DataTable DataTable { get; set; }
             public string ResultClass { get; set; }
+			public string QueryClass { get; set; }
         }
     }
 }
