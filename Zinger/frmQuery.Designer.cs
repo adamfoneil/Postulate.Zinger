@@ -84,12 +84,11 @@
 			// 
 			// btnRunQuery
 			// 
-			this.btnRunQuery.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.btnRunQuery.Image = ((System.Drawing.Image)(resources.GetObject("btnRunQuery.Image")));
 			this.btnRunQuery.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnRunQuery.Name = "btnRunQuery";
-			this.btnRunQuery.Size = new System.Drawing.Size(23, 22);
-			this.btnRunQuery.Text = "Run Query";
+			this.btnRunQuery.Size = new System.Drawing.Size(180, 22);
+			this.btnRunQuery.Text = "Run Query / Build C# Output";
 			this.btnRunQuery.Click += new System.EventHandler(this.btnRunQuery_Click);
 			// 
 			// tabControl1
@@ -101,7 +100,7 @@
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.Padding = new System.Drawing.Point(10, 5);
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(499, 461);
+			this.tabControl1.Size = new System.Drawing.Size(725, 461);
 			this.tabControl1.TabIndex = 1;
 			// 
 			// tabPage1
@@ -110,7 +109,7 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 26);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(491, 431);
+			this.tabPage1.Size = new System.Drawing.Size(717, 431);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "SQL";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -124,7 +123,7 @@
 			this.queryEditor1.Name = "queryEditor1";
 			this.queryEditor1.Provider = null;
 			this.queryEditor1.QueryName = null;
-			this.queryEditor1.Size = new System.Drawing.Size(485, 425);
+			this.queryEditor1.Size = new System.Drawing.Size(711, 425);
 			this.queryEditor1.TabIndex = 0;
 			this.queryEditor1.Executed += new System.EventHandler(this.queryEditor1_Executed);
 			// 
@@ -165,6 +164,7 @@
 			// splcQueryAndSourceTree.Panel2
 			// 
 			this.splcQueryAndSourceTree.Panel2.Controls.Add(this.tabNavigation);
+			this.splcQueryAndSourceTree.Panel2Collapsed = true;
 			this.splcQueryAndSourceTree.Size = new System.Drawing.Size(725, 461);
 			this.splcQueryAndSourceTree.SplitterDistance = 499;
 			this.splcQueryAndSourceTree.TabIndex = 2;
@@ -200,7 +200,7 @@
 			this.tabPage4.Text = "Source Files";
 			this.tabPage4.UseVisualStyleBackColor = true;
 			// 
-			// frmMain
+			// frmQuery
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -209,9 +209,9 @@
 			this.Controls.Add(this.toolStrip1);
 			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.KeyPreview = true;
-			this.Name = "frmMain";
+			this.Name = "frmQuery";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Postulate Query Helper";
+			this.Text = "Query";
 			this.Load += new System.EventHandler(this.frmMain_Load);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
 			this.toolStrip1.ResumeLayout(false);

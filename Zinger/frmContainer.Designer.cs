@@ -60,7 +60,7 @@
 			this.IsMdiContainer = true;
 			this.KeyPreview = true;
 			this.Name = "frmContainer";
-			this.Text = "Postulate Query Helper";
+			this.Text = "C# Query Result Class Builder";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmContainer_FormClosing);
 			this.Load += new System.EventHandler(this.frmContainer_Load);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmContainer_KeyDown);
