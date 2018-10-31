@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdamOneilSoftware;
+using System;
 using System.Windows.Forms;
 using Zinger.Models;
 
@@ -69,6 +70,11 @@ namespace Zinger.Controls
 			string[] lines = content.Split('\n');
 			lines[0] = newFirstLine;
 			return string.Join("\n", lines);
+		}
+
+		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			Shell.ViewDocument("https://github.com/adamosoftware/Postulate.Lite");
 		}
 	}
 }

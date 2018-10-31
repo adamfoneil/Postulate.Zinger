@@ -39,12 +39,16 @@
 			this.tbResultClass = new FastColoredTextBoxNS.FastColoredTextBox();
 			this.tabPage6 = new System.Windows.Forms.TabPage();
 			this.tbQueryClass = new FastColoredTextBoxNS.FastColoredTextBox();
+			this.panel1 = new System.Windows.Forms.Panel();
+			this.label1 = new System.Windows.Forms.Label();
+			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
 			this.toolStrip2.SuspendLayout();
 			this.tabControl2.SuspendLayout();
 			this.tabPage5.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.tbResultClass)).BeginInit();
 			this.tabPage6.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.tbQueryClass)).BeginInit();
+			this.panel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// toolStrip2
@@ -126,7 +130,6 @@
 			this.tbResultClass.Cursor = System.Windows.Forms.Cursors.IBeam;
 			this.tbResultClass.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
 			this.tbResultClass.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tbResultClass.Font = new System.Drawing.Font("Courier New", 9.75F);
 			this.tbResultClass.IsReplaceMode = false;
 			this.tbResultClass.Language = FastColoredTextBoxNS.Language.CSharp;
 			this.tbResultClass.LeftBracket = '(';
@@ -146,6 +149,7 @@
 			// tabPage6
 			// 
 			this.tabPage6.Controls.Add(this.tbQueryClass);
+			this.tabPage6.Controls.Add(this.panel1);
 			this.tabPage6.Location = new System.Drawing.Point(4, 22);
 			this.tabPage6.Name = "tabPage6";
 			this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
@@ -169,7 +173,7 @@
         '\''};
 			this.tbQueryClass.AutoIndentCharsPatterns = "\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;]+);\n^\\s*(case|default)\\s*[^:]*(" +
     "?<range>:)\\s*(?<range>[^;]+);\n";
-			this.tbQueryClass.AutoScrollMinSize = new System.Drawing.Size(2, 14);
+			this.tbQueryClass.AutoScrollMinSize = new System.Drawing.Size(27, 14);
 			this.tbQueryClass.BackBrush = null;
 			this.tbQueryClass.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
 			this.tbQueryClass.CharHeight = 14;
@@ -177,12 +181,11 @@
 			this.tbQueryClass.Cursor = System.Windows.Forms.Cursors.IBeam;
 			this.tbQueryClass.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
 			this.tbQueryClass.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tbQueryClass.Font = new System.Drawing.Font("Courier New", 9.75F);
 			this.tbQueryClass.IsReplaceMode = false;
 			this.tbQueryClass.Language = FastColoredTextBoxNS.Language.CSharp;
 			this.tbQueryClass.LeftBracket = '(';
 			this.tbQueryClass.LeftBracket2 = '{';
-			this.tbQueryClass.Location = new System.Drawing.Point(3, 3);
+			this.tbQueryClass.Location = new System.Drawing.Point(3, 36);
 			this.tbQueryClass.Name = "tbQueryClass";
 			this.tbQueryClass.Paddings = new System.Windows.Forms.Padding(0);
 			this.tbQueryClass.ReadOnly = true;
@@ -190,9 +193,39 @@
 			this.tbQueryClass.RightBracket2 = '}';
 			this.tbQueryClass.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
 			this.tbQueryClass.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("tbQueryClass.ServiceColors")));
-			this.tbQueryClass.Size = new System.Drawing.Size(468, 201);
+			this.tbQueryClass.Size = new System.Drawing.Size(468, 168);
 			this.tbQueryClass.TabIndex = 0;
 			this.tbQueryClass.Zoom = 100;
+			// 
+			// panel1
+			// 
+			this.panel1.Controls.Add(this.linkLabel1);
+			this.panel1.Controls.Add(this.label1);
+			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+			this.panel1.Location = new System.Drawing.Point(3, 3);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(468, 33);
+			this.panel1.TabIndex = 1;
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(15, 10);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(370, 13);
+			this.label1.TabIndex = 0;
+			this.label1.Text = "This generated code is intended for use with Postulate.Lite ORM";
+			// 
+			// linkLabel1
+			// 
+			this.linkLabel1.AutoSize = true;
+			this.linkLabel1.Location = new System.Drawing.Point(391, 10);
+			this.linkLabel1.Name = "linkLabel1";
+			this.linkLabel1.Size = new System.Drawing.Size(45, 13);
+			this.linkLabel1.TabIndex = 1;
+			this.linkLabel1.TabStop = true;
+			this.linkLabel1.Text = "GitHub";
+			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
 			// 
 			// ResultClassBuilder
 			// 
@@ -210,6 +243,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.tbResultClass)).EndInit();
 			this.tabPage6.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.tbQueryClass)).EndInit();
+			this.panel1.ResumeLayout(false);
+			this.panel1.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -226,5 +261,8 @@
 		private FastColoredTextBoxNS.FastColoredTextBox tbResultClass;
 		private System.Windows.Forms.TabPage tabPage6;
 		private FastColoredTextBoxNS.FastColoredTextBox tbQueryClass;
+		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.LinkLabel linkLabel1;
 	}
 }
