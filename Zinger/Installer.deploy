@@ -1,0 +1,338 @@
+DeployMaster Installation Script
+600
+Adam O'Neil Software
+https://github.com/adamosoftware
+Postulate Query Helper
+https://github.com/adamosoftware/Postulate.Zinger
+1.2.0
+TRUE
+43404
+C:\Users\Adam\Source\Repos\Postulate.Zinger\App.ico
+Copyright © 2018 Adam O'Neil Software
+
+
+TRUE
+
+
+TRUE
+%PROGRAMFILES%\Adam O'Neil Software\Postulate Query Helper
+%COMMONFILES%\Adam O'Neil Software\Postulate Query Helper
+%PROGRAMSMENU%\Postulate Query Helper
+%COMMONAPPDATAROOT%\Adam O'Neil Software\Postulate Query Helper
+TRUE
+FALSE
+%LOCALAPPDATAROOT%\Adam O'Neil Software\Postulate Query Helper
+%LOCALAPPDATAROOT%\Adam O'Neil Software
+%PROGRAMSMENU%\Postulate Query Helper
+%APPDATAROOT%\Adam O'Neil Software\Postulate Query Helper
+1
+1
+You are attempting to run the installer for %APP% %VERSION%.  This installer only works on %INSTALLER%-bit versions of Windows.  You are running a %USER%-bit version of Windows.  Please check the developer's website to see whether there is a separate %USER%-bit installer for %APP% that you can use on your version of Windows.
+FALSE
+FALSE
+FALSE
+FALSE
+FALSE
+FALSE
+FALSE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+1
+You are attempting to run the installer for %APP% %VERSION%.  This installer supports the following versions of Windows: %INSTALLER%.  You are running %USER%.  Please check the developer's website to see whether there is a separate installer for %APP% that you can use on %USER%.
+TRUE
+TRUE
+1
+-16777198
+Tahoma
+8
+FALSE
+FALSE
+FALSE
+FALSE
+FALSE
+16711680
+0
+
+TRUE
+Adam O'Neil Software Postulate Query Helper 1.2.0
+1
+16777215
+Times New Roman
+36
+TRUE
+FALSE
+FALSE
+FALSE
+TRUE
+0
+
+1
+16777215
+Times New Roman
+20
+TRUE
+FALSE
+FALSE
+FALSE
+TRUE
+0
+English (Default)
+FALSE
+FALSE
+FALSE
+FALSE
+FALSE
+FALSE
+Software\Adam O'Neil Software\Postulate Query Helper
+FALSE
+0
+FALSE
+0
++
+New component
+0
+TRUE
+TRUE
+Description of this component to help the user to determine if it should be installed or not.
++
+%APPFOLDER%
+1
+FALSE
++
+C:\Users\Adam\Source\Repos\Postulate.Zinger\Zinger\bin\Release\AoOptions.dll
+3
+1
+TRUE
+TRUE
+FALSE
+FALSE
+C:\Users\Adam\Source\Repos\Postulate.Zinger\Zinger\bin\Release\FastColoredTextBox.dll
+3
+1
+TRUE
+TRUE
+FALSE
+FALSE
+C:\Users\Adam\Source\Repos\Postulate.Zinger\Zinger\bin\Release\JsonSettings.dll
+3
+1
+TRUE
+TRUE
+FALSE
+FALSE
+C:\Users\Adam\Source\Repos\Postulate.Zinger\Zinger\bin\Release\MySql.Data.dll
+3
+1
+TRUE
+TRUE
+FALSE
+FALSE
+C:\Users\Adam\Source\Repos\Postulate.Zinger\Zinger\bin\Release\Newtonsoft.Json.dll
+3
+1
+TRUE
+TRUE
+FALSE
+FALSE
+C:\Users\Adam\Source\Repos\Postulate.Zinger\Zinger\bin\Release\WinFormsExt.dll
+3
+1
+TRUE
+TRUE
+FALSE
+FALSE
+C:\Users\Adam\Source\Repos\Postulate.Zinger\Zinger\bin\Release\XmlSerializerHelper.dll
+3
+1
+TRUE
+TRUE
+FALSE
+FALSE
+C:\Users\Adam\Source\Repos\Postulate.Zinger\Zinger\bin\Release\Zinger.exe
+3
+1
+TRUE
+TRUE
+FALSE
+FALSE
+C:\Users\Adam\Source\Repos\Postulate.Zinger\Zinger\bin\Release\Zinger.exe.config
+3
+1
+TRUE
+TRUE
+FALSE
+-
+%APPMENU%
+1
+FALSE
+%DESKTOP%
+1
+FALSE
++
+C:\Users\Adam\Source\Repos\Postulate.Zinger\Zinger\bin\Release\Zinger.exe
+4
+Postulate Query Helper
+
+
+
+0
+0
+-
+%FONTS%
+1
+FALSE
+%SYSTEM%
+1
+FALSE
+%USERDATA%
+1
+TRUE
+%WINDOWS%
+1
+FALSE
+-
+-
+0
+0
+2
+TRUE
+Postulate Query Helper
++
+HKEY_AUTO
+0
+FALSE
++
+Software
+0
+FALSE
++
+Adam O'Neil Software
+0
+FALSE
++
+Postulate Query Helper
+0
+FALSE
+-
+-
+-
+HKEY_CLASSES_ROOT
+0
+FALSE
+HKEY_CURRENT_USER
+0
+FALSE
++
+Software
+0
+FALSE
++
+Adam O'Neil Software
+0
+FALSE
++
+Postulate Query Helper
+0
+FALSE
+-
+-
+-
+HKEY_LOCAL_MACHINE
+0
+FALSE
++
+Software
+0
+FALSE
++
+Adam O'Neil Software
+0
+FALSE
++
+Postulate Query Helper
+0
+FALSE
+-
+-
+-
+HKEY_USERS
+0
+FALSE
++
+Software
+0
+FALSE
++
+Adam O'Neil Software
+0
+FALSE
++
+Postulate Query Helper
+0
+FALSE
+-
+-
+-
+-
+1
+TRUE
+pqh
+Postulate Query Helper File
+C:\Users\Adam\Source\Repos\Postulate.Zinger\Zinger\bin\Release\Zinger.exe
+0
+C:\Users\Adam\Source\Repos\Postulate.Zinger\Zinger\bin\Release\Zinger.exe
+0
+1
+open
+open
+C:\Users\Adam\Source\Repos\Postulate.Zinger\Zinger\bin\Release\Zinger.exe
+C:\Users\Adam\Source\Repos\Postulate.Zinger\Zinger\bin\Release\Zinger.exe
+
+FALSE
+FALSE
+FALSE
+FALSE
+FALSE
+TRUE
+5
+
+http://www.deploymaster.com/dotnetfx.html
+0
+TRUE
+FALSE
+TRUE
+FALSE
+
+
+
+
+
+
+FALSE
+
+
+FALSE
+FALSE
+43404
+0
+FALSE
+43404
+FALSE
+43769
+FALSE
+365
+1
+You are attempting to run the installer for %APP% %VERSION%.  This installer expired on %DATE%.  Please check the developer's website to see whether there is a newer installer for %APP%.
+0
+4095
+*.chm;*.png;*.jpg;*.gif;*.mp3;*.avi;*.zip
+
+PostulateQueryHelper.exe
+
+FALSE
+
+
+TRUE
