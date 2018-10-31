@@ -14,6 +14,10 @@ namespace Zinger.Forms
 		public frmConnections()
 		{
 			InitializeComponent();
+
+			// see https://stackoverflow.com/a/34345439/2023653
+			var cell = dataGridView1.TopLeftHeaderCell;
+
 			dataGridView1.AutoGenerateColumns = false;
 		}
 
