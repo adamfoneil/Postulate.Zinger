@@ -13,6 +13,8 @@ namespace Zinger
 	{
 		private Options _options = null;
 
+		internal const string FileDialogFilter = "Postulate Query Helper|*.pqh|All Files|*.*";
+
 		public frmContainer()
 		{
 			InitializeComponent();
@@ -21,7 +23,7 @@ namespace Zinger
 		public static IEnumerable<string> AutoLoadFiles()
 		{
 			if (!Directory.Exists(SavedConnectionPath())) return Enumerable.Empty<string>();
-			return Directory.GetFiles(SavedConnectionPath(), "*.sql", SearchOption.TopDirectoryOnly);
+			return Directory.GetFiles(SavedConnectionPath(), "*.pqh", SearchOption.TopDirectoryOnly);
 		}
 
 		private void frmContainer_Load(object sender, EventArgs e)
@@ -31,14 +33,6 @@ namespace Zinger
 				_options = UserOptionsBase.Load<Options>("Options.xml", this);
 				_options.RestoreFormPosition(_options.MainFormPosition, this);
 				_options.TrackFormPosition(this, (fp) => _options.MainFormPosition = fp);
-
-				var autoLoadFiles = AutoLoadFiles();
-				foreach (string fileName in autoLoadFiles)
-				{
-					var form = NewQueryWindow();
-					form.LoadQuery(fileName);
-					File.Delete(fileName);
-				}
 
 				NewQueryWindow();
 			}
@@ -75,24 +69,6 @@ namespace Zinger
 			}
 
 			return false;
-		}
-
-		private void frmContainer_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			try
-			{
-				int index = 0;
-				foreach (var form in MdiChildren)
-				{
-					index++;
-					var qryForm = form as frmQuery;
-					if (qryForm != null) qryForm.AutoSave(index);
-				}
-			}
-			catch (Exception exc)
-			{
-				MessageBox.Show(exc.Message);
-			}
 		}
 
 		private void newQueryToolStripMenuItem_Click(object sender, EventArgs e)
@@ -135,13 +111,94 @@ namespace Zinger
 		{
 			try
 			{
-				frmQuery activeQuery = ActiveForm as frmQuery;
-				activeQuery?.SaveAs();
+				frmQuery activeQuery = ActiveMdiChild as frmQuery;
+				if (activeQuery == null) throw new Exception("No query is open");
+				if (PromptSaveFile(out string fileName)) activeQuery.SaveQuery(fileName);
 			}
 			catch (Exception exc)
 			{
 				MessageBox.Show(exc.Message);
 			}
+		}
+
+		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				frmQuery activeQuery = ActiveMdiChild as frmQuery;
+				if (activeQuery == null) throw new Exception("No query is open");
+
+				string fileName;
+				if (!PromptSaveFileInner(activeQuery, out fileName)) return;
+				
+				activeQuery.SaveQuery(fileName);
+			}
+			catch (Exception exc)
+			{
+				MessageBox.Show(exc.Message);
+			}
+		}
+
+		/// <summary>
+		/// Returns true if a file name is set on the form or false if user cancels the Save As dialog
+		/// </summary>
+		public static bool PromptSaveFileInner(frmQuery form, out string fileName)
+		{
+			fileName = form.Filename;
+
+			if (string.IsNullOrEmpty(fileName))
+			{
+				return PromptSaveFile(out fileName);				
+			}
+
+			return true;
+		}
+
+		private void openToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				if (PromptOpenFile(out string fileName))
+				{
+					var frm = NewQueryWindow();
+					frm.LoadQuery(fileName);
+				}
+			}
+			catch (Exception exc)
+			{
+				MessageBox.Show(exc.Message);
+			}
+		}
+
+		public static bool PromptSaveFile(out string fileName)
+		{
+			fileName = null;
+
+			var dlg = new SaveFileDialog();
+			dlg.Filter = FileDialogFilter;
+			dlg.DefaultExt = "pqh";
+			if (dlg.ShowDialog() == DialogResult.OK)
+			{
+				fileName = dlg.FileName;
+				return true;
+			}
+
+			return false;
+		}
+
+		private bool PromptOpenFile(out string fileName)
+		{
+			fileName = null;
+
+			var dlg = new OpenFileDialog();
+			dlg.Filter = FileDialogFilter;
+			if (dlg.ShowDialog() == DialogResult.OK)
+			{
+				fileName = dlg.FileName;
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

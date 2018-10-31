@@ -120,6 +120,7 @@
 			this.tbQuery.Cursor = System.Windows.Forms.Cursors.IBeam;
 			this.tbQuery.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
 			this.tbQuery.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tbQuery.Font = new System.Drawing.Font("Courier New", 9.75F);
 			this.tbQuery.IsReplaceMode = false;
 			this.tbQuery.Language = FastColoredTextBoxNS.Language.SQL;
 			this.tbQuery.LeftBracket = '(';
@@ -132,6 +133,8 @@
 			this.tbQuery.Size = new System.Drawing.Size(471, 194);
 			this.tbQuery.TabIndex = 0;
 			this.tbQuery.Zoom = 100;
+			this.tbQuery.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.tbQuery_TextChanged);
+			this.tbQuery.TextChanging += new System.EventHandler<FastColoredTextBoxNS.TextChangingEventArgs>(this.tbQuery_TextChanging);
 			// 
 			// panel1
 			// 
@@ -167,7 +170,10 @@
 			this.dgvParams.Name = "dgvParams";
 			this.dgvParams.Size = new System.Drawing.Size(471, 106);
 			this.dgvParams.TabIndex = 0;
+			this.dgvParams.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvParams_CellValueChanged);
 			this.dgvParams.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvParams_DataError);
+			this.dgvParams.UserAddedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvParams_UserAddedRow);
+			this.dgvParams.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvParams_UserDeletedRow);
 			// 
 			// colParamName
 			// 

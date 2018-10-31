@@ -1,6 +1,6 @@
-﻿using System;
+﻿using JsonSettings;
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Windows.Forms;
 using Zinger.Models;
 
@@ -8,6 +8,9 @@ namespace Zinger
 {
 	public partial class frmQuery : Form
 	{
+		public string Filename { get; private set; }
+		public bool IsModified { get; private set; }
+
 		public frmQuery()
 		{
 			InitializeComponent();
@@ -32,9 +35,17 @@ namespace Zinger
 
 		public void LoadQuery(string fileName)
 		{
-			var query = queryEditor1.LoadQuery(fileName);
-			cbConnection.SelectedIndex = cbConnection.FindString(query.ConnectionName);
-			FindForm().Text = query.Name;
+			var sq = queryEditor1.LoadQuery(fileName);
+			cbConnection.SelectedIndex = cbConnection.FindString(sq.ConnectionName);
+			resultClassBuilder1.QueryName = sq.Name;
+			SetWindowTitle(sq.Name);
+			Filename = fileName;
+			IsModified = false;
+		}
+
+		private void SetWindowTitle(string name)
+		{
+			FindForm().Text = name;
 		}
 
 		private void frmMain_Load(object sender, EventArgs e)
@@ -74,6 +85,7 @@ namespace Zinger
 
 				queryEditor1.Enabled = true;
 				queryEditor1.Provider = providers[sc.ProviderType];
+				IsModified = true;
 			}
 			else
 			{
@@ -119,18 +131,52 @@ namespace Zinger
 		{
 			queryEditor1.QueryName = resultClassBuilder1.QueryName;
 			resultClassBuilder1.RenameQuery(queryEditor1.QueryName);
-			FindForm().Text = resultClassBuilder1.QueryName;
+			SetWindowTitle(resultClassBuilder1.QueryName);
 		}
 
-		public void AutoSave(int index)
+		internal void SaveQuery(string fileName)
 		{
-			string fileName = Path.Combine(frmContainer.SavedConnectionPath(), $"query{index}.sql");
-			queryEditor1.SaveQuery(resultClassBuilder1.QueryName, fileName);
+			SavedQuery qry = new SavedQuery()
+			{
+				ConnectionName = cbConnection.SelectedItem.ToString(),
+				Name = queryEditor1.QueryName,
+				Sql = queryEditor1.Sql,
+				Parameters = queryEditor1.Parameters
+			};
+
+			JsonFile.Save(fileName, qry);
+			IsModified = false;
 		}
 
-		public void SaveAs()
+		private void frmQuery_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			queryEditor1.SaveQuery(resultClassBuilder1.QueryName, cbConnection.SelectedText);
+			if (IsModified)
+			{
+				string fileName;
+				if (!frmContainer.PromptSaveFileInner(this, out fileName))
+				{
+					e.Cancel = true;
+					return;
+				}
+
+				var result = MessageBox.Show($"Save changes to {fileName}?", "Save Changes", MessageBoxButtons.YesNoCancel);
+				switch (result)
+				{
+					case DialogResult.Cancel:
+						e.Cancel = true;
+						return;
+
+					case DialogResult.No:
+						return;
+				}
+				
+				SaveQuery(fileName);
+			}
+		}
+
+		private void queryEditor1_Modified(object sender, EventArgs e)
+		{
+			IsModified = true;
 		}
 	}
 }

@@ -35,13 +35,13 @@
 			this.btnRunQuery = new System.Windows.Forms.ToolStripButton();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.queryEditor1 = new Zinger.Controls.QueryEditor();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
-			this.resultClassBuilder1 = new Zinger.Controls.ResultClassBuilder();
 			this.splcQueryAndSourceTree = new System.Windows.Forms.SplitContainer();
 			this.tabNavigation = new System.Windows.Forms.TabControl();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.tabPage4 = new System.Windows.Forms.TabPage();
+			this.queryEditor1 = new Zinger.Controls.QueryEditor();
+			this.resultClassBuilder1 = new Zinger.Controls.ResultClassBuilder();
 			this.toolStrip1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
@@ -114,19 +114,6 @@
 			this.tabPage1.Text = "SQL";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
-			// queryEditor1
-			// 
-			this.queryEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.queryEditor1.Enabled = false;
-			this.queryEditor1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.queryEditor1.Location = new System.Drawing.Point(3, 3);
-			this.queryEditor1.Name = "queryEditor1";
-			this.queryEditor1.Provider = null;
-			this.queryEditor1.QueryName = null;
-			this.queryEditor1.Size = new System.Drawing.Size(711, 425);
-			this.queryEditor1.TabIndex = 0;
-			this.queryEditor1.Executed += new System.EventHandler(this.queryEditor1_Executed);
-			// 
 			// tabPage2
 			// 
 			this.tabPage2.Controls.Add(this.resultClassBuilder1);
@@ -137,18 +124,6 @@
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "C#";
 			this.tabPage2.UseVisualStyleBackColor = true;
-			// 
-			// resultClassBuilder1
-			// 
-			this.resultClassBuilder1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.resultClassBuilder1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.resultClassBuilder1.Location = new System.Drawing.Point(3, 3);
-			this.resultClassBuilder1.Name = "resultClassBuilder1";
-			this.resultClassBuilder1.QueryName = "";
-			this.resultClassBuilder1.ResultClass = "";
-			this.resultClassBuilder1.Size = new System.Drawing.Size(711, 425);
-			this.resultClassBuilder1.TabIndex = 0;
-			this.resultClassBuilder1.QueryNameChanged += new System.EventHandler(this.resultClassBuilder1_QueryNameChanged);
 			// 
 			// splcQueryAndSourceTree
 			// 
@@ -177,7 +152,7 @@
 			this.tabNavigation.Location = new System.Drawing.Point(0, 0);
 			this.tabNavigation.Name = "tabNavigation";
 			this.tabNavigation.SelectedIndex = 0;
-			this.tabNavigation.Size = new System.Drawing.Size(222, 461);
+			this.tabNavigation.Size = new System.Drawing.Size(96, 100);
 			this.tabNavigation.TabIndex = 0;
 			// 
 			// tabPage3
@@ -185,7 +160,7 @@
 			this.tabPage3.Location = new System.Drawing.Point(4, 22);
 			this.tabPage3.Name = "tabPage3";
 			this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage3.Size = new System.Drawing.Size(214, 435);
+			this.tabPage3.Size = new System.Drawing.Size(88, 74);
 			this.tabPage3.TabIndex = 0;
 			this.tabPage3.Text = "Objects";
 			this.tabPage3.UseVisualStyleBackColor = true;
@@ -195,10 +170,38 @@
 			this.tabPage4.Location = new System.Drawing.Point(4, 22);
 			this.tabPage4.Name = "tabPage4";
 			this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage4.Size = new System.Drawing.Size(214, 435);
+			this.tabPage4.Size = new System.Drawing.Size(88, 74);
 			this.tabPage4.TabIndex = 1;
 			this.tabPage4.Text = "Source Files";
 			this.tabPage4.UseVisualStyleBackColor = true;
+			// 
+			// queryEditor1
+			// 
+			this.queryEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.queryEditor1.Enabled = false;
+			this.queryEditor1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.queryEditor1.Location = new System.Drawing.Point(3, 3);
+			this.queryEditor1.Name = "queryEditor1";
+			this.queryEditor1.Provider = null;
+			this.queryEditor1.QueryName = null;
+			this.queryEditor1.Size = new System.Drawing.Size(711, 425);
+			this.queryEditor1.Sql = "";
+			this.queryEditor1.TabIndex = 0;
+			this.queryEditor1.Executed += new System.EventHandler(this.queryEditor1_Executed);
+			this.queryEditor1.Modified += new System.EventHandler(this.queryEditor1_Modified);
+			// 
+			// resultClassBuilder1
+			// 
+			this.resultClassBuilder1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.resultClassBuilder1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.resultClassBuilder1.Location = new System.Drawing.Point(3, 3);
+			this.resultClassBuilder1.Name = "resultClassBuilder1";
+			this.resultClassBuilder1.QueryClass = "";
+			this.resultClassBuilder1.QueryName = "";
+			this.resultClassBuilder1.ResultClass = "";
+			this.resultClassBuilder1.Size = new System.Drawing.Size(711, 425);
+			this.resultClassBuilder1.TabIndex = 0;
+			this.resultClassBuilder1.QueryNameChanged += new System.EventHandler(this.resultClassBuilder1_QueryNameChanged);
 			// 
 			// frmQuery
 			// 
@@ -212,6 +215,7 @@
 			this.Name = "frmQuery";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Query";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmQuery_FormClosing);
 			this.Load += new System.EventHandler(this.frmMain_Load);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
 			this.toolStrip1.ResumeLayout(false);
