@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using Zinger.Forms;
 using Zinger.Models;
 
-namespace Zinger
+namespace Zinger.Forms
 {
 	public partial class frmContainer : Form
 	{
@@ -20,11 +20,7 @@ namespace Zinger
 			InitializeComponent();
 		}
 
-		public static IEnumerable<string> AutoLoadFiles()
-		{
-			if (!Directory.Exists(SavedConnectionPath())) return Enumerable.Empty<string>();
-			return Directory.GetFiles(SavedConnectionPath(), "*.pqh", SearchOption.TopDirectoryOnly);
-		}
+		public Options Options { get { return _options; } }
 
 		private void frmContainer_Load(object sender, EventArgs e)
 		{

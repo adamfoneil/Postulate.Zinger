@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\DocumentManager.cs" />
     <Compile Include="Controls\QueryEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -64,16 +65,16 @@
     <Compile Include="Forms\frmConnections.Designer.cs">
       <DependentUpon>frmConnections.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmContainer.cs">
+    <Compile Include="Forms\frmContainer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmContainer.Designer.cs">
+    <Compile Include="Forms\frmContainer.Designer.cs">
       <DependentUpon>frmContainer.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmQuery.cs">
+    <Compile Include="Forms\frmQuery.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmQuery.Designer.cs">
+    <Compile Include="Forms\frmQuery.Designer.cs">
       <DependentUpon>frmQuery.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\MySqlQueryProvider.cs" />
@@ -94,10 +95,10 @@
     <EmbeddedResource Include="Forms\frmConnections.resx">
       <DependentUpon>frmConnections.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmContainer.resx">
+    <EmbeddedResource Include="Forms\frmContainer.resx">
       <DependentUpon>frmContainer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmQuery.resx">
+    <EmbeddedResource Include="Forms\frmQuery.resx">
       <DependentUpon>frmQuery.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

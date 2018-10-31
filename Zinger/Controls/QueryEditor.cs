@@ -81,11 +81,6 @@ namespace Zinger.Controls
 			return result;
 		}
 
-		private void chkParams_CheckedChanged(object sender, EventArgs e)
-		{
-			splcQueryAndParams.Panel2Collapsed = !chkParams.Checked;
-		}
-
 		private void QueryEditor_Load(object sender, EventArgs e)
 		{
 			if (DesignMode) return;
@@ -99,6 +94,7 @@ namespace Zinger.Controls
 
 		private QueryProvider.Parameter[] ParametersToArray(BindingList<QueryProvider.Parameter> parameters)
 		{
+			if (parameters == null) return Enumerable.Empty<QueryProvider.Parameter>().ToArray();
 			return new List<QueryProvider.Parameter>(parameters).ToArray();
 		}
 

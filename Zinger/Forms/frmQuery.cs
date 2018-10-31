@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Zinger.Models;
 
-namespace Zinger
+namespace Zinger.Forms
 {
 	public partial class frmQuery : Form
 	{
@@ -86,6 +86,9 @@ namespace Zinger
 				queryEditor1.Enabled = true;
 				queryEditor1.Provider = providers[sc.ProviderType];
 				IsModified = true;
+
+				frmContainer parent = MdiParent as frmContainer;
+				parent.Options.ActiveConnection = sc.Name;
 			}
 			else
 			{
@@ -152,13 +155,7 @@ namespace Zinger
 		{
 			if (IsModified)
 			{
-				string fileName;
-				if (!frmContainer.PromptSaveFileInner(this, out fileName))
-				{
-					e.Cancel = true;
-					return;
-				}
-
+				string fileName = (string.IsNullOrEmpty(Filename)) ? "new file" : Filename;
 				var result = MessageBox.Show($"Save changes to {fileName}?", "Save Changes", MessageBoxButtons.YesNoCancel);
 				switch (result)
 				{
@@ -168,8 +165,17 @@ namespace Zinger
 
 					case DialogResult.No:
 						return;
+
+					case DialogResult.Yes:
+						if (!frmContainer.PromptSaveFileInner(this, out fileName))
+						{
+							e.Cancel = true;
+							return;
+						}
+						break;
+
 				}
-				
+
 				SaveQuery(fileName);
 			}
 		}

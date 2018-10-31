@@ -33,8 +33,6 @@
 			this.splcQueryAndResults = new System.Windows.Forms.SplitContainer();
 			this.splcQueryAndParams = new System.Windows.Forms.SplitContainer();
 			this.tbQuery = new FastColoredTextBoxNS.FastColoredTextBox();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.chkParams = new System.Windows.Forms.CheckBox();
 			this.dgvParams = new System.Windows.Forms.DataGridView();
 			this.colParamName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.colParamType = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -54,7 +52,6 @@
 			this.splcQueryAndParams.Panel2.SuspendLayout();
 			this.splcQueryAndParams.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.tbQuery)).BeginInit();
-			this.panel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvParams)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgvResults)).BeginInit();
 			this.statusStrip1.SuspendLayout();
@@ -89,7 +86,6 @@
 			// splcQueryAndParams.Panel1
 			// 
 			this.splcQueryAndParams.Panel1.Controls.Add(this.tbQuery);
-			this.splcQueryAndParams.Panel1.Controls.Add(this.panel1);
 			// 
 			// splcQueryAndParams.Panel2
 			// 
@@ -120,7 +116,6 @@
 			this.tbQuery.Cursor = System.Windows.Forms.Cursors.IBeam;
 			this.tbQuery.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
 			this.tbQuery.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tbQuery.Font = new System.Drawing.Font("Courier New", 9.75F);
 			this.tbQuery.IsReplaceMode = false;
 			this.tbQuery.Language = FastColoredTextBoxNS.Language.SQL;
 			this.tbQuery.LeftBracket = '(';
@@ -130,31 +125,11 @@
 			this.tbQuery.RightBracket = ')';
 			this.tbQuery.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
 			this.tbQuery.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("tbQuery.ServiceColors")));
-			this.tbQuery.Size = new System.Drawing.Size(471, 194);
+			this.tbQuery.Size = new System.Drawing.Size(471, 228);
 			this.tbQuery.TabIndex = 0;
 			this.tbQuery.Zoom = 100;
 			this.tbQuery.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.tbQuery_TextChanged);
 			this.tbQuery.TextChanging += new System.EventHandler<FastColoredTextBoxNS.TextChangingEventArgs>(this.tbQuery_TextChanging);
-			// 
-			// panel1
-			// 
-			this.panel1.Controls.Add(this.chkParams);
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panel1.Location = new System.Drawing.Point(0, 194);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(471, 34);
-			this.panel1.TabIndex = 1;
-			// 
-			// chkParams
-			// 
-			this.chkParams.AutoSize = true;
-			this.chkParams.Location = new System.Drawing.Point(14, 9);
-			this.chkParams.Name = "chkParams";
-			this.chkParams.Size = new System.Drawing.Size(203, 17);
-			this.chkParams.TabIndex = 0;
-			this.chkParams.Text = "Parameters (Query Properties)";
-			this.chkParams.UseVisualStyleBackColor = true;
-			this.chkParams.CheckedChanged += new System.EventHandler(this.chkParams_CheckedChanged);
 			// 
 			// dgvParams
 			// 
@@ -271,8 +246,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.splcQueryAndParams)).EndInit();
 			this.splcQueryAndParams.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.tbQuery)).EndInit();
-			this.panel1.ResumeLayout(false);
-			this.panel1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvParams)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dgvResults)).EndInit();
 			this.statusStrip1.ResumeLayout(false);
@@ -286,8 +259,6 @@
         private System.Windows.Forms.SplitContainer splcQueryAndResults;
         private System.Windows.Forms.SplitContainer splcQueryAndParams;
         private FastColoredTextBoxNS.FastColoredTextBox tbQuery;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.CheckBox chkParams;
         private System.Windows.Forms.DataGridView dgvParams;
         private System.Windows.Forms.DataGridView dgvResults;
         private System.Windows.Forms.StatusStrip statusStrip1;

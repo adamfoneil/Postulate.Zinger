@@ -1,4 +1,4 @@
-﻿namespace Zinger
+﻿namespace Zinger.Forms
 {
     partial class frmQuery
     {

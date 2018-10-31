@@ -1,4 +1,4 @@
-﻿namespace Zinger
+﻿namespace Zinger.Forms
 {
 	partial class frmContainer
 	{
@@ -39,6 +39,7 @@
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.recentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -58,6 +59,7 @@
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newQueryToolStripMenuItem,
+            this.recentToolStripMenuItem,
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
             this.saveAsToolStripMenuItem,
@@ -130,6 +132,12 @@
 			this.windowToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
 			this.windowToolStripMenuItem.Text = "&Window";
 			// 
+			// recentToolStripMenuItem
+			// 
+			this.recentToolStripMenuItem.Name = "recentToolStripMenuItem";
+			this.recentToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.recentToolStripMenuItem.Text = "Recent";
+			// 
 			// frmContainer
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -140,7 +148,7 @@
 			this.IsMdiContainer = true;
 			this.KeyPreview = true;
 			this.Name = "frmContainer";
-			this.Text = "Postulate Query Helper";			
+			this.Text = "Postulate Query Helper";
 			this.Load += new System.EventHandler(this.frmContainer_Load);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
@@ -162,5 +170,6 @@
 		private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem connectionsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem recentToolStripMenuItem;
 	}
 }
