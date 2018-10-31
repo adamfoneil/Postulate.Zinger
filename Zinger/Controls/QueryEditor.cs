@@ -50,7 +50,7 @@ namespace Zinger.Controls
 			{
 				pbExecuting.Visible = true;
 				tslQueryMetrics.Text = "Executing...";
-				var result = Provider.Execute(tbQuery.Text, QueryName);
+				var result = Provider.Execute(tbQuery.Text, QueryName, Parameters);
 				tslQueryMetrics.Text = $"{result.DataTable.Rows.Count} records, {Provider.Milleseconds:n0}ms";
 				dgvResults.DataSource = result.DataTable;
 				Executed?.Invoke(result, new EventArgs());
@@ -100,7 +100,9 @@ namespace Zinger.Controls
 
 		private BindingList<QueryProvider.Parameter> ParametersFromEnumerable(IEnumerable<QueryProvider.Parameter> parameters)
 		{
-			return new BindingList<QueryProvider.Parameter>(parameters.ToArray());
+			BindingList<QueryProvider.Parameter> results = new BindingList<QueryProvider.Parameter>();
+			foreach (var p in parameters) results.Add(p);
+			return results;
 		}
 
 		public SavedQuery LoadQuery(string fileName)

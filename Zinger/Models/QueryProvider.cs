@@ -16,8 +16,7 @@ namespace Zinger.Models
 
         public QueryProvider(string connectionString)
         {
-            _connectionString = connectionString;
-            Parameters = new BindingList<Parameter>();
+            _connectionString = connectionString;            
         }
 
         protected abstract IDbConnection GetConnection();
@@ -30,11 +29,9 @@ namespace Zinger.Models
 
         public string ResolvedQuery { get; private set; }
         
-        public BindingList<Parameter> Parameters { get; set; }
-
 		public bool BeautifyColumnNames { get; set; }
 
-        public ExecuteResult Execute(string query, string queryName)
+        public ExecuteResult Execute(string query, string queryName, IEnumerable<Parameter> parameters)
         {
             var result = new ExecuteResult();
 
@@ -42,26 +39,20 @@ namespace Zinger.Models
             {
                 cn.Open();
 
-                ResolvedQuery = ResolveQuery(query);
+                ResolvedQuery = ResolveQuery(query, parameters);
                 using (var cmd = GetCommand(ResolvedQuery, cn))
                 {
-                    foreach (var p in Parameters.Where(p => !p.IsArray()))
-                    {
-                        var param = cmd.CreateParameter();
-                        param.ParameterName = p.Name;
-                        param.DbType = p.DataType;
-                        param.Value = p.Value ?? DBNull.Value;
-                        cmd.Parameters.Add(param);
-                    }
+					AddParameters(parameters.Where(p => !p.IsArray()), cmd);
 
-                    using (var reader = cmd.ExecuteReader())
+					using (var reader = cmd.ExecuteReader())
                     {
                         var schemaTable = reader.GetSchemaTable();
-                        result.ResultClass = GetCSharpResultClass(schemaTable, queryName, BeautifyColumnNames);
-						result.QueryClass = GetCSharpQueryClass(query, queryName, Parameters);
+                        result.ResultClass = GetCSharpResultClass(schemaTable, queryName, BeautifyColumnNames);						
                     }
 
-                    var adapter = GetAdapter(cmd);
+					result.QueryClass = GetCSharpQueryClass(cn, query, queryName, parameters);
+
+					var adapter = GetAdapter(cmd);
                     try
                     {
                         DataSet dataSet = new DataSet();
@@ -91,7 +82,7 @@ namespace Zinger.Models
 			return $"public class {queryName} : Query<{queryName}Result>";
 		}
 
-		private static string GetCSharpQueryClass(string query, string queryName, BindingList<Parameter> parameters)
+		private string GetCSharpQueryClass(IDbConnection connection, string query, string queryName, IEnumerable<Parameter> parameters)
 		{
 			StringBuilder output = new StringBuilder();
 
@@ -99,14 +90,52 @@ namespace Zinger.Models
 			output.AppendLine($"\tpublic {queryName}() : base(");
 			output.AppendLine($"\t\t@\"{Indent(2, query)}\")\r\n\t{{\r\n\t}}");
 
-			foreach (var p in parameters)
+			var paramDictionary = parameters.ToDictionary(row => row.ToColumnName());
+			if (parameters?.Any() ?? false)
 			{
-				
-			}
+				output.AppendLine();
+				IEnumerable<ColumnInfo> properties = CSharpPropertiesFromParameters(connection, parameters);
+				foreach (var p in properties)
+				{
+					if (!string.IsNullOrEmpty(paramDictionary[p.Name].Expression))
+					{
+						output.AppendLine($"\t[Where(\"{paramDictionary[p.Name].Expression}\")]");
+					}
+					output.AppendLine($"\tpublic {p.CSharpType} {p.PascalCaseName} {{ get; set }}\r\n");
+				}
+			}			
 
 			output.AppendLine("}"); // end class
 
 			return output.ToString();
+		}
+
+		private IEnumerable<ColumnInfo> CSharpPropertiesFromParameters(IDbConnection connection, IEnumerable<Parameter> parameters)
+		{
+			string columns = string.Join(", ", parameters.Select(p => $"{p.ToParamName()} AS {p.ToColumnName()}"));
+			string dummyQuery = $"SELECT {columns}";
+
+			using (var cmd = GetCommand(dummyQuery, connection))
+			{
+				AddParameters(parameters, cmd);
+				using (var reader = cmd.ExecuteReader())
+				{
+					var schemaTable = reader.GetSchemaTable();
+					return CSharpPropertiesFromSchemaTable(schemaTable);
+				}
+			}
+		}
+
+		private static void AddParameters(IEnumerable<Parameter> parameters, IDbCommand cmd)
+		{
+			foreach (var p in parameters)
+			{
+				var param = cmd.CreateParameter();
+				param.ParameterName = p.Name;
+				param.DbType = p.DataType;
+				param.Value = p.Value ?? DBNull.Value;
+				cmd.Parameters.Add(param);
+			}
 		}
 
 		/// <summary>
@@ -164,9 +193,9 @@ namespace Zinger.Models
 			return input.Substring(0, 1).ToUpper() + input.Substring(1).ToLower();
 		}
 
-		private string ResolveQuery(string query)
+		private string ResolveQuery(string query, IEnumerable<Parameter> parameters)
         {
-            var expressionParams = Parameters?.Where(p => p.Value != null && p.Expression != null).ToArray() ?? Enumerable.Empty<Parameter>().ToArray();         
+            var expressionParams = parameters?.Where(p => p.Value != null && p.Expression != null).ToArray() ?? Enumerable.Empty<Parameter>().ToArray();         
             
             string result = query;
 
@@ -174,7 +203,7 @@ namespace Zinger.Models
             result = result.Replace("{where}", whereClause);
             result = result.Replace("{andWhere}", (!string.IsNullOrEmpty(whereClause)) ? " AND " + whereClause : string.Empty);
 
-			var arrayParams = Parameters?.Where(p => p.IsArray()) ?? Enumerable.Empty<Parameter>();
+			var arrayParams = parameters?.Where(p => p.IsArray()) ?? Enumerable.Empty<Parameter>();
 			foreach (var arrayParam in arrayParams)
 			{
 				result = result.Replace($"@{arrayParam.Name}", "(" + arrayParam.ArrayValueString() + ")");
@@ -232,10 +261,24 @@ namespace Zinger.Models
             public bool IsNullable { get; set; }
             public int Index { get; set; }
 
+			public string PascalCaseName
+			{
+				get
+				{
+					string name = PropertyName;
+					return name.Substring(0, 1).ToUpper() + name.Substring(1);
+				}
+			}
+
             public string PropertyName
             {
                 get { return (Index > 0) ? $"{Name}{Index}" : Name; }
             }
+
+			public string ToColumnName()
+			{
+				return (Name.StartsWith("@")) ? Name.Substring(1) : Name;
+			}
         }
 
         public class Parameter
@@ -254,6 +297,20 @@ namespace Zinger.Models
             public string Expression { get; set; }
 
             public object Value { get; set; }
+
+			/// <summary>
+			/// Inserts an @ sign ahead of name if not present to assure it can be used as param literal
+			/// </summary>
+			/// <returns></returns>
+			public string ToParamName()
+			{
+				return (!Name.StartsWith("@")) ? "@" + Name : Name;
+			}
+
+			public string ToColumnName()
+			{
+				return (Name.StartsWith("@")) ? Name.Substring(1) : Name;
+			}
 
 			public bool IsArray()
 			{
