@@ -196,5 +196,10 @@ namespace Zinger.Forms
 
 			return false;
 		}
+
+		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Shell.ViewDocument("https://github.com/adamosoftware/Postulate.Zinger");
+		}
 	}
 }
