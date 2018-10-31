@@ -96,9 +96,13 @@ namespace Zinger.Models
 			StringBuilder output = new StringBuilder();
 
 			output.AppendLine(QueryClassFirstLine(queryName) + "\r\n{");
-
 			output.AppendLine($"\tpublic {queryName}() : base(");
 			output.AppendLine($"\t\t@\"{Indent(2, query)}\")\r\n\t{{\r\n\t}}");
+
+			foreach (var p in parameters)
+			{
+				
+			}
 
 			output.AppendLine("}"); // end class
 
