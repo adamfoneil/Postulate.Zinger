@@ -98,7 +98,7 @@ namespace Zinger.Models
 			output.AppendLine(QueryClassFirstLine(queryName) + "\r\n{");
 
 			output.AppendLine($"\tpublic {queryName}() : base(");
-			output.AppendLine($"\t\t@\"{Indent(2, query)}\")\r\n\t\t{{\r\n\t\t}}");
+			output.AppendLine($"\t\t@\"{Indent(2, query)}\")\r\n\t{{\r\n\t}}");
 
 			output.AppendLine("}"); // end class
 
