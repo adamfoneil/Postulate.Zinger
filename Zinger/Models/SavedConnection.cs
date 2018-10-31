@@ -9,54 +9,54 @@ using System.Xml.Serialization;
 
 namespace Zinger.Models
 {
-    public enum ProviderType
-    {
-        MySql,
-        SqlServer,
+	public enum ProviderType
+	{
+		MySql,
+		SqlServer,
 		OleDb
-    }
+	}
 
-    [XmlRoot(ElementName = "ArrayOfSavedConnection")]
-    public class SavedConnections : List<SavedConnection>
-    {
-    }
+	[XmlRoot(ElementName = "ArrayOfSavedConnection")]
+	public class SavedConnections : List<SavedConnection>
+	{
+	}
 
-    public class SavedConnection
-    {
-        public string Name { get; set; }
+	public class SavedConnection
+	{
+		public string Name { get; set; }
 
-        [XmlIgnore]
-        public string ConnectionString { get; set; }
+		[XmlIgnore]
+		public string ConnectionString { get; set; }
 
-        public ProviderType ProviderType { get; set; }
+		public ProviderType ProviderType { get; set; }
 
-        public string EncryptedConnection
-        {
-            get { return ConnectionString.Encrypt(); }
-            set { ConnectionString = value.Decrypt(); }
-        }
+		public string EncryptedConnection
+		{
+			get { return ConnectionString.Encrypt(); }
+			set { ConnectionString = value.Decrypt(); }
+		}
 
-        public async Task<TestResult> TestAsync()
-        {
-            TestResult result = new TestResult();
+		public async Task<TestResult> TestAsync()
+		{
+			TestResult result = new TestResult();
 
-            try
-            {
-                switch (ProviderType)
-                {
-                    case ProviderType.MySql:
-                        using (var cn = new MySqlConnection(ConnectionString))
-                        {
-                            await cn.OpenAsync();
-                        }
-                        break;
+			try
+			{
+				switch (ProviderType)
+				{
+					case ProviderType.MySql:
+						using (var cn = new MySqlConnection(ConnectionString))
+						{
+							await cn.OpenAsync();
+						}
+						break;
 
-                    case ProviderType.SqlServer:
-                        using (var cn = new SqlConnection(ConnectionString))
-                        {
-                            await cn.OpenAsync();
-                        }
-                        break;
+					case ProviderType.SqlServer:
+						using (var cn = new SqlConnection(ConnectionString))
+						{
+							await cn.OpenAsync();
+						}
+						break;
 
 					case ProviderType.OleDb:
 						using (var cn = new OleDbConnection(ConnectionString))
@@ -64,26 +64,26 @@ namespace Zinger.Models
 							await cn.OpenAsync();
 						}
 						break;
-                }
-                result.OpenedSuccessfully = true;
-            }
-            catch (Exception exc)
-            {
-                result.ErrorMessage = exc.Message;                
-            }
+				}
+				result.OpenedSuccessfully = true;
+			}
+			catch (Exception exc)
+			{
+				result.ErrorMessage = exc.Message;
+			}
 
-            return result;
-        }
+			return result;
+		}
 
-        public class TestResult
-        {
-            public bool OpenedSuccessfully { get; set; }
-            public string ErrorMessage { get; set; }
-        }
+		public class TestResult
+		{
+			public bool OpenedSuccessfully { get; set; }
+			public string ErrorMessage { get; set; }
+		}
 
-        public override string ToString()
-        {
-            return $"{Name} ({ProviderType})";
-        }
-    }
+		public override string ToString()
+		{
+			return $"{Name} ({ProviderType})";
+		}
+	}
 }

@@ -85,7 +85,7 @@ namespace Zinger.Forms
 			catch (Exception exc)
 			{
 				MessageBox.Show(exc.Message);
-			}			
+			}
 		}
 	}
 }

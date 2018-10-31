@@ -6,6 +6,5 @@ namespace Zinger
 	{
 		public FormPosition MainFormPosition { get; set; }
 		public string ActiveConnection { get; set; }
-
 	}
 }

@@ -13,6 +13,7 @@ namespace Zinger.Controls
 	public partial class QueryEditor : UserControl
 	{
 		public event EventHandler Executed;
+
 		public event EventHandler Modified;
 
 		public QueryEditor()
@@ -109,7 +110,7 @@ namespace Zinger.Controls
 		{
 			var sq = JsonFile.Load<SavedQuery>(fileName);
 			tbQuery.Text = sq.Sql;
-			dgvParams.DataSource = ParametersFromEnumerable(sq.Parameters);			
+			dgvParams.DataSource = ParametersFromEnumerable(sq.Parameters);
 			return sq;
 		}
 
