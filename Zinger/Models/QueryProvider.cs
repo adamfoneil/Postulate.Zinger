@@ -100,7 +100,7 @@ namespace Zinger.Models
 					{
 						output.AppendLine($"\t[Where(\"{paramDictionary[p.Name].Expression}\")]");
 					}
-					output.AppendLine($"\tpublic {p.CSharpType} {p.PascalCaseName} {{ get; set }}\r\n");
+					output.AppendLine($"\tpublic {p.CSharpType} {p.PascalCaseName} {{ get; set; }}\r\n");
 				}
 			}
 
