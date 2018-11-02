@@ -86,6 +86,7 @@ namespace Zinger.Controls
 		{
 			if (DesignMode) return;
 			colParamType.FillFromEnum<DbType>();
+			dgvParams.DataSource = new BindingList<QueryProvider.Parameter>();
 		}
 
 		private void dgvParams_DataError(object sender, DataGridViewDataErrorEventArgs e)
