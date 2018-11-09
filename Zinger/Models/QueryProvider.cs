@@ -1,6 +1,7 @@
 ﻿using Microsoft.CSharp;
 using System;
 using System.CodeDom;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -111,12 +112,15 @@ namespace Zinger.Models
 
 		private IEnumerable<ColumnInfo> CSharpPropertiesFromParameters(IDbConnection connection, IEnumerable<Parameter> parameters)
 		{
-			string columns = string.Join(", ", parameters.Select(p => $"{p.ToParamName()} AS {p.ToColumnName()}"));
+			var includeParams = parameters.Where(p => !p.IsArray());
+			if (!includeParams.Any()) return Enumerable.Empty<ColumnInfo>();
+
+			string columns = string.Join(", ", includeParams.Select(p => $"{p.ToParamName()} AS {p.ToColumnName()}"));
 			string dummyQuery = $"SELECT {columns}";
 
 			using (var cmd = GetCommand(dummyQuery, connection))
 			{
-				AddParameters(parameters, cmd);
+				AddParameters(includeParams, cmd);
 				using (var reader = cmd.ExecuteReader())
 				{
 					var schemaTable = reader.GetSchemaTable();
