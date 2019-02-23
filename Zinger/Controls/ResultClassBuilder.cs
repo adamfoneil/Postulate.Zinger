@@ -74,7 +74,7 @@ namespace Zinger.Controls
 
 		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			Shell.ViewDocument("https://github.com/adamosoftware/Postulate.Lite");
+			Shell.ViewDocument("https://github.com/adamosoftware/Postulate");
 		}
 	}
 }
