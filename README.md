@@ -20,7 +20,7 @@ public class MyQueryResult
 ```
 Postulate Query Helper infers the property types from the underlying table column types in the backend database. SQL Server, MySQL, and OleDb data sources are supported.
 
-In addition to generating POCO result classes, you can also use Postulate Query Helper to debug and create [Postulate Query class](https://github.com/adamosoftware/Postulate.Lite/wiki/Using-the-Query-class) instances. This is how I handle inline SQL in my applications -- allowing me to balance the productivity and convenience of inline SQL with its inherent liabilities.
+In addition to generating POCO result classes, you can also use Postulate Query Helper to debug and create [Postulate Query class](https://github.com/adamosoftware/Postulate/wiki/Using-the-Query-class) instances. This is how I handle inline SQL in my applications -- allowing me to balance the productivity and convenience of inline SQL with its inherent liabilities.
 
 ("Zinger" was kind of a code name I was using for this during development. It's not one of my better code names, though, and it never stuck. Some of the source assets use this name, and it's too much trouble to rename it.)
 
