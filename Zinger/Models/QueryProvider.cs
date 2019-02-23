@@ -1,4 +1,5 @@
 ﻿using Microsoft.CSharp;
+using Postulate.Base;
 using System;
 using System.CodeDom;
 using System.Collections;
@@ -202,9 +203,10 @@ namespace Zinger.Models
 
 			string result = query;
 
-			string whereClause = string.Join(" AND ", expressionParams.Select(p => p.Expression));
-			result = result.Replace("{where}", whereClause);
-			result = result.Replace("{andWhere}", (!string.IsNullOrEmpty(whereClause)) ? " AND " + whereClause : string.Empty);
+			if (QueryUtil.FindWhereToken(result, out string token))
+			{
+				result = QueryUtil.ResolveWhereToken(token, result, expressionParams.Select(p => p.Expression));
+			}
 
 			var arrayParams = parameters?.Where(p => p.IsArray()) ?? Enumerable.Empty<Parameter>();
 			foreach (var arrayParam in arrayParams)

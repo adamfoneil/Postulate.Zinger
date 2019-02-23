@@ -126,9 +126,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AoJsonSettings">
-      <Version>1.0.5</Version>
-    </PackageReference>
     <PackageReference Include="AoOptions">
       <Version>1.5.10</Version>
     </PackageReference>
@@ -139,13 +136,19 @@
       <Version>1.0.12</Version>
     </PackageReference>
     <PackageReference Include="FCTB">
-      <Version>2.16.21</Version>
+      <Version>2.16.24</Version>
+    </PackageReference>
+    <PackageReference Include="JsonSettings.Library">
+      <Version>1.0.12</Version>
     </PackageReference>
     <PackageReference Include="MySql.Data">
-      <Version>6.10.5</Version>
+      <Version>8.0.15</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>11.0.2</Version>
+      <Version>12.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Postulate.Base">
+      <Version>1.3.7</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
