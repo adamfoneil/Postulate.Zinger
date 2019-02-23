@@ -112,10 +112,6 @@ Description of this component to help the user to determine if it should be inst
 1
 FALSE
 +
-Release
-1
-FALSE
-+
 C:\Users\Adam\Source\Repos\Postulate.Zinger\Zinger\bin\Release\AoOptions.dll
 3
 1
@@ -885,7 +881,6 @@ C:\Users\Adam\Source\Repos\Postulate.Zinger\Zinger\bin\Release\Zinger.exe.config
 TRUE
 TRUE
 FALSE
--
 -
 %APPMENU%
 1
