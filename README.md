@@ -50,7 +50,7 @@ Next, click the **C#** tab to see the C# outputs. Here you set the **Query Name*
 
 ![img](https://github.com/adamosoftware/Postulate.Zinger/blob/master/result-class.png)
 
-Click the **Query Class** tab to see the class generated that's compatible with the Postulate.Lite Query&lt;T&gt; type. For more info on this, see the Postulate.Lite [Query wiki](https://github.com/adamosoftware/Postulate.Lite/wiki/Using-the-Query-class) page as well as the [source](https://github.com/adamosoftware/Postulate.Lite/blob/master/Postulate.Lite.Core/Query.cs).
+Click the **Query Class** tab to see the class generated that's compatible with the Postulate Query&lt;T&gt; type. For more info on this, see the Postulate [Query wiki](https://github.com/adamosoftware/Postulate/wiki/Using-the-Query-class) page as well as the [source](https://github.com/adamosoftware/Postulate/blob/master/Postulate.Base/Query_base.cs).
   
 ![img](https://github.com/adamosoftware/Postulate.Zinger/blob/master/query-class.png)
 
