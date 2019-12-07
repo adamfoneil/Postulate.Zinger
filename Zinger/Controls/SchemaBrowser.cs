@@ -12,7 +12,7 @@ using Zinger.Models;
 namespace Zinger.Controls
 {
     public partial class SchemaBrowser : UserControl
-    {
+    {        
         public SchemaBrowser()
         {
             InitializeComponent();
@@ -88,6 +88,17 @@ namespace Zinger.Controls
                 tvwObjects.EndUpdate();
                 statusStrip1.Visible = false;
             }            
+        }
+
+        private void selectColumnsToolStripMenuItem_Click(object sender, System.EventArgs e)
+        {
+            var node = tvwObjects.SelectedNode;
+            tvwObjects.CheckBoxes = !tvwObjects.CheckBoxes;
+        }
+
+        private void tvwObjects_MouseDown(object sender, MouseEventArgs e)
+        {
+
         }
     }
 }

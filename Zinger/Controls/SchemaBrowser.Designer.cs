@@ -36,7 +36,10 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.selectColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // imlSmallIcons
@@ -59,14 +62,16 @@
             // 
             // tvwObjects
             // 
+            this.tvwObjects.ContextMenuStrip = this.contextMenuStrip1;
             this.tvwObjects.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tvwObjects.ImageIndex = 0;
             this.tvwObjects.ImageList = this.imlSmallIcons;
             this.tvwObjects.Location = new System.Drawing.Point(0, 21);
             this.tvwObjects.Name = "tvwObjects";
             this.tvwObjects.SelectedImageIndex = 0;
-            this.tvwObjects.Size = new System.Drawing.Size(231, 358);
+            this.tvwObjects.Size = new System.Drawing.Size(231, 380);
             this.tvwObjects.TabIndex = 1;
+            this.tvwObjects.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tvwObjects_MouseDown);
             // 
             // statusStrip1
             // 
@@ -93,6 +98,20 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(59, 17);
             this.toolStripStatusLabel1.Text = "Loading...";
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.selectColumnsToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(157, 26);
+            // 
+            // selectColumnsToolStripMenuItem
+            // 
+            this.selectColumnsToolStripMenuItem.Name = "selectColumnsToolStripMenuItem";
+            this.selectColumnsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.selectColumnsToolStripMenuItem.Text = "Select Columns";
+            this.selectColumnsToolStripMenuItem.Click += new System.EventHandler(this.selectColumnsToolStripMenuItem_Click);
+            // 
             // SchemaBrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -105,6 +124,7 @@
             this.Size = new System.Drawing.Size(231, 401);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -118,5 +138,7 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem selectColumnsToolStripMenuItem;
     }
 }
