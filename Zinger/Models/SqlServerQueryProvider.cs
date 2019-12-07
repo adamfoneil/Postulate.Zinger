@@ -19,7 +19,7 @@ namespace Zinger.Models
 			return new SqlCommand(query, connection as SqlConnection);
 		}
 
-		protected override IDbConnection GetConnection()
+		public override IDbConnection GetConnection()
 		{
 			return new SqlConnection(_connectionString);
 		}

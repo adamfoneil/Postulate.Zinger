@@ -19,7 +19,7 @@ namespace Zinger.Models
 			return new OleDbCommand(query, connection as OleDbConnection);
 		}
 
-		protected override IDbConnection GetConnection()
+		public override IDbConnection GetConnection()
 		{
 			return new OleDbConnection(_connectionString);
 		}

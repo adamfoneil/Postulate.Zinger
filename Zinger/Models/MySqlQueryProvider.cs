@@ -19,7 +19,7 @@ namespace Zinger.Models
 			return new MySqlCommand(query, connection as MySqlConnection);
 		}
 
-		protected override IDbConnection GetConnection()
+		public override IDbConnection GetConnection()
 		{
 			return new MySqlConnection(_connectionString);
 		}

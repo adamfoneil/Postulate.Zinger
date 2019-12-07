@@ -1,6 +1,7 @@
 ﻿using JsonSettings;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Zinger.Models;
 
@@ -70,7 +71,7 @@ namespace Zinger.Forms
 			cbConnection.SelectedIndexChanged += cbConnection_SelectedIndexChanged;
 		}
 
-		private void cbConnection_SelectedIndexChanged(object sender, EventArgs e)
+		private async void cbConnection_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (cbConnection.SelectedItem != null)
 			{
@@ -89,6 +90,11 @@ namespace Zinger.Forms
 
 				frmContainer parent = MdiParent as frmContainer;
 				parent.Options.ActiveConnection = sc.Name;
+
+                using (var cn = providers[sc.ProviderType].GetConnection())
+                {
+                    await schemaBrowser1.FillAsync(sc.ProviderType, cn);
+                }                
 			}
 			else
 			{
