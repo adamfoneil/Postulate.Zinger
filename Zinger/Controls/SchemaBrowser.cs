@@ -43,9 +43,14 @@ namespace Zinger.Controls
 
             try
             {
+                statusStrip1.Visible = true;
                 tvwObjects.BeginUpdate();
-                var schemaGroups = objects.Where(obj => obj.IsSelectable).GroupBy(obj => obj.Schema).OrderBy(grp => grp.Key);
-                foreach (var schemaGrp in schemaGroups)
+                
+                var schemas = objects
+                    .Where(obj => obj.IsSelectable)
+                    .GroupBy(obj => obj.Schema).OrderBy(grp => grp.Key);
+
+                foreach (var schemaGrp in schemas)
                 {
                     var schemaNode = new SchemaNode(schemaGrp.Key);
                     tvwObjects.Nodes.Add(schemaNode);
@@ -56,11 +61,24 @@ namespace Zinger.Controls
                         var tableNode = new TableNode(table.Name);
                         schemaNode.Nodes.Add(tableNode);
 
-                        var foreignKeys = (table as Table).GetParentForeignKeys(objects);
+                        var foreignKeys = table.GetParentForeignKeys(objects);
                         foreach (var col in table.Columns)
                         {
                             var columnNode = new ColumnNode(col, foreignKeys);
                             tableNode.Nodes.Add(columnNode);
+                        }
+                        
+                        var childFKs = table.GetChildForeignKeys(objects);
+                        if (childFKs.Any())
+                        {
+                            var childFolderNode = new TreeNode("children");
+                            tableNode.Nodes.Add(childFolderNode);
+
+                            foreach (var childFK in childFKs)
+                            {
+                                var fkNode = new TableNode($"{childFK.ReferencingTable.Schema}.{childFK.ReferencingTable.Name}");
+                                childFolderNode.Nodes.Add(fkNode);
+                            }
                         }
                     }
                 }
@@ -68,6 +86,7 @@ namespace Zinger.Controls
             finally
             {
                 tvwObjects.EndUpdate();
+                statusStrip1.Visible = false;
             }            
         }
     }
