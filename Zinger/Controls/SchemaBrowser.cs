@@ -120,14 +120,24 @@ namespace Zinger.Controls
             public string TableName { get; set; }
             public string ColumnName { get; set; }
 
+            public Func<DbObject, bool> GetPredicate()
+            {
+                throw new NotImplementedException();
+            }
+
             public static DbObjectSearch Parse(string text)
             {
+                if (text.StartsWith("."))
+                {
+                    return new DbObjectSearch() { ColumnName = text.Substring(1).Trim() };
+                }
+
                 string[] parts = text.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
 
                 return
                     (parts.Length == 1) ? new DbObjectSearch() { TableName = parts[0] } :
                     (parts.Length == 2) ? new DbObjectSearch() { TableName = parts[0], ColumnName = parts[1] } :
-                    (parts.Length == 3) ? new DbObjectSearch() { SchemaName = parts[0], TableName = parts[1], ColumnName = parts[2] } :
+                    (parts.Length > 2) ? new DbObjectSearch() { SchemaName = parts[0], TableName = parts[1], ColumnName = parts[2] } :
                     null;                
             }
         }
