@@ -1,6 +1,7 @@
 ﻿using SqlSchema.Library;
 using SqlSchema.Library.Models;
 using SqlSchema.SqlServer;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -99,6 +100,36 @@ namespace Zinger.Controls
         private void tvwObjects_MouseDown(object sender, MouseEventArgs e)
         {
 
+        }
+
+        private void tbSearch_TextChanged(object sender, System.EventArgs e)
+        {
+            try
+            {
+                var search = DbObjectSearch.Parse(tbSearch.Text);
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+        }
+        
+        private class DbObjectSearch
+        {
+            public string SchemaName { get; set; }
+            public string TableName { get; set; }
+            public string ColumnName { get; set; }
+
+            public static DbObjectSearch Parse(string text)
+            {
+                string[] parts = text.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+
+                return
+                    (parts.Length == 1) ? new DbObjectSearch() { TableName = parts[0] } :
+                    (parts.Length == 2) ? new DbObjectSearch() { TableName = parts[0], ColumnName = parts[1] } :
+                    (parts.Length == 3) ? new DbObjectSearch() { SchemaName = parts[0], TableName = parts[1], ColumnName = parts[2] } :
+                    null;                
+            }
         }
     }
 }
