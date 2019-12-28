@@ -63,11 +63,7 @@ namespace Zinger.Controls
                         schemaNode.Nodes.Add(tableNode);
 
                         var foreignKeys = table.GetParentForeignKeys(objects);
-                        foreach (var col in table.Columns)
-                        {
-                            var columnNode = new ColumnNode(col, foreignKeys);
-                            tableNode.Nodes.Add(columnNode);
-                        }
+                        tableNode.Columns.AddRange(table.Columns.Select(col => new ColumnNode(col, foreignKeys)));
                         
                         var childFKs = table.GetChildForeignKeys(objects);
                         if (childFKs.Any())
@@ -139,6 +135,15 @@ namespace Zinger.Controls
                     (parts.Length == 2) ? new DbObjectSearch() { TableName = parts[0], ColumnName = parts[1] } :
                     (parts.Length > 2) ? new DbObjectSearch() { SchemaName = parts[0], TableName = parts[1], ColumnName = parts[2] } :
                     null;                
+            }
+        }
+
+        private void tvwObjects_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            TableNode tableNode = e.Node as TableNode;
+            if (tableNode != null)
+            {
+                if (tableNode.HasPlaceholder) tableNode.LoadColumns();
             }
         }
     }

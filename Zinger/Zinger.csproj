@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Nodes\ColumnNode.cs" />
+    <Compile Include="Controls\Nodes\PlaceholderNode.cs" />
     <Compile Include="Controls\Nodes\SchemaNode.cs" />
     <Compile Include="Controls\Nodes\TableNode.cs" />
     <Compile Include="Controls\QueryEditor.cs">
