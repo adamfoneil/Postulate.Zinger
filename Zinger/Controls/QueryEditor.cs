@@ -42,6 +42,7 @@ namespace Zinger.Controls
         }
 
         public QueryProvider Provider { get; set; }
+        public DataTable DataTable => dgvResults.DataSource as DataTable;
 
         public void Execute()
         {

@@ -1,6 +1,8 @@
-﻿using JsonSettings.Library;
+﻿using ClosedXML.Excel;
+using JsonSettings.Library;
 using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using WinForms.Library;
@@ -50,8 +52,7 @@ namespace Zinger.Forms
             try
             {
                 frmConnections dlg = new frmConnections();
-                dlg.SavedConnections = GetSavedConnections();
-                dlg.SavedConnectionFolder = SavedConnectionPath();
+                dlg.SavedConnections = GetSavedConnections();                
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
                     dlg.SavedConnections.Save();                    
@@ -201,6 +202,24 @@ namespace Zinger.Forms
         {
             _options.MainFormPosition = FormPosition.FromForm(this);
             _options.Save();
+        }
+
+        private void resultsToExcelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.DefaultExt = "xlsx";
+            dlg.Filter = "Excel Files|*.xlsx|All Files|*.*";
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                var wb = new XLWorkbook(XLEventTracking.Disabled);
+                int index = 0;
+                foreach (var qryForm in Application.OpenForms.OfType<frmQuery>())
+                {
+                    index++;
+                    wb.AddWorksheet(qryForm.DataTable, $"Sheet{index}");
+                }
+                wb.SaveAs(dlg.FileName);
+            }
         }
     }
 }

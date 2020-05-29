@@ -1,6 +1,7 @@
 ﻿using JsonSettings;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using Zinger.Models;
@@ -11,6 +12,8 @@ namespace Zinger.Forms
     {
         public string Filename { get; private set; }
         public bool IsModified { get; private set; }
+
+        public DataTable DataTable => queryEditor1.DataTable;
 
         public frmQuery()
         {
