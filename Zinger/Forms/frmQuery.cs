@@ -194,5 +194,22 @@ namespace Zinger.Forms
         {
             IsModified = true;
         }
+
+        private void btnDataToScript_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var dlg = new SaveFileDialog();
+                dlg.Filter = "SQL Script Files|*.sql|All Files|*.*";
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+        }
     }
 }
