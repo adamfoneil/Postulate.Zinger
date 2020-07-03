@@ -20,11 +20,13 @@ namespace Zinger.Models
             _connectionString = connectionString;
         }
 
-        protected abstract IDbConnection GetConnection();
+        public abstract IDbConnection GetConnection();
 
         protected abstract IDbCommand GetCommand(string query, IDbConnection connection);
 
         protected abstract IDbDataAdapter GetAdapter(IDbCommand command);
+
+        public abstract ProviderType ProviderType { get; }
 
         public long Milleseconds { get; private set; }
 

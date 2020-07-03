@@ -5,6 +5,8 @@ namespace Zinger.Models
 {
     public class OleDbQueryProvider : QueryProvider
     {
+        public override ProviderType ProviderType => ProviderType.OleDb;
+
         public OleDbQueryProvider(string connectionString) : base(connectionString)
         {
         }
@@ -19,7 +21,7 @@ namespace Zinger.Models
             return new OleDbCommand(query, connection as OleDbConnection);
         }
 
-        protected override IDbConnection GetConnection()
+        public override IDbConnection GetConnection()
         {
             return new OleDbConnection(_connectionString);
         }

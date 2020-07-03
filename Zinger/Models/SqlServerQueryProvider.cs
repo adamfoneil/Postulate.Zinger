@@ -5,6 +5,8 @@ namespace Zinger.Models
 {
     public class SqlServerQueryProvider : QueryProvider
     {
+        public override ProviderType ProviderType => ProviderType.SqlServer;
+
         public SqlServerQueryProvider(string connectionString) : base(connectionString)
         {
         }
@@ -19,7 +21,7 @@ namespace Zinger.Models
             return new SqlCommand(query, connection as SqlConnection);
         }
 
-        protected override IDbConnection GetConnection()
+        public override IDbConnection GetConnection()
         {
             return new SqlConnection(_connectionString);
         }

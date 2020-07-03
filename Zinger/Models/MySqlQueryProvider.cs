@@ -5,6 +5,8 @@ namespace Zinger.Models
 {
     public class MySqlQueryProvider : QueryProvider
     {
+        public override ProviderType ProviderType => ProviderType.MySql;
+
         public MySqlQueryProvider(string connectionString) : base(connectionString)
         {
         }
@@ -19,7 +21,7 @@ namespace Zinger.Models
             return new MySqlCommand(query, connection as MySqlConnection);
         }
 
-        protected override IDbConnection GetConnection()
+        public override IDbConnection GetConnection()
         {
             return new MySqlConnection(_connectionString);
         }

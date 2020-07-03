@@ -1,4 +1,7 @@
 ﻿using JsonSettings;
+using SqlSchema.Library;
+using SqlSchema.Library.Models;
+using SqlSchema.SqlServer;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -195,16 +198,28 @@ namespace Zinger.Forms
             IsModified = true;
         }
 
-        private void btnDataToScript_Click(object sender, EventArgs e)
+        private async void btnDataToScript_Click(object sender, EventArgs e)
         {
+            var analyzers = new Dictionary<ProviderType, Analyzer>()
+            {
+                { ProviderType.SqlServer, new SqlServerAnalyzer() }
+            };
+
             try
             {
-                var dlg = new SaveFileDialog();
-                dlg.Filter = "SQL Script Files|*.sql|All Files|*.*";
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
+                var dlg = new frmScriptData();
+                dlg.DataTable = queryEditor1.DataTable;
 
+                var providerType = queryEditor1.Provider.ProviderType;
+                if (analyzers.ContainsKey(providerType))
+                {
+                    using (var cn = queryEditor1.Provider.GetConnection())
+                    {
+                        dlg.DatabaseTables = (await analyzers[providerType].GetDbObjectsAsync(cn)).OfType<Table>();
+                    }
                 }
+
+                dlg.ShowDialog();
             }
             catch (Exception exc)
             {

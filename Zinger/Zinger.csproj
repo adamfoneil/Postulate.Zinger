@@ -80,6 +80,12 @@
     <Compile Include="Forms\frmQuery.Designer.cs">
       <DependentUpon>frmQuery.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmScriptData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmScriptData.Designer.cs">
+      <DependentUpon>frmScriptData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\MySqlQueryProvider.cs" />
     <Compile Include="Models\OleDbQueryProvider.cs" />
     <Compile Include="Models\QueryProvider.cs" />
@@ -104,6 +110,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmQuery.resx">
       <DependentUpon>frmQuery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmScriptData.resx">
+      <DependentUpon>frmScriptData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -133,7 +142,7 @@
       <Version>0.95.3</Version>
     </PackageReference>
     <PackageReference Include="Dapper.QX">
-      <Version>1.0.13</Version>
+      <Version>1.0.15</Version>
     </PackageReference>
     <PackageReference Include="FCTB">
       <Version>2.16.24</Version>
@@ -146,6 +155,12 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="SqlSchema.SqlServer">
+      <Version>1.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="SqlServer.Util.Library">
+      <Version>1.0.1</Version>
     </PackageReference>
     <PackageReference Include="WinForms.Library">
       <Version>1.0.53</Version>
