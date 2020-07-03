@@ -160,7 +160,7 @@
       <Version>1.0.1</Version>
     </PackageReference>
     <PackageReference Include="SqlServer.Util.Library">
-      <Version>1.0.1</Version>
+      <Version>1.0.3</Version>
     </PackageReference>
     <PackageReference Include="WinForms.Library">
       <Version>1.0.53</Version>

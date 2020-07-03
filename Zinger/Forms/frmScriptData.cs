@@ -23,7 +23,7 @@ namespace Zinger.Forms
         {
             if (DatabaseTables?.Any() ?? false)
             {
-                cbTable.Items.AddRange(DatabaseTables.ToArray());
+                cbTable.Items.AddRange(DatabaseTables.OrderBy(row => row.Name).ToArray());
             }            
         }
 
@@ -34,7 +34,7 @@ namespace Zinger.Forms
                 var table = cbTable.SelectedItem as Table;
                 if (table != null)
                 {
-                    var output = await BulkInsert.GetSqlInsertStatements(table.Name, DataTable, new BulkInsertOptions()
+                    var output = await BulkInsert.GetSqlStatementsAsync(table.Name, DataTable, new BulkInsertOptions()
                     {
                         SkipIdentityColumn = (rbOmitIdentity.Checked) ? table.IdentityColumn : null,
                         IdentityInsert = rbIdentityInsert.Checked

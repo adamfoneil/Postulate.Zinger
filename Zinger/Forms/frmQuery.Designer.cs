@@ -33,6 +33,7 @@
             this.btnConnections = new System.Windows.Forms.ToolStripButton();
             this.cbConnection = new System.Windows.Forms.ToolStripComboBox();
             this.btnRunQuery = new System.Windows.Forms.ToolStripButton();
+            this.btnDataToScript = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.queryEditor1 = new Zinger.Controls.QueryEditor();
@@ -42,7 +43,6 @@
             this.tabNavigation = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.btnDataToScript = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -92,6 +92,16 @@
             this.btnRunQuery.Size = new System.Drawing.Size(180, 22);
             this.btnRunQuery.Text = "Run Query / Build C# Output";
             this.btnRunQuery.Click += new System.EventHandler(this.btnRunQuery_Click);
+            // 
+            // btnDataToScript
+            // 
+            this.btnDataToScript.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnDataToScript.Image = ((System.Drawing.Image)(resources.GetObject("btnDataToScript.Image")));
+            this.btnDataToScript.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDataToScript.Name = "btnDataToScript";
+            this.btnDataToScript.Size = new System.Drawing.Size(91, 22);
+            this.btnDataToScript.Text = "Data to Script...";
+            this.btnDataToScript.Click += new System.EventHandler(this.btnDataToScript_Click);
             // 
             // tabControl1
             // 
@@ -205,16 +215,6 @@
             this.tabPage4.TabIndex = 1;
             this.tabPage4.Text = "Source Files";
             this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // btnDataToScript
-            // 
-            this.btnDataToScript.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnDataToScript.Image = ((System.Drawing.Image)(resources.GetObject("btnDataToScript.Image")));
-            this.btnDataToScript.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnDataToScript.Name = "btnDataToScript";
-            this.btnDataToScript.Size = new System.Drawing.Size(104, 22);
-            this.btnDataToScript.Text = "Results to Script...";
-            this.btnDataToScript.Click += new System.EventHandler(this.btnDataToScript_Click);
             // 
             // frmQuery
             // 
