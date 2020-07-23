@@ -1,4 +1,6 @@
-﻿namespace Zinger.Models
+﻿using System.Collections.Generic;
+
+namespace Zinger.Models
 {
     public class SavedQuery
     {
@@ -17,6 +19,6 @@
         /// </summary>
         public string Sql { get; set; }
 
-        public QueryProvider.Parameter[] Parameters { get; set; }
+        public List<QueryProvider.Parameter> Parameters { get; set; }
     }
 }

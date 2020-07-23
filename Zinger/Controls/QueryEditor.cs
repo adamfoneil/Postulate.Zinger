@@ -1,11 +1,14 @@
-﻿using JsonSettings;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using JsonSettings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using WinForms.Library.Extensions;
+using WinForms.Library.Models;
 using Zinger.Models;
 
 namespace Zinger.Controls
@@ -19,6 +22,15 @@ namespace Zinger.Controls
         public QueryEditor()
         {
             InitializeComponent();
+
+            /*colParamType.DataSource = new BindingList<ListItem<DbType>>(new ListItem<DbType>[]
+            {
+                new ListItem<DbType>(DbType.String, "String"),
+                new ListItem<DbType>(DbType.Int32, "Int32")
+            });
+            colParamType.ValueMember = "Value";
+            colParamType.DisplayMember = "Text";*/
+            colParamType.Fill<DbType>();
         }
 
         public new bool Enabled
@@ -35,9 +47,9 @@ namespace Zinger.Controls
 
         public string Sql { get { return tbQuery.Text; } set { tbQuery.Text = value; } }
 
-        public QueryProvider.Parameter[] Parameters
+        public List<QueryProvider.Parameter> Parameters
         {
-            get { return ParametersToArray(dgvParams.DataSource as BindingList<QueryProvider.Parameter>); }
+            get { return (dgvParams.DataSource as BindingList<QueryProvider.Parameter>).ToList(); }
             set { dgvParams.DataSource = ParametersFromEnumerable(value); }
         }
 
@@ -85,14 +97,15 @@ namespace Zinger.Controls
 
         private void QueryEditor_Load(object sender, EventArgs e)
         {
-            if (DesignMode) return;
-            colParamType.Fill<DbType>();
-            dgvParams.DataSource = new BindingList<QueryProvider.Parameter>();
+            if (DesignMode) return;                        
+
+            dgvParams.DataSource = new BindingList<QueryProvider.Parameter>();            
         }
 
         private void dgvParams_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             // ignore
+            //Debugger.Break();
         }
 
         private QueryProvider.Parameter[] ParametersToArray(BindingList<QueryProvider.Parameter> parameters)
@@ -139,6 +152,11 @@ namespace Zinger.Controls
         private void tbQuery_TextChanging(object sender, FastColoredTextBoxNS.TextChangingEventArgs e)
         {
             Modified?.Invoke(sender, new EventArgs());
+        }
+
+        private void dgvParams_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
+        {
+            e.Row.Cells[nameof(colParamType)].Value = DbType.Int32;
         }
     }
 }

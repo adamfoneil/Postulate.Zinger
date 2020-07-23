@@ -20,13 +20,13 @@ namespace Zinger.Forms
             var cell = dataGridView1.TopLeftHeaderCell;
 
             dataGridView1.AutoGenerateColumns = false;
+            colProvider.Fill<ProviderType>();
         }
 
         private void frmConnections_Load(object sender, EventArgs e)
         {
             try
-            {
-                colProvider.Fill<ProviderType>();
+            {                
                 dataGridView1.DataSource = new BindingList<SavedConnection>(SavedConnections.Connections);
             }
             catch (Exception exc)
