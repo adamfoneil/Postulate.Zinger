@@ -14,7 +14,27 @@ namespace Zinger.Forms
     public partial class frmQuery : Form
     {
         public string Filename { get; private set; }
-        public bool IsModified { get; private set; }
+
+        private bool _isModified;
+        public bool IsModified
+        {
+            get => _isModified;
+            set
+            {
+                if (value != _isModified)
+                {
+                    if (value)
+                    {
+                        if (!Text.StartsWith("*")) Text = "*" + Text;
+                    }
+                    else
+                    {
+                        if (Text.StartsWith("*")) Text = Text.Substring(1);
+                    }
+                    _isModified = value;
+                }
+            }
+        }
 
         public DataTable DataTable => queryEditor1.DataTable;
 
@@ -45,7 +65,7 @@ namespace Zinger.Forms
             var sq = queryEditor1.LoadQuery(fileName);
             cbConnection.SelectedIndex = cbConnection.FindString(sq.ConnectionName);
             resultClassBuilder1.QueryName = sq.Name;
-            SetWindowTitle(sq.Name);
+            SetWindowTitle(fileName);
             Filename = fileName;
             IsModified = false;
         }
@@ -147,7 +167,7 @@ namespace Zinger.Forms
         {
             queryEditor1.QueryName = resultClassBuilder1.QueryName;
             resultClassBuilder1.RenameQuery(queryEditor1.QueryName);
-            SetWindowTitle(resultClassBuilder1.QueryName);
+            //SetWindowTitle(resultClassBuilder1.QueryName);
         }
 
         internal void SaveQuery(string fileName)
@@ -162,6 +182,7 @@ namespace Zinger.Forms
 
             JsonFile.Save(fileName, qry);
             IsModified = false;
+            Text = fileName;
         }
 
         private void frmQuery_FormClosing(object sender, FormClosingEventArgs e)
