@@ -3,25 +3,27 @@ using System.Data;
 
 namespace Zinger.Models
 {
-	public class MySqlQueryProvider : QueryProvider
-	{
-		public MySqlQueryProvider(string connectionString) : base(connectionString)
-		{
-		}
+    public class MySqlQueryProvider : QueryProvider
+    {
+        public override ProviderType ProviderType => ProviderType.MySql;
 
-		protected override IDbDataAdapter GetAdapter(IDbCommand command)
-		{
-			return new MySqlDataAdapter(command as MySqlCommand);
-		}
+        public MySqlQueryProvider(string connectionString) : base(connectionString)
+        {
+        }
 
-		protected override IDbCommand GetCommand(string query, IDbConnection connection)
-		{
-			return new MySqlCommand(query, connection as MySqlConnection);
-		}
+        protected override IDbDataAdapter GetAdapter(IDbCommand command)
+        {
+            return new MySqlDataAdapter(command as MySqlCommand);
+        }
 
-		public override IDbConnection GetConnection()
-		{
-			return new MySqlConnection(_connectionString);
-		}
-	}
+        protected override IDbCommand GetCommand(string query, IDbConnection connection)
+        {
+            return new MySqlCommand(query, connection as MySqlConnection);
+        }
+
+        public override IDbConnection GetConnection()
+        {
+            return new MySqlConnection(_connectionString);
+        }
+    }
 }

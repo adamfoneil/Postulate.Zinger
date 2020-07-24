@@ -1,89 +1,91 @@
-﻿using AdamOneilSoftware;
+﻿using JsonSettings;
+using JsonSettings.Library;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.Data.SqlClient;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace Zinger.Models
 {
-	public enum ProviderType
-	{
-		MySql,
-		SqlServer,
-		OleDb
-	}
+    public enum ProviderType
+    {
+        MySql,
+        SqlServer,
+        OleDb
+    }
 
-	[XmlRoot(ElementName = "ArrayOfSavedConnection")]
-	public class SavedConnections : List<SavedConnection>
-	{
-	}
+    public class SavedConnections : SettingsBase
+    {
+        public List<SavedConnection> Connections { get; set; }
 
-	public class SavedConnection
-	{
-		public string Name { get; set; }
+        protected override void Initialize()
+        {
+            if (Connections == null) Connections = new List<SavedConnection>();            
+        }
 
-		[XmlIgnore]
-		public string ConnectionString { get; set; }
+        public override string Filename => BuildPath(Environment.SpecialFolder.ApplicationData, "Zinger", "Connections.json");
+    }
 
-		public ProviderType ProviderType { get; set; }
+    public class SavedConnection
+    {
+        public string Name { get; set; }
 
-		public string EncryptedConnection
-		{
-			get { return ConnectionString.Encrypt(); }
-			set { ConnectionString = value.Decrypt(); }
-		}
+        [JsonProtect(DataProtectionScope.CurrentUser)]
+        public string ConnectionString { get; set; }
 
-		public async Task<TestResult> TestAsync()
-		{
-			TestResult result = new TestResult();
+        public ProviderType ProviderType { get; set; }
 
-			try
-			{
-				switch (ProviderType)
-				{
-					case ProviderType.MySql:
-						using (var cn = new MySqlConnection(ConnectionString))
-						{
-							await cn.OpenAsync();
-						}
-						break;
+        public async Task<TestResult> TestAsync()
+        {
+            TestResult result = new TestResult();
 
-					case ProviderType.SqlServer:
-						using (var cn = new SqlConnection(ConnectionString))
-						{
-							await cn.OpenAsync();
-						}
-						break;
+            try
+            {
+                switch (ProviderType)
+                {
+                    case ProviderType.MySql:
+                        using (var cn = new MySqlConnection(ConnectionString))
+                        {
+                            await cn.OpenAsync();
+                        }
+                        break;
 
-					case ProviderType.OleDb:
-						using (var cn = new OleDbConnection(ConnectionString))
-						{
-							await cn.OpenAsync();
-						}
-						break;
-				}
-				result.OpenedSuccessfully = true;
-			}
-			catch (Exception exc)
-			{
-				result.ErrorMessage = exc.Message;
-			}
+                    case ProviderType.SqlServer:
+                        using (var cn = new SqlConnection(ConnectionString))
+                        {
+                            await cn.OpenAsync();
+                        }
+                        break;
 
-			return result;
-		}
+                    case ProviderType.OleDb:
+                        using (var cn = new OleDbConnection(ConnectionString))
+                        {
+                            await cn.OpenAsync();
+                        }
+                        break;
+                }
+                result.OpenedSuccessfully = true;
+            }
+            catch (Exception exc)
+            {
+                result.ErrorMessage = exc.Message;
+            }
 
-		public class TestResult
-		{
-			public bool OpenedSuccessfully { get; set; }
-			public string ErrorMessage { get; set; }
-		}
+            return result;
+        }
 
-		public override string ToString()
-		{
-			return $"{Name} ({ProviderType})";
-		}
-	}
+        public class TestResult
+        {
+            public bool OpenedSuccessfully { get; set; }
+            public string ErrorMessage { get; set; }
+        }
+
+        public override string ToString()
+        {
+            return $"{Name} ({ProviderType})";
+        }
+    }
 }

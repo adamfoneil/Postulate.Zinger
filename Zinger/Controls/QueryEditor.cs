@@ -1,143 +1,162 @@
-﻿using AdamOneilSoftware;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
 using JsonSettings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
+using WinForms.Library.Extensions;
+using WinForms.Library.Models;
 using Zinger.Models;
 
 namespace Zinger.Controls
 {
-	public partial class QueryEditor : UserControl
-	{
-		public event EventHandler Executed;
+    public partial class QueryEditor : UserControl
+    {
+        public event EventHandler Executed;
 
-		public event EventHandler Modified;
+        public event EventHandler Modified;
 
-		public QueryEditor()
-		{
-			InitializeComponent();
-		}
+        public QueryEditor()
+        {
+            InitializeComponent();
 
-		public new bool Enabled
-		{
-			get { return tbQuery.Enabled; }
-			set
-			{
-				tbQuery.Enabled = value;
-				dgvParams.Enabled = value;
-			}
-		}
+            /*colParamType.DataSource = new BindingList<ListItem<DbType>>(new ListItem<DbType>[]
+            {
+                new ListItem<DbType>(DbType.String, "String"),
+                new ListItem<DbType>(DbType.Int32, "Int32")
+            });
+            colParamType.ValueMember = "Value";
+            colParamType.DisplayMember = "Text";*/
+            colParamType.Fill<DbType>();
+        }
 
-		public string QueryName { get; set; }
+        public new bool Enabled
+        {
+            get { return tbQuery.Enabled; }
+            set
+            {
+                tbQuery.Enabled = value;
+                dgvParams.Enabled = value;
+            }
+        }
 
-		public string Sql { get { return tbQuery.Text; } set { tbQuery.Text = value; } }
+        public string QueryName { get; set; }
 
-		public QueryProvider.Parameter[] Parameters
-		{
-			get { return ParametersToArray(dgvParams.DataSource as BindingList<QueryProvider.Parameter>); }
-			set { dgvParams.DataSource = ParametersFromEnumerable(value); }
-		}
+        public string Sql { get { return tbQuery.Text; } set { tbQuery.Text = value; } }
 
-		public QueryProvider Provider { get; set; }
+        public List<QueryProvider.Parameter> Parameters
+        {
+            get { return (dgvParams.DataSource as BindingList<QueryProvider.Parameter>).ToList(); }
+            set { dgvParams.DataSource = ParametersFromEnumerable(value); }
+        }
 
-		public void Execute()
-		{
-			if (!Enabled) return;
+        public QueryProvider Provider { get; set; }
+        public DataTable DataTable => dgvResults.DataSource as DataTable;
 
-			try
-			{
-				pbExecuting.Visible = true;
-				tslQueryMetrics.Text = "Executing...";
-				var result = Provider.Execute(tbQuery.Text, QueryName, Parameters);
-				tslQueryMetrics.Text = $"{result.DataTable.Rows.Count} records, {Provider.Milleseconds:n0}ms";
-				dgvResults.DataSource = result.DataTable;
-				Executed?.Invoke(result, new EventArgs());
-			}
-			catch (Exception exc)
-			{
-				tslQueryMetrics.Text = $"Error: {exc.Message}";
-				string fullMessage = GetFullError(exc);
-				MessageBox.Show(fullMessage);
-			}
-			finally
-			{
-				pbExecuting.Visible = false;
-			}
-		}
+        public void Execute()
+        {
+            if (!Enabled) return;
 
-		private string GetFullError(Exception exc)
-		{
-			string result = exc.Message;
+            try
+            {
+                pbExecuting.Visible = true;
+                tslQueryMetrics.Text = "Executing...";
+                var result = Provider.Execute(tbQuery.Text, QueryName, Parameters);
+                tslQueryMetrics.Text = $"{result.DataTable.Rows.Count} records, {Provider.Milleseconds:n0}ms";
+                dgvResults.DataSource = result.DataTable;
+                Executed?.Invoke(result, new EventArgs());
+            }
+            catch (Exception exc)
+            {
+                tslQueryMetrics.Text = $"Error: {exc.Message}";
+                string fullMessage = GetFullError(exc);
+                MessageBox.Show(fullMessage);
+            }
+            finally
+            {
+                pbExecuting.Visible = false;
+            }
+        }
 
-			Exception inner = exc.InnerException;
-			while (inner != null)
-			{
-				result += "\r\n- " + inner.Message;
-				inner = inner.InnerException;
-			}
+        private string GetFullError(Exception exc)
+        {
+            string result = exc.Message;
 
-			return result;
-		}
+            Exception inner = exc.InnerException;
+            while (inner != null)
+            {
+                result += "\r\n- " + inner.Message;
+                inner = inner.InnerException;
+            }
 
-		private void QueryEditor_Load(object sender, EventArgs e)
-		{
-			if (DesignMode) return;
-			colParamType.FillFromEnum<DbType>();
-			dgvParams.DataSource = new BindingList<QueryProvider.Parameter>();
-		}
+            return result;
+        }
 
-		private void dgvParams_DataError(object sender, DataGridViewDataErrorEventArgs e)
-		{
-			// ignore
-		}
+        private void QueryEditor_Load(object sender, EventArgs e)
+        {
+            if (DesignMode) return;                        
 
-		private QueryProvider.Parameter[] ParametersToArray(BindingList<QueryProvider.Parameter> parameters)
-		{
-			if (parameters == null) return Enumerable.Empty<QueryProvider.Parameter>().ToArray();
-			return new List<QueryProvider.Parameter>(parameters).ToArray();
-		}
+            dgvParams.DataSource = new BindingList<QueryProvider.Parameter>();            
+        }
 
-		private BindingList<QueryProvider.Parameter> ParametersFromEnumerable(IEnumerable<QueryProvider.Parameter> parameters)
-		{
-			BindingList<QueryProvider.Parameter> results = new BindingList<QueryProvider.Parameter>();
-			foreach (var p in parameters) results.Add(p);
-			return results;
-		}
+        private void dgvParams_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            // ignore
+            //Debugger.Break();
+        }
 
-		public SavedQuery LoadQuery(string fileName)
-		{
-			var sq = JsonFile.Load<SavedQuery>(fileName);
-			tbQuery.Text = sq.Sql;
-			dgvParams.DataSource = ParametersFromEnumerable(sq.Parameters);
-			return sq;
-		}
+        private QueryProvider.Parameter[] ParametersToArray(BindingList<QueryProvider.Parameter> parameters)
+        {
+            if (parameters == null) return Enumerable.Empty<QueryProvider.Parameter>().ToArray();
+            return new List<QueryProvider.Parameter>(parameters).ToArray();
+        }
 
-		private void tbQuery_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
-		{
-			Modified?.Invoke(sender, new EventArgs());
-		}
+        private BindingList<QueryProvider.Parameter> ParametersFromEnumerable(IEnumerable<QueryProvider.Parameter> parameters)
+        {
+            BindingList<QueryProvider.Parameter> results = new BindingList<QueryProvider.Parameter>();
+            foreach (var p in parameters) results.Add(p);
+            return results;
+        }
 
-		private void dgvParams_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-		{
-			Modified?.Invoke(sender, new EventArgs());
-		}
+        public SavedQuery LoadQuery(string fileName)
+        {
+            var sq = JsonFile.Load<SavedQuery>(fileName);
+            tbQuery.Text = sq.Sql;
+            dgvParams.DataSource = ParametersFromEnumerable(sq.Parameters);
+            return sq;
+        }
 
-		private void dgvParams_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
-		{
-			Modified?.Invoke(sender, new EventArgs());
-		}
+        private void tbQuery_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
+        {
+            Modified?.Invoke(sender, new EventArgs());
+        }
 
-		private void dgvParams_UserAddedRow(object sender, DataGridViewRowEventArgs e)
-		{
-			Modified?.Invoke(sender, new EventArgs());
-		}
+        private void dgvParams_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            Modified?.Invoke(sender, new EventArgs());
+        }
 
-		private void tbQuery_TextChanging(object sender, FastColoredTextBoxNS.TextChangingEventArgs e)
-		{
-			Modified?.Invoke(sender, new EventArgs());
-		}
-	}
+        private void dgvParams_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            Modified?.Invoke(sender, new EventArgs());
+        }
+
+        private void dgvParams_UserAddedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            Modified?.Invoke(sender, new EventArgs());
+        }
+
+        private void tbQuery_TextChanging(object sender, FastColoredTextBoxNS.TextChangingEventArgs e)
+        {
+            Modified?.Invoke(sender, new EventArgs());
+        }
+
+        private void dgvParams_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
+        {
+            e.Row.Cells[nameof(colParamType)].Value = DbType.Int32;
+        }
+    }
 }

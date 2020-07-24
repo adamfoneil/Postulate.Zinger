@@ -33,14 +33,13 @@
             this.btnConnections = new System.Windows.Forms.ToolStripButton();
             this.cbConnection = new System.Windows.Forms.ToolStripComboBox();
             this.btnRunQuery = new System.Windows.Forms.ToolStripButton();
+            this.btnDataToScript = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.queryEditor1 = new Zinger.Controls.QueryEditor();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.resultClassBuilder1 = new Zinger.Controls.ResultClassBuilder();
             this.splcQueryAndSourceTree = new System.Windows.Forms.SplitContainer();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.schemaBrowser1 = new Zinger.Controls.SchemaBrowser();
             this.tabNavigation = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
@@ -52,10 +51,6 @@
             this.splcQueryAndSourceTree.Panel1.SuspendLayout();
             this.splcQueryAndSourceTree.Panel2.SuspendLayout();
             this.splcQueryAndSourceTree.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
             this.tabNavigation.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,7 +59,8 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnConnections,
             this.cbConnection,
-            this.btnRunQuery});
+            this.btnRunQuery,
+            this.btnDataToScript});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(725, 25);
@@ -97,6 +93,16 @@
             this.btnRunQuery.Text = "Run Query / Build C# Output";
             this.btnRunQuery.Click += new System.EventHandler(this.btnRunQuery_Click);
             // 
+            // btnDataToScript
+            // 
+            this.btnDataToScript.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnDataToScript.Image = ((System.Drawing.Image)(resources.GetObject("btnDataToScript.Image")));
+            this.btnDataToScript.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDataToScript.Name = "btnDataToScript";
+            this.btnDataToScript.Size = new System.Drawing.Size(91, 22);
+            this.btnDataToScript.Text = "Data to Script...";
+            this.btnDataToScript.Click += new System.EventHandler(this.btnDataToScript_Click);
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
@@ -106,7 +112,7 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.Padding = new System.Drawing.Point(10, 5);
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(480, 461);
+            this.tabControl1.Size = new System.Drawing.Size(725, 461);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
@@ -115,7 +121,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 26);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(472, 431);
+            this.tabPage1.Size = new System.Drawing.Size(717, 431);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "SQL";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -126,11 +132,10 @@
             this.queryEditor1.Enabled = false;
             this.queryEditor1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.queryEditor1.Location = new System.Drawing.Point(3, 3);
-            this.queryEditor1.Name = "queryEditor1";
-            this.queryEditor1.Parameters = new Zinger.Models.QueryProvider.Parameter[0];
+            this.queryEditor1.Name = "queryEditor1";            
             this.queryEditor1.Provider = null;
             this.queryEditor1.QueryName = null;
-            this.queryEditor1.Size = new System.Drawing.Size(466, 425);
+            this.queryEditor1.Size = new System.Drawing.Size(711, 425);
             this.queryEditor1.Sql = "";
             this.queryEditor1.TabIndex = 0;
             this.queryEditor1.Executed += new System.EventHandler(this.queryEditor1_Executed);
@@ -142,7 +147,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 26);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(472, 431);
+            this.tabPage2.Size = new System.Drawing.Size(717, 431);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "C#";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -156,7 +161,7 @@
             this.resultClassBuilder1.QueryClass = "";
             this.resultClassBuilder1.QueryName = "";
             this.resultClassBuilder1.ResultClass = "";
-            this.resultClassBuilder1.Size = new System.Drawing.Size(466, 425);
+            this.resultClassBuilder1.Size = new System.Drawing.Size(711, 425);
             this.resultClassBuilder1.TabIndex = 0;
             this.resultClassBuilder1.QueryNameChanged += new System.EventHandler(this.resultClassBuilder1_QueryNameChanged);
             // 
@@ -169,7 +174,7 @@
             // 
             // splcQueryAndSourceTree.Panel1
             // 
-            this.splcQueryAndSourceTree.Panel1.Controls.Add(this.splitContainer1);
+            this.splcQueryAndSourceTree.Panel1.Controls.Add(this.tabControl1);
             // 
             // splcQueryAndSourceTree.Panel2
             // 
@@ -178,33 +183,6 @@
             this.splcQueryAndSourceTree.Size = new System.Drawing.Size(725, 461);
             this.splcQueryAndSourceTree.SplitterDistance = 499;
             this.splcQueryAndSourceTree.TabIndex = 2;
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.schemaBrowser1);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(725, 461);
-            this.splitContainer1.SplitterDistance = 241;
-            this.splitContainer1.TabIndex = 2;
-            // 
-            // schemaBrowser1
-            // 
-            this.schemaBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.schemaBrowser1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.schemaBrowser1.Location = new System.Drawing.Point(0, 0);
-            this.schemaBrowser1.Name = "schemaBrowser1";
-            this.schemaBrowser1.Size = new System.Drawing.Size(241, 461);
-            this.schemaBrowser1.TabIndex = 0;
             // 
             // tabNavigation
             // 
@@ -261,10 +239,6 @@
             this.splcQueryAndSourceTree.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splcQueryAndSourceTree)).EndInit();
             this.splcQueryAndSourceTree.ResumeLayout(false);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
             this.tabNavigation.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -286,6 +260,8 @@
         private System.Windows.Forms.ToolStripComboBox cbConnection;
         private System.Windows.Forms.ToolStripButton btnRunQuery;
 		private Controls.ResultClassBuilder resultClassBuilder1;
+        private System.Windows.Forms.ToolStripButton btnDataToScript;
+    }
         private System.Windows.Forms.SplitContainer splitContainer1;
         private Controls.SchemaBrowser schemaBrowser1;
     }
