@@ -1,5 +1,4 @@
 ﻿using SqlSchema.Library.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -8,13 +7,24 @@ namespace Zinger.Controls.Nodes
 {
     public class ColumnNode : TreeNode
     {
-        public ColumnNode(Column column, IEnumerable<ForeignKey> foreignKeys) : base(GetNodeText(column, foreignKeys))
+        public ColumnNode(ForeignKeyColumn column) : base($"{column.ReferencingName} = {column.ReferencedName}")
+        {
+            ImageKey = "shortcut";
+            SelectedImageKey = "shortcut";
+        }
+
+        public ColumnNode(Column column, IEnumerable<ForeignKey> foreignKeys) : base(GetNodeText(column))
         {
             ImageKey =
                 (column.InPrimaryKey) ? "primaryKey" :
-                (IsForeignKey(column, foreignKeys, out _, out _)) ? "shortcut" :
+                (IsForeignKey(column, foreignKeys, out _, out _)) ? "shortcut" :                
                 "column";
-            SelectedImageKey = ImageKey;                
+            SelectedImageKey = ImageKey;
+
+            if (IsForeignKey(column, foreignKeys, out Table referencedTable, out string referencedColumn))
+            {
+                Nodes.Add(new TableNode(referencedTable, referencedColumn));                
+            }
         }
 
         protected static bool IsForeignKey(Column column, IEnumerable<ForeignKey> foreignKeys, out Table referencedTable, out string referencedColumn)
@@ -28,16 +38,20 @@ namespace Zinger.Controls.Nodes
             return (referencedFK != null);
         }
 
-        public static string GetNodeText(Column column, IEnumerable<ForeignKey> foreignKeys)
+        public static string GetNodeText(Column column)
         {
             string result = column.Name;
 
-            if (IsForeignKey(column, foreignKeys, out Table referencedTable, out string referencedColumn))
-            {
-                result += $" -> {referencedTable.Schema}.{referencedTable.Name}.{referencedColumn}";
-            }
+            result += $": {displayType()}, {nullable()}";            
 
             return result;
+
+            string nullable() => (column.IsNullable) ? "null" : "not null";
+
+            string displayType() => 
+                (column.DataType.StartsWith("nvar") || column.DataType.StartsWith("var")) ? 
+                (column.MaxLength == -1) ? $"{column.DataType}(max)" : $"{column.DataType}({column.MaxLength})" : 
+                column.DataType;
         }
     }
 }

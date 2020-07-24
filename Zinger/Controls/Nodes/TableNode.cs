@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SqlSchema.Library.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -6,6 +7,20 @@ namespace Zinger.Controls.Nodes
 {
     public class TableNode : TreeNode
     {
+        public TableNode(ForeignKey foreignKey) : base($"{foreignKey.ReferencingTable.Schema}.{foreignKey.ReferencingTable.Name}")
+        {
+            ImageKey = "table";
+            SelectedImageKey = "table";
+            Nodes.Add(new PlaceholderNode());
+            Columns = foreignKey.Columns.Select(col => new ColumnNode(col)).ToList();
+        }
+
+        public TableNode(Table parentTable, string parentColumn) : base($"{parentTable.Schema}.{parentTable.Name}.{parentColumn}")
+        {
+            ImageKey = "unique";
+            SelectedImageKey = "unique";
+        }
+
         public TableNode(string name) : base(name)
         {
             ImageKey = "table";

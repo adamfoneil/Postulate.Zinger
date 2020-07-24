@@ -54,6 +54,8 @@
             this.imlSmallIcons.Images.SetKeyName(2, "column");
             this.imlSmallIcons.Images.SetKeyName(3, "primaryKey");
             this.imlSmallIcons.Images.SetKeyName(4, "shortcut");
+            this.imlSmallIcons.Images.SetKeyName(5, "unique");
+            this.imlSmallIcons.Images.SetKeyName(6, "join");
             // 
             // tvwObjects
             // 

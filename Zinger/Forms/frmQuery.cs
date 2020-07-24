@@ -143,6 +143,14 @@ namespace Zinger.Forms
                 case Keys.F5:
                     queryEditor1.Execute();
                     break;
+
+                case Keys.F3:
+                    if (cbConnection.SelectedItem != null)
+                    {
+                        if (splitContainer1.Panel2Collapsed) splitContainer1.Panel2Collapsed = false;
+                        schemaBrowser1.Focus();
+                    }
+                    break;
             }
         }
 

@@ -43,11 +43,16 @@ namespace Zinger.Controls
             }
         }
 
+        public new void Focus()
+        {
+            tbSearch.Focus();
+        }
+
         public async Task FillAsync(ProviderType providerType, Func<IDbConnection> getConnection)
         {            
             if (!Analyzers.ContainsKey(providerType))
             {
-                MessageBox.Show($"Provider type {providerType} not supported by object browser.");
+                MessageBox.Show($"Provider type {providerType} not supported by this schema browser.");
                 return;
             }
 
@@ -66,7 +71,6 @@ namespace Zinger.Controls
             LoadObjects();
         }
 
-
         private void LoadObjects(DbObjectSearch search = null)
         {
             try
@@ -83,7 +87,7 @@ namespace Zinger.Controls
 
                 foreach (var schemaGrp in schemas)
                 {
-                    var schemaNode = new SchemaNode(schemaGrp.Key);
+                    var schemaNode = new SchemaNode(schemaGrp.Key, schemaGrp.Count());
                     tvwObjects.Nodes.Add(schemaNode);
 
                     var tables = schemaGrp.OfType<Table>().OrderBy(obj => obj.Name);
@@ -98,12 +102,12 @@ namespace Zinger.Controls
                         var childFKs = table.GetChildForeignKeys(_objects);
                         if (childFKs.Any())
                         {
-                            var childFolderNode = new TreeNode("Child Tables");
+                            var childFolderNode = new TreeNode($"Child Tables ({childFKs.Count()})") { ImageKey = "join", SelectedImageKey = "join" };
                             tableNode.Nodes.Add(childFolderNode);
 
                             foreach (var childFK in childFKs)
                             {
-                                var fkNode = new TableNode($"{childFK.ReferencingTable.Schema}.{childFK.ReferencingTable.Name}");
+                                var fkNode = new TableNode(childFK);
                                 childFolderNode.Nodes.Add(fkNode);
                             }
                         }
