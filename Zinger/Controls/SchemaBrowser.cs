@@ -13,7 +13,12 @@ using Zinger.Models;
 namespace Zinger.Controls
 {
     public partial class SchemaBrowser : UserControl
-    {        
+    {
+        private IEnumerable<DbObject> _objects;
+
+        public event EventHandler<string> OperationStarted;
+        public event EventHandler OperationEnded;
+
         public SchemaBrowser()
         {
             InitializeComponent();
@@ -31,29 +36,33 @@ namespace Zinger.Controls
         }
 
         public async Task FillAsync(ProviderType providerType, Func<IDbConnection> getConnection)
-        {
-            tvwObjects.Nodes.Clear();
-
+        {            
             if (!Analyzers.ContainsKey(providerType))
             {
                 MessageBox.Show($"Provider type {providerType.ToString()} not supported by object browser.");
                 return;
             }
 
-            IEnumerable<DbObject> objects = Enumerable.Empty<DbObject>();
-
             using (var cn = getConnection.Invoke())
             {
-                objects = await Analyzers[providerType].GetDbObjectsAsync(cn);                
+                _objects = await Analyzers[providerType].GetDbObjectsAsync(cn);                
             }
 
+            LoadObjects();
+        }
+
+        private void LoadObjects(DbObjectSearch search = null)
+        {
             try
             {
                 statusStrip1.Visible = true;
-                tvwObjects.BeginUpdate();
+                OperationStarted?.Invoke(this, "Loading objects...");
 
-                var schemas = objects
-                    .Where(obj => obj.IsSelectable)
+                tvwObjects.BeginUpdate();
+                tvwObjects.Nodes.Clear();
+
+                var schemas = _objects
+                    .Where(obj => obj.IsSelectable && (search?.IsIncluded(obj) ?? true))
                     .GroupBy(obj => obj.Schema).OrderBy(grp => grp.Key);
 
                 foreach (var schemaGrp in schemas)
@@ -67,13 +76,13 @@ namespace Zinger.Controls
                         var tableNode = new TableNode(table.Name);
                         schemaNode.Nodes.Add(tableNode);
 
-                        var foreignKeys = table.GetParentForeignKeys(objects);
+                        var foreignKeys = table.GetParentForeignKeys(_objects);
                         tableNode.Columns.AddRange(table.Columns.Select(col => new ColumnNode(col, foreignKeys)));
 
-                        var childFKs = table.GetChildForeignKeys(objects);
+                        var childFKs = table.GetChildForeignKeys(_objects);
                         if (childFKs.Any())
                         {
-                            var childFolderNode = new TreeNode("children");
+                            var childFolderNode = new TreeNode("Child Tables");
                             tableNode.Nodes.Add(childFolderNode);
 
                             foreach (var childFK in childFKs)
@@ -90,7 +99,8 @@ namespace Zinger.Controls
             finally
             {
                 tvwObjects.EndUpdate();
-                statusStrip1.Visible = false;                
+                statusStrip1.Visible = false;
+                OperationEnded?.Invoke(this, new EventArgs());
             }
         }
 
@@ -105,11 +115,12 @@ namespace Zinger.Controls
 
         }
 
-        private void tbSearch_TextChanged(object sender, System.EventArgs e)
+        private void tbSearch_TextChanged(object sender, EventArgs e)
         {
             try
             {
                 var search = DbObjectSearch.Parse(tbSearch.Text);
+
             }
             catch (Exception exc)
             {
@@ -123,7 +134,7 @@ namespace Zinger.Controls
             public string TableName { get; set; }
             public string ColumnName { get; set; }
 
-            public Func<DbObject, bool> GetPredicate()
+            public bool IsIncluded(DbObject dbObject)
             {
                 throw new NotImplementedException();
             }

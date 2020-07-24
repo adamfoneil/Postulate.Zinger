@@ -126,6 +126,7 @@ namespace Zinger.Forms
                 parent.Options.ActiveConnection = sc.Name;
 
                 await schemaBrowser1.FillAsync(sc.ProviderType, provider.GetConnection);
+                if (splitContainer1.Panel2Collapsed) splitContainer1.Panel2Collapsed = false;
             }
             else
             {

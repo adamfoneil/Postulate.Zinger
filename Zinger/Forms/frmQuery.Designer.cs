@@ -42,10 +42,10 @@
             this.resultClassBuilder1 = new Zinger.Controls.ResultClassBuilder();
             this.splcQueryAndSourceTree = new System.Windows.Forms.SplitContainer();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.schemaBrowser1 = new Zinger.Controls.SchemaBrowser();
             this.tabNavigation = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.schemaBrowser1 = new Zinger.Controls.SchemaBrowser();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -130,7 +130,7 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.Padding = new System.Drawing.Point(10, 5);
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(493, 461);
+            this.tabControl1.Size = new System.Drawing.Size(725, 461);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
@@ -139,7 +139,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 26);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(485, 431);
+            this.tabPage1.Size = new System.Drawing.Size(717, 431);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "SQL";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -151,10 +151,9 @@
             this.queryEditor1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.queryEditor1.Location = new System.Drawing.Point(3, 3);
             this.queryEditor1.Name = "queryEditor1";
-            this.queryEditor1.Parameters = null;
             this.queryEditor1.Provider = null;
             this.queryEditor1.QueryName = null;
-            this.queryEditor1.Size = new System.Drawing.Size(479, 425);
+            this.queryEditor1.Size = new System.Drawing.Size(711, 425);
             this.queryEditor1.Sql = "";
             this.queryEditor1.TabIndex = 0;
             this.queryEditor1.Executed += new System.EventHandler(this.queryEditor1_Executed);
@@ -217,9 +216,19 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.schemaBrowser1);
+            this.splitContainer1.Panel2Collapsed = true;
             this.splitContainer1.Size = new System.Drawing.Size(725, 461);
             this.splitContainer1.SplitterDistance = 493;
             this.splitContainer1.TabIndex = 2;
+            // 
+            // schemaBrowser1
+            // 
+            this.schemaBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.schemaBrowser1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.schemaBrowser1.Location = new System.Drawing.Point(0, 0);
+            this.schemaBrowser1.Name = "schemaBrowser1";
+            this.schemaBrowser1.Size = new System.Drawing.Size(228, 461);
+            this.schemaBrowser1.TabIndex = 0;
             // 
             // tabNavigation
             // 
@@ -251,15 +260,6 @@
             this.tabPage4.TabIndex = 1;
             this.tabPage4.Text = "Source Files";
             this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // schemaBrowser1
-            // 
-            this.schemaBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.schemaBrowser1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.schemaBrowser1.Location = new System.Drawing.Point(0, 0);
-            this.schemaBrowser1.Name = "schemaBrowser1";
-            this.schemaBrowser1.Size = new System.Drawing.Size(228, 461);
-            this.schemaBrowser1.TabIndex = 0;
             // 
             // frmQuery
             // 
