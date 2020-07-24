@@ -24,6 +24,8 @@ namespace Zinger.Controls
         public event EventHandler<string> OperationStarted;
         public event EventHandler OperationEnded;
 
+        private TableNode _selectedTable;
+
         public SchemaBrowser()
         {
             InitializeComponent();
@@ -93,7 +95,7 @@ namespace Zinger.Controls
                     var tables = schemaGrp.OfType<Table>().OrderBy(obj => obj.Name);
                     foreach (var table in tables)
                     {
-                        var tableNode = new TableNode(table.Name);
+                        var tableNode = new TableNode(table);
                         schemaNode.Nodes.Add(tableNode);
 
                         var foreignKeys = table.GetParentForeignKeys(_objects);
@@ -132,7 +134,8 @@ namespace Zinger.Controls
 
         private void tvwObjects_MouseDown(object sender, MouseEventArgs e)
         {
-
+            var hitTest = tvwObjects.HitTest(e.X, e.Y);
+            _selectedTable = hitTest.Node as TableNode;
         }
 
         private void tbSearch_TextChanged(object sender, EventArgs e)
@@ -196,6 +199,19 @@ namespace Zinger.Controls
         {
             _searchBox.Clear();
             await RefreshAsync();
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {           
+            if (_selectedTable != null)
+            {
+                rowCountToolStripMenuItem.Visible = true;
+                rowCountToolStripMenuItem.Text = $"{_selectedTable.RowCount:n0} rows";
+            }
+            else
+            {
+                rowCountToolStripMenuItem.Visible = false;
+            }
         }
     }
 }

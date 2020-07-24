@@ -6,7 +6,7 @@ using System.Windows.Forms;
 namespace Zinger.Controls.Nodes
 {
     public class TableNode : TreeNode
-    {
+    {        
         public TableNode(ForeignKey foreignKey) : base($"{foreignKey.ReferencingTable.Schema}.{foreignKey.ReferencingTable.Name}")
         {
             ImageKey = "table";
@@ -21,15 +21,18 @@ namespace Zinger.Controls.Nodes
             SelectedImageKey = "unique";
         }
 
-        public TableNode(string name) : base(name)
+        public TableNode(Table table) : base(table.Name)
         {
             ImageKey = "table";
             SelectedImageKey = "table";
             Nodes.Add(new PlaceholderNode());
             Columns = new List<ColumnNode>();
+            RowCount = table.RowCount;
         }
         
         public List<ColumnNode> Columns { get; internal set; }
+
+        public long RowCount { get; }
         
         public bool HasPlaceholder
         {

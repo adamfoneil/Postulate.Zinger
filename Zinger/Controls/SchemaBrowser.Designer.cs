@@ -40,6 +40,7 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.tbSearch = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.rowCountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -74,14 +75,16 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.selectColumnsToolStripMenuItem});
+            this.selectColumnsToolStripMenuItem,
+            this.rowCountToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(157, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // selectColumnsToolStripMenuItem
             // 
             this.selectColumnsToolStripMenuItem.Name = "selectColumnsToolStripMenuItem";
-            this.selectColumnsToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.selectColumnsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.selectColumnsToolStripMenuItem.Text = "Select Columns";
             this.selectColumnsToolStripMenuItem.Click += new System.EventHandler(this.selectColumnsToolStripMenuItem_Click);
             // 
@@ -141,6 +144,13 @@
             this.panel1.Size = new System.Drawing.Size(231, 29);
             this.panel1.TabIndex = 6;
             // 
+            // rowCountToolStripMenuItem
+            // 
+            this.rowCountToolStripMenuItem.Enabled = false;
+            this.rowCountToolStripMenuItem.Name = "rowCountToolStripMenuItem";
+            this.rowCountToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.rowCountToolStripMenuItem.Text = "Row Count";
+            // 
             // SchemaBrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -173,5 +183,6 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.TextBox tbSearch;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ToolStripMenuItem rowCountToolStripMenuItem;
     }
 }
