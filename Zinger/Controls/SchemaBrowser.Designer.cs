@@ -59,7 +59,6 @@
             this.tbSearch.Name = "tbSearch";
             this.tbSearch.Size = new System.Drawing.Size(231, 21);
             this.tbSearch.TabIndex = 0;
-            this.tbSearch.TextChanged += new System.EventHandler(this.tbSearch_TextChanged);
             // 
             // tvwObjects
             // 

@@ -151,6 +151,7 @@
             this.queryEditor1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.queryEditor1.Location = new System.Drawing.Point(3, 3);
             this.queryEditor1.Name = "queryEditor1";
+            this.queryEditor1.Parameters = null;
             this.queryEditor1.Provider = null;
             this.queryEditor1.QueryName = null;
             this.queryEditor1.Size = new System.Drawing.Size(711, 425);
@@ -165,7 +166,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 26);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(485, 431);
+            this.tabPage2.Size = new System.Drawing.Size(717, 431);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "C#";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -179,7 +180,7 @@
             this.resultClassBuilder1.QueryClass = "";
             this.resultClassBuilder1.QueryName = "";
             this.resultClassBuilder1.ResultClass = "";
-            this.resultClassBuilder1.Size = new System.Drawing.Size(479, 425);
+            this.resultClassBuilder1.Size = new System.Drawing.Size(711, 425);
             this.resultClassBuilder1.TabIndex = 0;
             this.resultClassBuilder1.QueryNameChanged += new System.EventHandler(this.resultClassBuilder1_QueryNameChanged);
             // 
@@ -227,7 +228,7 @@
             this.schemaBrowser1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.schemaBrowser1.Location = new System.Drawing.Point(0, 0);
             this.schemaBrowser1.Name = "schemaBrowser1";
-            this.schemaBrowser1.Size = new System.Drawing.Size(228, 461);
+            this.schemaBrowser1.Size = new System.Drawing.Size(96, 100);
             this.schemaBrowser1.TabIndex = 0;
             // 
             // tabNavigation

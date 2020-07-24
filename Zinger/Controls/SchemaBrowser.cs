@@ -5,17 +5,18 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Zinger.Controls.Nodes;
 using Zinger.Models;
+using Zinger.Services;
 
 namespace Zinger.Controls
 {
     public partial class SchemaBrowser : UserControl
     {
         private IEnumerable<DbObject> _objects;
+        private readonly TextBoxDelayHandler _searchBox;
 
         public event EventHandler<string> OperationStarted;
         public event EventHandler OperationEnded;
@@ -23,6 +24,9 @@ namespace Zinger.Controls
         public SchemaBrowser()
         {
             InitializeComponent();
+
+            _searchBox = new TextBoxDelayHandler(tbSearch, 300);
+            _searchBox.DelayedTextChanged += tbSearch_TextChanged;
         }                
 
         private Dictionary<ProviderType, Analyzer> Analyzers
@@ -154,7 +158,7 @@ namespace Zinger.Controls
                     return new DbObjectSearch() { ColumnName = text.Substring(1).Trim() };
                 }
 
-                string[] parts = text.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] parts = text.Split(new char[] { '.', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                 return
                     (parts.Length == 1) ? new DbObjectSearch() { TableName = parts[0] } :
