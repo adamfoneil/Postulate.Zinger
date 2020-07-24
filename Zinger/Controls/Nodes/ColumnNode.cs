@@ -13,12 +13,14 @@ namespace Zinger.Controls.Nodes
             SelectedImageKey = "shortcut";
         }
 
-        public ColumnNode(Column column, IEnumerable<ForeignKey> foreignKeys) : base(GetNodeText(column))
+        public ColumnNode(Column column, IEnumerable<ForeignKey> foreignKeys, string identityColumn) : base(GetNodeText(column))
         {
             ImageKey =
                 (column.InPrimaryKey) ? "primaryKey" :
                 (IsForeignKey(column, foreignKeys, out _, out _)) ? "shortcut" :                
+                (column.Name.Equals(identityColumn)) ? "unique" :
                 "column";
+
             SelectedImageKey = ImageKey;
 
             if (IsForeignKey(column, foreignKeys, out Table referencedTable, out string referencedColumn))

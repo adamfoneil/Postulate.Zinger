@@ -99,7 +99,7 @@ namespace Zinger.Controls
                         schemaNode.Nodes.Add(tableNode);
 
                         var foreignKeys = table.GetParentForeignKeys(_objects);
-                        tableNode.Columns.AddRange(table.Columns.Select(col => new ColumnNode(col, foreignKeys)));
+                        tableNode.Columns.AddRange(table.Columns.Select(col => new ColumnNode(col, foreignKeys, table.IdentityColumn)));
 
                         var childFKs = table.GetChildForeignKeys(_objects);
                         if (childFKs.Any())
@@ -139,6 +139,7 @@ namespace Zinger.Controls
 
             void findTable(TreeNode node)
             {
+                if (node == null) return;
                 _selectedTable = node as TableNode;
                 if (_selectedTable == null && node.Parent != null) findTable(node.Parent);
             }
