@@ -114,6 +114,7 @@
             // btnSchema
             // 
             this.btnSchema.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.btnSchema.Enabled = false;
             this.btnSchema.Image = ((System.Drawing.Image)(resources.GetObject("btnSchema.Image")));
             this.btnSchema.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnSchema.Name = "btnSchema";

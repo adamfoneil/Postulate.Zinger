@@ -132,6 +132,8 @@ namespace Zinger.Forms
             {
                 queryEditor1.Enabled = false;
             }
+
+            btnSchema.Enabled = cbConnection.SelectedItem != null;
         }
 
         private void frmMain_KeyDown(object sender, KeyEventArgs e)
