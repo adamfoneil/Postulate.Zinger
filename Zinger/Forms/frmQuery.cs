@@ -103,7 +103,7 @@ namespace Zinger.Forms
             cbConnection.SelectedIndexChanged += cbConnection_SelectedIndexChanged;
         }
 
-        private void cbConnection_SelectedIndexChanged(object sender, EventArgs e)
+        private async void cbConnection_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbConnection.SelectedItem != null)
             {
@@ -116,12 +116,16 @@ namespace Zinger.Forms
                     { ProviderType.OleDb, new OleDbQueryProvider(sc.ConnectionString) }
                 };
 
+                var provider = providers[sc.ProviderType];
+
                 queryEditor1.Enabled = true;
-                queryEditor1.Provider = providers[sc.ProviderType];
+                queryEditor1.Provider = provider;
                 IsModified = true;
 
                 frmContainer parent = MdiParent as frmContainer;
                 parent.Options.ActiveConnection = sc.Name;
+
+                await schemaBrowser1.FillAsync(sc.ProviderType, provider.GetConnection);
             }
             else
             {
@@ -246,6 +250,11 @@ namespace Zinger.Forms
             {
                 MessageBox.Show(exc.Message);
             }
+        }
+
+        private void btnSchema_Click(object sender, EventArgs e)
+        {
+            splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
         }
     }
 }

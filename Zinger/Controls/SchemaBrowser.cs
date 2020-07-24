@@ -30,7 +30,7 @@ namespace Zinger.Controls
             }
         }
 
-        public async Task FillAsync(ProviderType providerType, IDbConnection connection)
+        public async Task FillAsync(ProviderType providerType, Func<IDbConnection> getConnection)
         {
             tvwObjects.Nodes.Clear();
 
@@ -39,14 +39,19 @@ namespace Zinger.Controls
                 MessageBox.Show($"Provider type {providerType.ToString()} not supported by object browser.");
                 return;
             }
-            
-            var objects = await Analyzers[providerType].GetDbObjectsAsync(connection);
+
+            IEnumerable<DbObject> objects = Enumerable.Empty<DbObject>();
+
+            using (var cn = getConnection.Invoke())
+            {
+                objects = await Analyzers[providerType].GetDbObjectsAsync(cn);                
+            }
 
             try
             {
                 statusStrip1.Visible = true;
                 tvwObjects.BeginUpdate();
-                
+
                 var schemas = objects
                     .Where(obj => obj.IsSelectable)
                     .GroupBy(obj => obj.Schema).OrderBy(grp => grp.Key);
@@ -64,7 +69,7 @@ namespace Zinger.Controls
 
                         var foreignKeys = table.GetParentForeignKeys(objects);
                         tableNode.Columns.AddRange(table.Columns.Select(col => new ColumnNode(col, foreignKeys)));
-                        
+
                         var childFKs = table.GetChildForeignKeys(objects);
                         if (childFKs.Any())
                         {
@@ -78,13 +83,15 @@ namespace Zinger.Controls
                             }
                         }
                     }
+
+                    schemaNode.Expand();
                 }
             }
             finally
             {
                 tvwObjects.EndUpdate();
-                statusStrip1.Visible = false;
-            }            
+                statusStrip1.Visible = false;                
+            }
         }
 
         private void selectColumnsToolStripMenuItem_Click(object sender, System.EventArgs e)

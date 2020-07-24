@@ -49,7 +49,7 @@ namespace Zinger.Controls
 
         public List<QueryProvider.Parameter> Parameters
         {
-            get { return (dgvParams.DataSource as BindingList<QueryProvider.Parameter>).ToList(); }
+            get { return (dgvParams.DataSource as BindingList<QueryProvider.Parameter>)?.ToList(); }
             set { dgvParams.DataSource = ParametersFromEnumerable(value); }
         }
 
@@ -115,8 +115,9 @@ namespace Zinger.Controls
         }
 
         private BindingList<QueryProvider.Parameter> ParametersFromEnumerable(IEnumerable<QueryProvider.Parameter> parameters)
-        {
+        {            
             BindingList<QueryProvider.Parameter> results = new BindingList<QueryProvider.Parameter>();
+            if (parameters == null) return results;
             foreach (var p in parameters) results.Add(p);
             return results;
         }
