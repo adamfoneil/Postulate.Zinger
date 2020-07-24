@@ -18,6 +18,9 @@ namespace Zinger.Controls
         private IEnumerable<DbObject> _objects;
         private readonly TextBoxDelayHandler _searchBox;
 
+        private ProviderType _providerType;
+        private Func<IDbConnection> _getConnection;
+
         public event EventHandler<string> OperationStarted;
         public event EventHandler OperationEnded;
 
@@ -44,17 +47,25 @@ namespace Zinger.Controls
         {            
             if (!Analyzers.ContainsKey(providerType))
             {
-                MessageBox.Show($"Provider type {providerType.ToString()} not supported by object browser.");
+                MessageBox.Show($"Provider type {providerType} not supported by object browser.");
                 return;
             }
 
-            using (var cn = getConnection.Invoke())
+            _providerType = providerType;
+            _getConnection = getConnection;
+            await RefreshAsync();
+        }
+
+        private async Task RefreshAsync()
+        {
+            using (var cn = _getConnection.Invoke())
             {
-                _objects = await Analyzers[providerType].GetDbObjectsAsync(cn);                
+                _objects = await Analyzers[_providerType].GetDbObjectsAsync(cn);
             }
 
             LoadObjects();
         }
+
 
         private void LoadObjects(DbObjectSearch search = null)
         {
@@ -175,6 +186,12 @@ namespace Zinger.Controls
             {
                 if (tableNode.HasPlaceholder) tableNode.LoadColumns();
             }
+        }
+
+        private async void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            _searchBox.Clear();
+            await RefreshAsync();
         }
     }
 }

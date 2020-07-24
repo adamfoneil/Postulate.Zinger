@@ -20,10 +20,16 @@ namespace Zinger.Services
                 DelayedTextChanged?.Invoke(_textBox, e);                
             };
 
-            _textBox.TextChanged += delegate (object sender, EventArgs e)
-            {
-                _timer.Start();
-            };
+            _textBox.TextChanged += StartTimer;
+        }
+
+        private void StartTimer(object sender, EventArgs e) => _timer.Start();
+
+        internal void Clear()
+        {
+            _textBox.TextChanged -= StartTimer;
+            _textBox.Clear();
+            _textBox.TextChanged += StartTimer;
         }
     }
 }
