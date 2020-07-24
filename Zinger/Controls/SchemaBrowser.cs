@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Zinger.Controls.Nodes;
@@ -120,7 +121,7 @@ namespace Zinger.Controls
             try
             {
                 var search = DbObjectSearch.Parse(tbSearch.Text);
-
+                LoadObjects(search);
             }
             catch (Exception exc)
             {
@@ -136,7 +137,14 @@ namespace Zinger.Controls
 
             public bool IsIncluded(DbObject dbObject)
             {
-                throw new NotImplementedException();
+                var criteria = new Dictionary<Func<string>, Func<string, bool>>()
+                {
+                    { () => SchemaName, (value) => dbObject.Schema.ToLower().Equals(value.ToLower()) },
+                    { () => TableName, (value) => (dbObject as Table)?.Name.ToLower().Contains(value.ToLower()) ?? false },
+                    { () => ColumnName, (value) => (dbObject as Table)?.Columns.Any(col => col.Name.ToLower().Contains(value.ToLower())) ?? false }
+                };
+
+                return criteria.Where(kp => !string.IsNullOrEmpty(kp.Key.Invoke())).All(kp => kp.Value.Invoke(kp.Key.Invoke()));
             }
 
             public static DbObjectSearch Parse(string text)
