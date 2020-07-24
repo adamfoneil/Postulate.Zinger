@@ -135,7 +135,13 @@ namespace Zinger.Controls
         private void tvwObjects_MouseDown(object sender, MouseEventArgs e)
         {
             var hitTest = tvwObjects.HitTest(e.X, e.Y);
-            _selectedTable = hitTest.Node as TableNode;
+            findTable(hitTest.Node);
+
+            void findTable(TreeNode node)
+            {
+                _selectedTable = node as TableNode;
+                if (_selectedTable == null && node.Parent != null) findTable(node.Parent);
+            }
         }
 
         private void tbSearch_TextChanged(object sender, EventArgs e)

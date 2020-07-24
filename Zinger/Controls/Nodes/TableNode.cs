@@ -13,6 +13,7 @@ namespace Zinger.Controls.Nodes
             SelectedImageKey = "table";
             Nodes.Add(new PlaceholderNode());
             Columns = foreignKey.Columns.Select(col => new ColumnNode(col)).ToList();
+            RowCount = foreignKey.ReferencingTable.RowCount;
         }
 
         public TableNode(Table parentTable, string parentColumn) : base($"{parentTable.Schema}.{parentTable.Name}.{parentColumn}")
