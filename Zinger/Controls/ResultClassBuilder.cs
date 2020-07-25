@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using WinForms.Library;
 using Zinger.Models;
 
 namespace Zinger.Controls
@@ -70,11 +69,6 @@ namespace Zinger.Controls
             string[] lines = content.Split('\n');
             lines[0] = newFirstLine;
             return string.Join("\n", lines);
-        }
-
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            FileSystem.OpenDocument("https://github.com/adamosoftware/Postulate");
-        }
+        }        
     }
 }
