@@ -195,7 +195,7 @@ namespace Zinger.Forms
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FileSystem.OpenDocument("https://github.com/adamfoneil/Postulate.Zinger");
+            new frmAbout().ShowDialog();
         }
 
         private void frmContainer_FormClosing(object sender, FormClosingEventArgs e)

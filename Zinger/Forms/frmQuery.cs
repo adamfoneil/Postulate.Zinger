@@ -267,5 +267,10 @@ namespace Zinger.Forms
         {
             splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
         }
+
+        private void queryEditor1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

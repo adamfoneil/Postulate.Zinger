@@ -152,7 +152,6 @@
             this.queryEditor1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.queryEditor1.Location = new System.Drawing.Point(3, 3);
             this.queryEditor1.Name = "queryEditor1";
-            this.queryEditor1.Parameters = null;
             this.queryEditor1.Provider = null;
             this.queryEditor1.QueryName = null;
             this.queryEditor1.Size = new System.Drawing.Size(711, 425);
@@ -160,6 +159,7 @@
             this.queryEditor1.TabIndex = 0;
             this.queryEditor1.Executed += new System.EventHandler(this.queryEditor1_Executed);
             this.queryEditor1.Modified += new System.EventHandler(this.queryEditor1_Modified);
+            this.queryEditor1.Load += new System.EventHandler(this.queryEditor1_Load);
             // 
             // tabPage2
             // 
