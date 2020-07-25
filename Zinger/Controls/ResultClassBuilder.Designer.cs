@@ -40,9 +40,10 @@
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.tbQueryClass = new FastColoredTextBoxNS.FastColoredTextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chkTestableQuery = new System.Windows.Forms.CheckBox();
             this.webUrlLinkLabel1 = new WinForms.Library.Controls.WebUrlLinkLabel();
             this.label1 = new System.Windows.Forms.Label();
-            this.chkTestableQuery = new System.Windows.Forms.CheckBox();
+            this.webUrlLinkLabel2 = new WinForms.Library.Controls.WebUrlLinkLabel();
             this.toolStrip2.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage5.SuspendLayout();
@@ -131,7 +132,6 @@
             this.tbResultClass.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbResultClass.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.tbResultClass.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbResultClass.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.tbResultClass.IsReplaceMode = false;
             this.tbResultClass.Language = FastColoredTextBoxNS.Language.CSharp;
             this.tbResultClass.LeftBracket = '(';
@@ -182,7 +182,6 @@
             this.tbQueryClass.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbQueryClass.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.tbQueryClass.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbQueryClass.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.tbQueryClass.IsReplaceMode = false;
             this.tbQueryClass.Language = FastColoredTextBoxNS.Language.CSharp;
             this.tbQueryClass.LeftBracket = '(';
@@ -201,6 +200,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.webUrlLinkLabel2);
             this.panel1.Controls.Add(this.chkTestableQuery);
             this.panel1.Controls.Add(this.webUrlLinkLabel1);
             this.panel1.Controls.Add(this.label1);
@@ -209,6 +209,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(468, 60);
             this.panel1.TabIndex = 1;
+            // 
+            // chkTestableQuery
+            // 
+            this.chkTestableQuery.AutoSize = true;
+            this.chkTestableQuery.Location = new System.Drawing.Point(33, 34);
+            this.chkTestableQuery.Name = "chkTestableQuery";
+            this.chkTestableQuery.Size = new System.Drawing.Size(158, 17);
+            this.chkTestableQuery.TabIndex = 2;
+            this.chkTestableQuery.Text = "Use TestableQuery<T>";
+            this.chkTestableQuery.UseVisualStyleBackColor = true;
             // 
             // webUrlLinkLabel1
             // 
@@ -230,15 +240,16 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "This generated code is intended for use with Dapper.QX";
             // 
-            // chkTestableQuery
+            // webUrlLinkLabel2
             // 
-            this.chkTestableQuery.AutoSize = true;
-            this.chkTestableQuery.Location = new System.Drawing.Point(33, 34);
-            this.chkTestableQuery.Name = "chkTestableQuery";
-            this.chkTestableQuery.Size = new System.Drawing.Size(158, 17);
-            this.chkTestableQuery.TabIndex = 2;
-            this.chkTestableQuery.Text = "Use TestableQuery<T>";
-            this.chkTestableQuery.UseVisualStyleBackColor = true;
+            this.webUrlLinkLabel2.AutoSize = true;
+            this.webUrlLinkLabel2.Location = new System.Drawing.Point(197, 35);
+            this.webUrlLinkLabel2.Name = "webUrlLinkLabel2";
+            this.webUrlLinkLabel2.Size = new System.Drawing.Size(70, 13);
+            this.webUrlLinkLabel2.TabIndex = 3;
+            this.webUrlLinkLabel2.TabStop = true;
+            this.webUrlLinkLabel2.Text = "learn more";
+            this.webUrlLinkLabel2.Url = "https://github.com/adamfoneil/Dapper.QX#testing";
             // 
             // ResultClassBuilder
             // 
@@ -278,5 +289,6 @@
 		private FastColoredTextBoxNS.FastColoredTextBox tbResultClass;
         private WinForms.Library.Controls.WebUrlLinkLabel webUrlLinkLabel1;
         private System.Windows.Forms.CheckBox chkTestableQuery;
+        private WinForms.Library.Controls.WebUrlLinkLabel webUrlLinkLabel2;
     }
 }
