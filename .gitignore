@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 /Zinger/PostulateQueryHelper.exe
 /ZingerSetup.exe
+/AzDeploy.json
