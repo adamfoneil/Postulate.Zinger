@@ -1,14 +1,11 @@
-﻿using DocumentFormat.OpenXml.Office2010.Excel;
-using JsonSettings;
+﻿using JsonSettings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using WinForms.Library.Extensions;
-using WinForms.Library.Models;
 using Zinger.Models;
 
 namespace Zinger.Controls
@@ -23,6 +20,7 @@ namespace Zinger.Controls
         {
             InitializeComponent();
             colParamType.Fill<DbType>();
+            dgvParams.AutoGenerateColumns = false;
         }
 
         public new bool Enabled
