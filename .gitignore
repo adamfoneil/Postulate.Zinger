@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /Zinger/PostulateQueryHelper.exe
+/ZingerSetup.exe
