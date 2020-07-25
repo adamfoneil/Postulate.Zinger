@@ -1,4 +1,5 @@
 ﻿using SqlSchema.Library.Models;
+using SqlSchema.SqlServer.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -7,6 +8,12 @@ namespace Zinger.Controls.Nodes
 {
     public class ColumnNode : TreeNode
     {
+        public ColumnNode(Column column) : base(GetNodeText(column))
+        {
+            ImageKey = "column";
+            SelectedImageKey = "column";
+        }
+
         public ColumnNode(ForeignKeyColumn column) : base($"{column.ReferencingName} = {column.ReferencedName}")
         {
             ImageKey = "shortcut";
@@ -44,16 +51,11 @@ namespace Zinger.Controls.Nodes
         {
             string result = column.Name;
 
-            result += $": {displayType()}, {nullable()}";            
+            result += $": {column.DisplayDataType()}, {nullable()}";            
 
             return result;
 
             string nullable() => (column.IsNullable) ? "null" : "not null";
-
-            string displayType() => 
-                (column.DataType.StartsWith("nvar") || column.DataType.StartsWith("var")) ? 
-                (column.MaxLength == -1) ? $"{column.DataType}(max)" : $"{column.DataType}({column.MaxLength})" : 
-                column.DataType;
         }
     }
 }

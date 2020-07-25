@@ -1,4 +1,5 @@
-﻿using SqlSchema.Library;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using SqlSchema.Library;
 using SqlSchema.Library.Models;
 using SqlSchema.SqlServer;
 using System;
@@ -10,6 +11,7 @@ using System.Windows.Forms;
 using Zinger.Controls.Nodes;
 using Zinger.Models;
 using Zinger.Services;
+using Table = SqlSchema.Library.Models.Table;
 
 namespace Zinger.Controls
 {
@@ -87,31 +89,66 @@ namespace Zinger.Controls
                     .Where(obj => obj.IsSelectable && (search?.IsIncluded(obj) ?? true))
                     .GroupBy(obj => obj.Schema).OrderBy(grp => grp.Key);
 
+                FolderNode folderNode = null;
+
                 foreach (var schemaGrp in schemas)
                 {
                     var schemaNode = new SchemaNode(schemaGrp.Key, schemaGrp.Count());
                     tvwObjects.Nodes.Add(schemaNode);
 
                     var tables = schemaGrp.OfType<Table>().OrderBy(obj => obj.Name);
-                    foreach (var table in tables)
+                    if (tables.Any())
                     {
-                        var tableNode = new TableNode(table);
-                        schemaNode.Nodes.Add(tableNode);
+                        folderNode = new FolderNode("Tables", tables.Count());
+                        schemaNode.Nodes.Add(folderNode);
 
-                        var foreignKeys = table.GetParentForeignKeys(_objects);
-                        tableNode.Columns.AddRange(table.Columns.Select(col => new ColumnNode(col, foreignKeys, table.IdentityColumn)));
-
-                        var childFKs = table.GetChildForeignKeys(_objects);
-                        if (childFKs.Any())
+                        foreach (var table in tables)
                         {
-                            var childFolderNode = new TreeNode($"Child Tables ({childFKs.Count()})") { ImageKey = "join", SelectedImageKey = "join" };
-                            tableNode.Nodes.Add(childFolderNode);
+                            var tableNode = new TableNode(table);
+                            folderNode.Nodes.Add(tableNode);
 
-                            foreach (var childFK in childFKs)
+                            var foreignKeys = table.GetParentForeignKeys(_objects);
+                            tableNode.Columns.AddRange(table.Columns.Select(col => new ColumnNode(col, foreignKeys, table.IdentityColumn)));
+
+                            var childFKs = table.GetChildForeignKeys(_objects);
+                            if (childFKs.Any())
                             {
-                                var fkNode = new TableNode(childFK);
-                                childFolderNode.Nodes.Add(fkNode);
+                                var childFolderNode = new TreeNode($"Child Tables ({childFKs.Count()})") { ImageKey = "join", SelectedImageKey = "join" };
+                                tableNode.Nodes.Add(childFolderNode);
+
+                                foreach (var childFK in childFKs)
+                                {
+                                    var fkNode = new TableNode(childFK);
+                                    childFolderNode.Nodes.Add(fkNode);
+                                }
                             }
+                        }
+                        folderNode.Expand();
+                    }                    
+
+                    var views = schemaGrp.OfType<SqlSchema.Library.Models.View>().OrderBy(obj => obj.Name);
+                    if (views.Any())
+                    {
+                        folderNode = new FolderNode("Views", views.Count());
+                        schemaNode.Nodes.Add(folderNode);
+
+                        foreach (var view in views)
+                        {
+                            var viewNode = new ViewNode(view);
+                            folderNode.Nodes.Add(viewNode);
+                        }
+                    }
+
+                    var functions = schemaGrp.OfType<TableFunction>().OrderBy(obj => obj.Name);
+                    if (functions.Any())
+                    {
+                        folderNode = new FolderNode("Functions", functions.Count());
+                        schemaNode.Nodes.Add(folderNode);
+
+                        foreach (var func in functions)
+                        {
+                            var functionNode = new FunctionNode(func);
+                            folderNode.Nodes.Add(functionNode);
                         }
                     }
 
@@ -169,8 +206,8 @@ namespace Zinger.Controls
                 var criteria = new Dictionary<Func<string>, Func<string, bool>>()
                 {
                     { () => SchemaName, (value) => dbObject.Schema.ToLower().Equals(value.ToLower()) },
-                    { () => TableName, (value) => (dbObject as Table)?.Name.ToLower().Contains(value.ToLower()) ?? false },
-                    { () => ColumnName, (value) => (dbObject as Table)?.Columns.Any(col => col.Name.ToLower().Contains(value.ToLower())) ?? false }
+                    { () => TableName, (value) => dbObject.Name.ToLower().Contains(value.ToLower()) },
+                    { () => ColumnName, (value) => dbObject.Columns.Any(col => col.Name.ToLower().Contains(value.ToLower())) }
                 };
 
                 return criteria.Where(kp => !string.IsNullOrEmpty(kp.Key.Invoke())).All(kp => kp.Value.Invoke(kp.Key.Invoke()));
@@ -195,7 +232,7 @@ namespace Zinger.Controls
 
         private void tvwObjects_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-            TableNode tableNode = e.Node as TableNode;
+            var tableNode = e.Node as ColumnContainerNode;
             if (tableNode != null)
             {
                 if (tableNode.HasPlaceholder) tableNode.LoadColumns();

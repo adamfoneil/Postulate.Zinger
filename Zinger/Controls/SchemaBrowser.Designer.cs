@@ -57,6 +57,10 @@
             this.imlSmallIcons.Images.SetKeyName(4, "shortcut");
             this.imlSmallIcons.Images.SetKeyName(5, "unique");
             this.imlSmallIcons.Images.SetKeyName(6, "join");
+            this.imlSmallIcons.Images.SetKeyName(7, "folder");
+            this.imlSmallIcons.Images.SetKeyName(8, "view");
+            this.imlSmallIcons.Images.SetKeyName(9, "table-function");
+            this.imlSmallIcons.Images.SetKeyName(10, "param-in");
             // 
             // tvwObjects
             // 
@@ -78,13 +82,13 @@
             this.selectColumnsToolStripMenuItem,
             this.rowCountToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(157, 48);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // selectColumnsToolStripMenuItem
             // 
             this.selectColumnsToolStripMenuItem.Name = "selectColumnsToolStripMenuItem";
-            this.selectColumnsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.selectColumnsToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.selectColumnsToolStripMenuItem.Text = "Select Columns";
             this.selectColumnsToolStripMenuItem.Click += new System.EventHandler(this.selectColumnsToolStripMenuItem_Click);
             // 
@@ -148,7 +152,7 @@
             // 
             this.rowCountToolStripMenuItem.Enabled = false;
             this.rowCountToolStripMenuItem.Name = "rowCountToolStripMenuItem";
-            this.rowCountToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.rowCountToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.rowCountToolStripMenuItem.Text = "Row Count";
             // 
             // SchemaBrowser
