@@ -19,6 +19,6 @@ namespace Zinger.Models
         /// </summary>
         public string Sql { get; set; }
 
-        public List<QueryProvider.Parameter> Parameters { get; set; }
+        public List<Parameter> Parameters { get; set; }
     }
 }

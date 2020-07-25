@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using Zinger.Models;
+using Zinger.Services;
 
 namespace Zinger.Controls
 {
@@ -60,8 +60,8 @@ namespace Zinger.Controls
 
         public void RenameQuery(string queryName)
         {
-            ResultClass = ReplaceFirstLine(ResultClass, QueryProvider.ResultClassFirstLine(queryName));
-            QueryClass = ReplaceFirstLine(QueryClass, QueryProvider.QueryClassFirstLine(queryName));
+            ResultClass = ReplaceFirstLine(ResultClass, QueryClassBuilder.ResultClassFirstLine(queryName));
+            QueryClass = ReplaceFirstLine(QueryClass, QueryClassBuilder.QueryClassFirstLine(queryName, true));
         }
 
         private string ReplaceFirstLine(string content, string newFirstLine)

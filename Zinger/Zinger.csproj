@@ -103,6 +103,7 @@
     </Compile>
     <Compile Include="Models\MySqlQueryProvider.cs" />
     <Compile Include="Models\OleDbQueryProvider.cs" />
+    <Compile Include="Models\Parameter.cs" />
     <Compile Include="Models\QueryProvider.cs" />
     <Compile Include="Models\SavedConnection.cs" />
     <Compile Include="Models\SavedQuery.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DataScripter.cs" />
+    <Compile Include="Services\QueryClassBuilder.cs" />
     <Compile Include="Services\TextBoxDelayHandler.cs" />
     <EmbeddedResource Include="Controls\QueryEditor.resx">
       <DependentUpon>QueryEditor.cs</DependentUpon>

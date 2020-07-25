@@ -37,9 +37,9 @@ namespace Zinger.Controls
 
         public string Sql { get { return tbQuery.Text; } set { tbQuery.Text = value; } }
 
-        public List<QueryProvider.Parameter> Parameters
+        public List<Parameter> Parameters
         {
-            get { return (dgvParams.DataSource as BindingList<QueryProvider.Parameter>)?.ToList(); }
+            get { return (dgvParams.DataSource as BindingList<Parameter>)?.ToList(); }
             set { dgvParams.DataSource = ParametersFromEnumerable(value); }
         }
 
@@ -89,7 +89,7 @@ namespace Zinger.Controls
         {
             if (DesignMode) return;                        
 
-            dgvParams.DataSource = new BindingList<QueryProvider.Parameter>();            
+            dgvParams.DataSource = new BindingList<Parameter>();            
         }
 
         private void dgvParams_DataError(object sender, DataGridViewDataErrorEventArgs e)
@@ -98,15 +98,15 @@ namespace Zinger.Controls
             //Debugger.Break();
         }
 
-        private QueryProvider.Parameter[] ParametersToArray(BindingList<QueryProvider.Parameter> parameters)
+        private Parameter[] ParametersToArray(BindingList<Parameter> parameters)
         {
-            if (parameters == null) return Enumerable.Empty<QueryProvider.Parameter>().ToArray();
-            return new List<QueryProvider.Parameter>(parameters).ToArray();
+            if (parameters == null) return Enumerable.Empty<Parameter>().ToArray();
+            return new List<Parameter>(parameters).ToArray();
         }
 
-        private BindingList<QueryProvider.Parameter> ParametersFromEnumerable(IEnumerable<QueryProvider.Parameter> parameters)
+        private BindingList<Parameter> ParametersFromEnumerable(IEnumerable<Parameter> parameters)
         {            
-            BindingList<QueryProvider.Parameter> results = new BindingList<QueryProvider.Parameter>();
+            BindingList<Parameter> results = new BindingList<Parameter>();
             if (parameters == null) return results;
             foreach (var p in parameters) results.Add(p);
             return results;
