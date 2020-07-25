@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
-using SqlSchema.Library;
+﻿using SqlSchema.Library;
 using SqlSchema.Library.Models;
 using SqlSchema.SqlServer;
 using System;
@@ -78,8 +77,8 @@ namespace Zinger.Controls
         private void LoadObjects(DbObjectSearch search = null)
         {
             try
-            {
-                statusStrip1.Visible = true;
+            {                
+                pbLoading.Visible = true;
                 OperationStarted?.Invoke(this, "Loading objects...");
 
                 tvwObjects.BeginUpdate();
@@ -157,8 +156,8 @@ namespace Zinger.Controls
             }
             finally
             {
-                tvwObjects.EndUpdate();
-                statusStrip1.Visible = false;
+                tvwObjects.EndUpdate();                
+                pbLoading.Visible = false;
                 OperationEnded?.Invoke(this, new EventArgs());
             }
         }
@@ -239,12 +238,6 @@ namespace Zinger.Controls
             }
         }
 
-        private async void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            _searchBox.Clear();
-            await RefreshAsync();
-        }
-
         private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {           
             if (_selectedTable != null)
@@ -256,6 +249,12 @@ namespace Zinger.Controls
             {
                 rowCountToolStripMenuItem.Visible = false;
             }
+        }
+
+        private async void llRefresh_Click(object sender, EventArgs e)
+        {
+            _searchBox.Clear();
+            await RefreshAsync();
         }
     }
 }
