@@ -22,14 +22,6 @@ namespace Zinger.Controls
         public QueryEditor()
         {
             InitializeComponent();
-
-            /*colParamType.DataSource = new BindingList<ListItem<DbType>>(new ListItem<DbType>[]
-            {
-                new ListItem<DbType>(DbType.String, "String"),
-                new ListItem<DbType>(DbType.Int32, "Int32")
-            });
-            colParamType.ValueMember = "Value";
-            colParamType.DisplayMember = "Text";*/
             colParamType.Fill<DbType>();
         }
 

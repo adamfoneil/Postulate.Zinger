@@ -93,7 +93,7 @@ namespace Zinger.Models
             output.AppendLine($"\tpublic {queryName}() : base(");
             output.AppendLine($"\t\t@\"{Indent(2, query)}\")\r\n\t{{\r\n\t}}");
 
-            var paramDictionary = parameters.ToDictionary(row => row.ToColumnName());
+            var paramDictionary = parameters.Where(p => !string.IsNullOrEmpty(p.Name)).ToDictionary(row => row.ToColumnName());
             if (parameters?.Any() ?? false)
             {
                 output.AppendLine();
@@ -115,7 +115,7 @@ namespace Zinger.Models
 
         private IEnumerable<ColumnInfo> CSharpPropertiesFromParameters(IDbConnection connection, IEnumerable<Parameter> parameters)
         {
-            var includeParams = parameters.Where(p => !p.IsArray());
+            var includeParams = parameters.Where(p => !string.IsNullOrEmpty(p.Name) && !p.IsArray());
             if (!includeParams.Any()) return Enumerable.Empty<ColumnInfo>();
 
             string columns = string.Join(", ", includeParams.Select(p => $"{p.ToParamName()} AS {p.ToColumnName()}"));
