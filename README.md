@@ -24,6 +24,11 @@ In addition to generating POCO result classes, you can also use Postulate Query 
 
 ("Zinger" was kind of a code name I was using for this during development. It's not one of my better code names, though, and it never stuck. Some of the source assets use this name, and it's too much trouble to rename it.)
 
+## Downloads
+The latest release is now available [here](https://aosoftware.blob.core.windows.net/install/ZingerSetup.exe).
+
+I'm not going to maintain GitHub releases anymore unless sporadically, so please use the installer download link above.
+
 ## How to use
 
 Check the [Releases](https://github.com/adamosoftware/Postulate.Zinger/releases) page for the latest installer. Download and install. The desktop icon looks like this:
