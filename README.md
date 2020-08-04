@@ -30,12 +30,11 @@ The latest release is now available [here](https://aosoftware.blob.core.windows.
 I'm not going to maintain GitHub releases anymore unless sporadically, so please use the installer download link above.
 
 ## How to use
-
-Check the [Releases](https://github.com/adamosoftware/Postulate.Zinger/releases) page for the latest installer. Download and install. The desktop icon looks like this:
+The desktop icon looks like this:
 
 ![img](https://github.com/adamosoftware/Postulate.Zinger/blob/master/icon.png)
 
- When you run it for first time, you'll need to create one or more connection strings. (Postulate Query Helper encrypts any connection strings you create.) Click File > Connections:
+ When you run it for first time, you'll need to create one or more connection strings. (Zinger encrypts any connection strings you create.) Click File > Connections:
  
 ![img](https://github.com/adamosoftware/Postulate.Zinger/blob/master/connections-menu.png)
 
