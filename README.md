@@ -2,14 +2,14 @@
 
 This is a C# WinForms app that helps you generate C# POCO classes to encapsulate results of SQL queries as well as to test dynamic query parameters and preview results. For example, given a query like this:
 
-```
+```sql
 SELECT [Whatever], [DjangoValue], [MatriculationVector], [OscilliscopeRiskDate]
 FROM [dbo].[Ablative]
 WHERE blah blah blah
 ```
 Postulate Query Helper creates a C# class patterned after results like this:
 
-```
+```csharp
 public class MyQueryResult
 {
     public string Whatever { get; set; }
