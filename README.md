@@ -2,14 +2,14 @@
 
 This is a C# WinForms app that helps you generate C# POCO classes to encapsulate results of SQL queries as well as to test dynamic query parameters and preview results. For example, given a query like this:
 
-```
+```sql
 SELECT [Whatever], [DjangoValue], [MatriculationVector], [OscilliscopeRiskDate]
 FROM [dbo].[Ablative]
 WHERE blah blah blah
 ```
 Postulate Query Helper creates a C# class patterned after results like this:
 
-```
+```csharp
 public class MyQueryResult
 {
     public string Whatever { get; set; }
@@ -20,17 +20,21 @@ public class MyQueryResult
 ```
 Postulate Query Helper infers the property types from the underlying table column types in the backend database. SQL Server, MySQL, and OleDb data sources are supported.
 
-In addition to generating POCO result classes, you can also use Postulate Query Helper to debug and create [Postulate Query class](https://github.com/adamosoftware/Postulate/wiki/Using-the-Query-class) instances. This is how I handle inline SQL in my applications -- allowing me to balance the productivity and convenience of inline SQL with its inherent liabilities.
+In addition to generating POCO result classes, you can also use Postulate Query Helper to debug and create [Dapper.QX Query](https://github.com/adamfoneil/Dapper.QX) instances. This is how I handle inline SQL in my applications -- allowing me to balance the productivity and convenience of inline SQL with its inherent liabilities.
 
 ("Zinger" was kind of a code name I was using for this during development. It's not one of my better code names, though, and it never stuck. Some of the source assets use this name, and it's too much trouble to rename it.)
 
-## How to use
+## Downloads
+The latest release is now available [here](https://aosoftware.blob.core.windows.net/install/ZingerSetup.exe).
 
-Check the [Releases](https://github.com/adamosoftware/Postulate.Zinger/releases) page for the latest installer. Download and install. The desktop icon looks like this:
+I'm not going to maintain GitHub releases anymore unless sporadically, so please use the installer download link above.
+
+## How to use
+The desktop icon looks like this:
 
 ![img](https://github.com/adamosoftware/Postulate.Zinger/blob/master/icon.png)
 
- When you run it for first time, you'll need to create one or more connection strings. (Postulate Query Helper encrypts any connection strings you create.) Click File > Connections:
+ When you run it for first time, you'll need to create one or more connection strings. (Zinger encrypts any connection strings you create.) Click File > Connections:
  
 ![img](https://github.com/adamosoftware/Postulate.Zinger/blob/master/connections-menu.png)
 
