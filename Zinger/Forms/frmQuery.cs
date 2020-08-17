@@ -164,6 +164,7 @@ namespace Zinger.Forms
             var results = sender as QueryProvider.ExecuteResult;
             resultClassBuilder1.ResultClass = results.ResultClass;
             resultClassBuilder1.QueryClass = results.QueryClass;
+            //queryEditor1.Provider.ResolvedQuery
         }
 
         private void btnRunQuery_Click(object sender, EventArgs e)

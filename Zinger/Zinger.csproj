@@ -101,6 +101,12 @@
     <Compile Include="Forms\frmQuery.Designer.cs">
       <DependentUpon>frmQuery.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmResolvedSQL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmResolvedSQL.Designer.cs">
+      <DependentUpon>frmResolvedSQL.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmScriptData.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,6 +147,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmQuery.resx">
       <DependentUpon>frmQuery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmResolvedSQL.resx">
+      <DependentUpon>frmResolvedSQL.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmScriptData.resx">
       <DependentUpon>frmScriptData.cs</DependentUpon>

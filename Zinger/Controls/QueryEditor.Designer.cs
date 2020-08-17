@@ -34,14 +34,15 @@
             this.splcQueryAndParams = new System.Windows.Forms.SplitContainer();
             this.tbQuery = new FastColoredTextBoxNS.FastColoredTextBox();
             this.dgvParams = new System.Windows.Forms.DataGridView();
-            this.dgvResults = new System.Windows.Forms.DataGridView();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.tslQueryMetrics = new System.Windows.Forms.ToolStripStatusLabel();
-            this.pbExecuting = new System.Windows.Forms.ToolStripProgressBar();
             this.colParamName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colParamType = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.colExpression = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colParamValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvResults = new System.Windows.Forms.DataGridView();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.tslQueryMetrics = new System.Windows.Forms.ToolStripStatusLabel();
+            this.pbExecuting = new System.Windows.Forms.ToolStripProgressBar();
+            this.tslResolvedSQL = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.splcQueryAndResults)).BeginInit();
             this.splcQueryAndResults.Panel1.SuspendLayout();
             this.splcQueryAndResults.Panel2.SuspendLayout();
@@ -149,6 +150,38 @@
             this.dgvParams.UserAddedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvParams_UserAddedRow);
             this.dgvParams.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvParams_UserDeletedRow);
             // 
+            // colParamName
+            // 
+            this.colParamName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colParamName.DataPropertyName = "Name";
+            this.colParamName.HeaderText = "Param Name";
+            this.colParamName.MinimumWidth = 110;
+            this.colParamName.Name = "colParamName";
+            this.colParamName.Width = 110;
+            // 
+            // colParamType
+            // 
+            this.colParamType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colParamType.DataPropertyName = "DataType";
+            this.colParamType.HeaderText = "Data Type";
+            this.colParamType.Name = "colParamType";
+            this.colParamType.Width = 40;
+            // 
+            // colExpression
+            // 
+            this.colExpression.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colExpression.DataPropertyName = "Expression";
+            this.colExpression.HeaderText = "Expression";
+            this.colExpression.Name = "colExpression";
+            // 
+            // colParamValue
+            // 
+            this.colParamValue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colParamValue.DataPropertyName = "Value";
+            this.colParamValue.HeaderText = "Value";
+            this.colParamValue.Name = "colParamValue";
+            this.colParamValue.Width = 63;
+            // 
             // dgvResults
             // 
             this.dgvResults.AllowUserToAddRows = false;
@@ -165,7 +198,8 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tslQueryMetrics,
-            this.pbExecuting});
+            this.pbExecuting,
+            this.tslResolvedSQL});
             this.statusStrip1.Location = new System.Drawing.Point(0, 130);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
@@ -187,37 +221,16 @@
             this.pbExecuting.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.pbExecuting.Visible = false;
             // 
-            // colParamName
+            // tslResolvedSQL
             // 
-            this.colParamName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colParamName.DataPropertyName = "Name";
-            this.colParamName.HeaderText = "Param Name";
-            this.colParamName.MinimumWidth = 110;
-            this.colParamName.Name = "colParamName";
-            this.colParamName.Width = 110;
-            // 
-            // colParamType
-            // 
-            this.colParamType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colParamType.DataPropertyName = "DataType";
-            this.colParamType.HeaderText = "Data Type";
-            this.colParamType.Name = "colParamType";
-            this.colParamType.Width = 71;
-            // 
-            // colExpression
-            // 
-            this.colExpression.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colExpression.DataPropertyName = "Expression";
-            this.colExpression.HeaderText = "Expression";
-            this.colExpression.Name = "colExpression";
-            // 
-            // colParamValue
-            // 
-            this.colParamValue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colParamValue.DataPropertyName = "Value";
-            this.colParamValue.HeaderText = "Value";
-            this.colParamValue.Name = "colParamValue";
-            this.colParamValue.Width = 63;
+            this.tslResolvedSQL.IsLink = true;
+            this.tslResolvedSQL.Name = "tslResolvedSQL";
+            this.tslResolvedSQL.Size = new System.Drawing.Size(282, 17);
+            this.tslResolvedSQL.Spring = true;
+            this.tslResolvedSQL.Text = "Resolved SQL";
+            this.tslResolvedSQL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.tslResolvedSQL.Visible = false;
+            this.tslResolvedSQL.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
             // 
             // QueryEditor
             // 
@@ -260,5 +273,6 @@
         private System.Windows.Forms.DataGridViewComboBoxColumn colParamType;
         private System.Windows.Forms.DataGridViewTextBoxColumn colExpression;
         private System.Windows.Forms.DataGridViewTextBoxColumn colParamValue;
+        private System.Windows.Forms.ToolStripStatusLabel tslResolvedSQL;
     }
 }
