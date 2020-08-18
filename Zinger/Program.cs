@@ -6,15 +6,20 @@ namespace Zinger
 {
     internal static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
         private static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmContainer());
+
+            try
+            {
+                Application.Run(new frmContainer());
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Unhandled Exception");
+            }            
         }
     }
 }
