@@ -1,4 +1,6 @@
-﻿using JsonSettings;
+﻿using Excel2SqlServer.Library;
+using JsonSettings;
+using Microsoft.Data.SqlClient;
 using SqlSchema.Library;
 using SqlSchema.Library.Models;
 using SqlSchema.SqlServer;
@@ -269,9 +271,29 @@ namespace Zinger.Forms
             splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
         }
 
-        private void queryEditor1_Load(object sender, EventArgs e)
+        private async void btnImportExcel_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                OpenFileDialog dlg = new OpenFileDialog();
+                dlg.Filter = "Excel Files|*.xlsx|All Files|*.*";
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    var importDlg = new frmImportExcel() { ExcelFile = dlg.FileName };
+                    if (importDlg.ShowDialog() == DialogResult.OK)
+                    {
+                        using (var cn = queryEditor1.Provider.GetConnection())
+                        {
+                            var loader = new ExcelLoader();
+                            await loader.SaveAsync(importDlg.ExcelFile, cn as SqlConnection, importDlg.Schema, importDlg.TableName);
+                        }
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
         }
     }
 }

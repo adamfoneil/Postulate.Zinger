@@ -46,6 +46,7 @@
             this.tabNavigation = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.btnImportExcel = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -68,7 +69,8 @@
             this.cbConnection,
             this.btnRunQuery,
             this.btnDataToScript,
-            this.btnSchema});
+            this.btnSchema,
+            this.btnImportExcel});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(725, 25);
@@ -152,14 +154,14 @@
             this.queryEditor1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.queryEditor1.Location = new System.Drawing.Point(3, 3);
             this.queryEditor1.Name = "queryEditor1";
+            this.queryEditor1.Parameters = null;
             this.queryEditor1.Provider = null;
             this.queryEditor1.QueryName = null;
             this.queryEditor1.Size = new System.Drawing.Size(711, 425);
             this.queryEditor1.Sql = "";
             this.queryEditor1.TabIndex = 0;
             this.queryEditor1.Executed += new System.EventHandler(this.queryEditor1_Executed);
-            this.queryEditor1.Modified += new System.EventHandler(this.queryEditor1_Modified);
-            this.queryEditor1.Load += new System.EventHandler(this.queryEditor1_Load);
+            this.queryEditor1.Modified += new System.EventHandler(this.queryEditor1_Modified);            
             // 
             // tabPage2
             // 
@@ -263,6 +265,16 @@
             this.tabPage4.Text = "Source Files";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // btnImportExcel
+            // 
+            this.btnImportExcel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnImportExcel.Image = ((System.Drawing.Image)(resources.GetObject("btnImportExcel.Image")));
+            this.btnImportExcel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnImportExcel.Name = "btnImportExcel";
+            this.btnImportExcel.Size = new System.Drawing.Size(86, 22);
+            this.btnImportExcel.Text = "Import Excel...";
+            this.btnImportExcel.Click += new System.EventHandler(this.btnImportExcel_Click);
+            // 
             // frmQuery
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -316,6 +328,7 @@
         private System.Windows.Forms.ToolStripButton btnSchema;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private Controls.SchemaBrowser schemaBrowser1;
+        private System.Windows.Forms.ToolStripButton btnImportExcel;
     }
 }
 
