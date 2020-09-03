@@ -111,7 +111,7 @@ namespace Zinger.Controls
                             tableNode.Columns.AddRange(table.Columns.Select(col =>
                             {
                                 var node = new ColumnNode(col, foreignKeys, table.IdentityColumn);
-                                if (col.InPrimaryKey) node.NodeFont = new Font(tvwObjects.Font, FontStyle.Bold);
+                                if (IsUniqueMultiColumn(table, col)) node.NodeFont = new Font(tvwObjects.Font, FontStyle.Bold);
                                 return node;
                             }));
 
@@ -166,6 +166,16 @@ namespace Zinger.Controls
                 pbLoading.Visible = false;
                 OperationEnded?.Invoke(this, new EventArgs());
             }
+        }
+
+        private bool IsUniqueMultiColumn(Table table, Column col)
+        {
+            return table
+                .Indexes
+                .Where(ndx => ndx.Type != IndexType.PrimaryKey && ndx.Type != IndexType.NonUnique && ndx.Columns.Count() > 1)
+                .SelectMany(ndx => ndx.Columns)
+                .Select(ndxCol => ndxCol.Name)
+                .Contains(col.Name);
         }
 
         private void selectColumnsToolStripMenuItem_Click(object sender, System.EventArgs e)
