@@ -4,6 +4,7 @@ using SqlSchema.SqlServer;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -107,7 +108,12 @@ namespace Zinger.Controls
                             folderNode.Nodes.Add(tableNode);
 
                             var foreignKeys = table.GetParentForeignKeys(_objects);
-                            tableNode.Columns.AddRange(table.Columns.Select(col => new ColumnNode(col, foreignKeys, table.IdentityColumn)));
+                            tableNode.Columns.AddRange(table.Columns.Select(col =>
+                            {
+                                var node = new ColumnNode(col, foreignKeys, table.IdentityColumn);
+                                if (col.InPrimaryKey) node.NodeFont = new Font(tvwObjects.Font, FontStyle.Bold);
+                                return node;
+                            }));
 
                             var childFKs = table.GetChildForeignKeys(_objects);
                             if (childFKs.Any())
