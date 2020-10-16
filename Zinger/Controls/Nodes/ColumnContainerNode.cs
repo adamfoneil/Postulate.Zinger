@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace Zinger.Controls.Nodes
 {
-    public class ColumnContainerNode : TreeNode
+    public abstract class ColumnContainerNode : TreeNode
     {
         public ColumnContainerNode(string text, bool addPlaceholder = true) : base(text)
         {
@@ -24,5 +24,9 @@ namespace Zinger.Controls.Nodes
             // add columns in reverse order so we can insert them ahead of any child nodes, maintaining original order
             for (int i = Columns.Count - 1; i >= 0; i--) Nodes.Insert(0, Columns[i]);
         }
+
+        public abstract bool SqlQueryEnabled { get; }
+        public abstract string SqlQuery { get; }        
+        public abstract string ModelClassName { get; }
     }
 }

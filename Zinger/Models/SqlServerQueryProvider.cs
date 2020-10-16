@@ -16,7 +16,7 @@ namespace Zinger.Models
             return new SqlDataAdapter(command as SqlCommand);
         }
 
-        protected override IDbCommand GetCommand(string query, IDbConnection connection)
+        public override IDbCommand GetCommand(string query, IDbConnection connection)
         {
             return new SqlCommand(query, connection as SqlConnection);
         }

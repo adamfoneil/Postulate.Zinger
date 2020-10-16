@@ -16,7 +16,7 @@ namespace Zinger.Models
             return new MySqlDataAdapter(command as MySqlCommand);
         }
 
-        protected override IDbCommand GetCommand(string query, IDbConnection connection)
+        public override IDbCommand GetCommand(string query, IDbConnection connection)
         {
             return new MySqlCommand(query, connection as MySqlConnection);
         }

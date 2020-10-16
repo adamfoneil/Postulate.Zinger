@@ -61,6 +61,8 @@ namespace Zinger.Models
 
         public static void AddToQuery(IEnumerable<Parameter> parameters, IDbCommand cmd)
         {
+            if (parameters == null) return;
+
             foreach (var p in parameters)
             {
                 var param = cmd.CreateParameter();

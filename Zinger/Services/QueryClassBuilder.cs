@@ -18,9 +18,10 @@ namespace Zinger.Services
             _getCommand = getCommand;
         }
 
-        public static string ResultClassFirstLine(string queryName)
+        public static string ResultClassFirstLine(string queryName, bool isQueryClass = true)
         {
-            return $"public class {queryName}Result";
+            string append = (isQueryClass) ? "Result" : string.Empty;
+            return $"public class {queryName}{append}";
         }
 
         public static string QueryClassFirstLine(string queryName, bool testable)
@@ -57,11 +58,11 @@ namespace Zinger.Services
 
         }
 
-        public string GetResultClass(DataTable schemaTable, string queryName, bool beautifyColumnNames)
+        public string GetResultClass(DataTable schemaTable, string queryName, bool beautifyColumnNames, bool isResultClass = true)
         {
             StringBuilder output = new StringBuilder();
 
-            output.AppendLine(ResultClassFirstLine(queryName) + "\r\n{");
+            output.AppendLine(ResultClassFirstLine(queryName, isResultClass) + "\r\n{");
 
             var columnInfo = CSharpPropertiesFromSchemaTable(schemaTable);
 

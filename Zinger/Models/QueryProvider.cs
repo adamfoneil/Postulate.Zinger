@@ -22,7 +22,7 @@ namespace Zinger.Models
 
         public abstract IDbConnection GetConnection();
 
-        protected abstract IDbCommand GetCommand(string query, IDbConnection connection);
+        public abstract IDbCommand GetCommand(string query, IDbConnection connection);
 
         protected abstract IDbDataAdapter GetAdapter(IDbCommand command);
 
@@ -33,6 +33,22 @@ namespace Zinger.Models
         public string ResolvedQuery { get; private set; }
 
         public bool BeautifyColumnNames { get; set; }
+
+        public DataTable GetSchemaTable(string query, IEnumerable<Parameter> parameters = null)
+        {
+            using (var cn = GetConnection())
+            {
+                cn.Open();
+                using (var cmd = GetCommand(query, cn))
+                {
+                    Parameter.AddToQuery(parameters?.Where(p => !p.IsArray()), cmd);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        return reader.GetSchemaTable();
+                    }
+                }
+            }
+        }
 
         public ExecuteResult Execute(string query, string queryName, IEnumerable<Parameter> parameters)
         {

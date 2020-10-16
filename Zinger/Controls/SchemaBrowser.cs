@@ -25,8 +25,10 @@ namespace Zinger.Controls
 
         public event EventHandler<string> OperationStarted;
         public event EventHandler OperationEnded;
+        public event EventHandler<ColumnContainerNode> ModelClassRequested;
 
         private TableNode _selectedTable;
+        private ColumnContainerNode _selectedObject;
 
         public SchemaBrowser()
         {
@@ -187,6 +189,8 @@ namespace Zinger.Controls
         private void tvwObjects_MouseDown(object sender, MouseEventArgs e)
         {
             var hitTest = tvwObjects.HitTest(e.X, e.Y);
+            _selectedObject = hitTest.Node as ColumnContainerNode;
+
             findTable(hitTest.Node);
 
             void findTable(TreeNode node)
@@ -265,12 +269,19 @@ namespace Zinger.Controls
             {
                 rowCountToolStripMenuItem.Visible = false;
             }
+
+            createModelClassToolStripMenuItem.Enabled = _selectedObject?.SqlQueryEnabled ?? false;
         }
 
         private async void llRefresh_Click(object sender, EventArgs e)
         {
             _searchBox.Clear();
             await RefreshAsync();
+        }
+
+        private void createModelClassToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ModelClassRequested?.Invoke(this, _selectedObject);
         }
     }
 }

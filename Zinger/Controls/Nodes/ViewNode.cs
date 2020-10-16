@@ -9,6 +9,13 @@ namespace Zinger.Controls.Nodes
             ImageKey = "view";
             SelectedImageKey = "view";            
             Columns = view.Columns.Select(col => new ColumnNode(col)).ToList();
+            View = view;
         }
+
+        public SqlSchema.Library.Models.View View { get; }
+
+        public override string SqlQuery => $"SELECT * FROM [{View.Schema}].[{View.Name}]";
+        public override bool SqlQueryEnabled => true;
+        public override string ModelClassName => View.Name;
     }
 }

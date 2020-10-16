@@ -16,7 +16,7 @@ namespace Zinger.Models
             return new OleDbDataAdapter(command as OleDbCommand);
         }
 
-        protected override IDbCommand GetCommand(string query, IDbConnection connection)
+        public override IDbCommand GetCommand(string query, IDbConnection connection)
         {
             return new OleDbCommand(query, connection as OleDbConnection);
         }
