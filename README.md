@@ -1,5 +1,3 @@
-# Postulate Query Helper ("Zinger")
-
 This is a C# WinForms app that helps you generate C# POCO classes to encapsulate results of SQL queries as well as to test dynamic query parameters and preview results. For example, given a query like this:
 
 ```sql
