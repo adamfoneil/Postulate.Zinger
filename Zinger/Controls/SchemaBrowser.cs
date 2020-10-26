@@ -55,16 +55,23 @@ namespace Zinger.Controls
         }
 
         public async Task FillAsync(ProviderType providerType, Func<IDbConnection> getConnection)
-        {            
-            if (!Analyzers.ContainsKey(providerType))
+        {
+            try
             {
-                MessageBox.Show($"Provider type {providerType} not supported by this schema browser.");
-                return;
-            }
+                if (!Analyzers.ContainsKey(providerType))
+                {
+                    MessageBox.Show($"Provider type {providerType} not supported by this schema browser.");
+                    return;
+                }
 
-            _providerType = providerType;
-            _getConnection = getConnection;
-            await RefreshAsync();
+                _providerType = providerType;
+                _getConnection = getConnection;
+                await RefreshAsync();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
         }
 
         private async Task RefreshAsync()
