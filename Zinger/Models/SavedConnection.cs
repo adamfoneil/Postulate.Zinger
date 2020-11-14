@@ -14,7 +14,8 @@ namespace Zinger.Models
     {
         MySql,
         SqlServer,
-        OleDb
+        OleDb,
+        SqlCe
     }
 
     public class SavedConnections : SettingsBase

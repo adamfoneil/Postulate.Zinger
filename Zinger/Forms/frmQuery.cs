@@ -46,6 +46,12 @@ namespace Zinger.Forms
         {
             InitializeComponent();
             schemaBrowser1.ModelClassRequested += SchemaBrowser1_ModelClassRequested;
+            schemaBrowser1.SchemaInspected += OnSchemaInspected;
+        }
+
+        private void OnSchemaInspected(object sender, EventArgs e)
+        {
+            btnSchema.Enabled = schemaBrowser1.IsSchemaSupported;
         }
 
         private void SchemaBrowser1_ModelClassRequested(object sender, ColumnContainerNode node)
@@ -127,7 +133,8 @@ namespace Zinger.Forms
                 {
                     { ProviderType.SqlServer, new SqlServerQueryProvider(sc.ConnectionString) },
                     { ProviderType.MySql, new MySqlQueryProvider(sc.ConnectionString) },
-                    { ProviderType.OleDb, new OleDbQueryProvider(sc.ConnectionString) }
+                    { ProviderType.OleDb, new OleDbQueryProvider(sc.ConnectionString) },
+                    { ProviderType.SqlCe, new SqlCeQueryProvider(sc.ConnectionString) }
                 };
 
                 var provider = providers[sc.ProviderType];
@@ -140,7 +147,7 @@ namespace Zinger.Forms
                 parent.Options.ActiveConnection = sc.Name;
 
                 await schemaBrowser1.FillAsync(sc.ProviderType, provider.GetConnection);
-                if (splitContainer1.Panel2Collapsed) splitContainer1.Panel2Collapsed = false;
+                if (splitContainer1.Panel2Collapsed) splitContainer1.Panel2Collapsed = !schemaBrowser1.IsSchemaSupported;
             }
             else
             {

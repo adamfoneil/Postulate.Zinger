@@ -26,6 +26,7 @@ namespace Zinger.Controls
         public event EventHandler<string> OperationStarted;
         public event EventHandler OperationEnded;
         public event EventHandler<ColumnContainerNode> ModelClassRequested;
+        public event EventHandler SchemaInspected;
 
         private TableNode _selectedTable;
         private ColumnContainerNode _selectedObject;
@@ -54,19 +55,21 @@ namespace Zinger.Controls
             tbSearch.Focus();
         }
 
+        public bool IsSchemaSupported { get; private set; }
+
         public async Task FillAsync(ProviderType providerType, Func<IDbConnection> getConnection)
         {
             try
-            {
-                if (!Analyzers.ContainsKey(providerType))
+            {                
+                if (Analyzers.ContainsKey(providerType))
                 {
-                    MessageBox.Show($"Provider type {providerType} not supported by this schema browser.");
-                    return;
+                    _providerType = providerType;
+                    _getConnection = getConnection;
+                    await RefreshAsync();                    
                 }
 
-                _providerType = providerType;
-                _getConnection = getConnection;
-                await RefreshAsync();
+                IsSchemaSupported = Analyzers.ContainsKey(providerType);
+                SchemaInspected?.Invoke(this, new EventArgs());
             }
             catch (Exception exc)
             {
