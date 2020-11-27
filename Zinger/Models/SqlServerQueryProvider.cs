@@ -1,5 +1,5 @@
-﻿using System.Data;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace Zinger.Models
 {

@@ -19,7 +19,7 @@ namespace Zinger
             catch (Exception exc)
             {
                 MessageBox.Show(exc.Message, "Unhandled Exception");
-            }            
+            }
         }
     }
 }

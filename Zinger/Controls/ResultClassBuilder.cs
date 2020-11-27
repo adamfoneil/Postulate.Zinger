@@ -69,6 +69,6 @@ namespace Zinger.Controls
             string[] lines = content.Split('\n');
             lines[0] = newFirstLine;
             return string.Join("\n", lines);
-        }        
+        }
     }
 }

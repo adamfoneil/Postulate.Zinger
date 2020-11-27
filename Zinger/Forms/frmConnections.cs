@@ -26,7 +26,7 @@ namespace Zinger.Forms
         private void frmConnections_Load(object sender, EventArgs e)
         {
             try
-            {                
+            {
                 dataGridView1.DataSource = new BindingList<SavedConnection>(SavedConnections.Connections);
             }
             catch (Exception exc)

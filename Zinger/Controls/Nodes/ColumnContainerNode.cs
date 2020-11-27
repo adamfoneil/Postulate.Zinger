@@ -12,7 +12,7 @@ namespace Zinger.Controls.Nodes
         }
 
         public List<ColumnNode> Columns { get; internal set; }
-       
+
         public bool HasPlaceholder => this.Nodes[0] is PlaceholderNode;
 
         public void LoadColumns()
@@ -26,7 +26,7 @@ namespace Zinger.Controls.Nodes
         }
 
         public abstract bool SqlQueryEnabled { get; }
-        public abstract string SqlQuery { get; }        
+        public abstract string SqlQuery { get; }
         public abstract string ModelClassName { get; }
     }
 }

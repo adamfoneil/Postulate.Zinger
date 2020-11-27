@@ -13,5 +13,5 @@ namespace Zinger.Services
 
             return result;
         }
-    }    
+    }
 }

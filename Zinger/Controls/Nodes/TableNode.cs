@@ -11,14 +11,14 @@ namespace Zinger.Controls.Nodes
         public TableNode(ForeignKey foreignKey) : base($"{foreignKey.ReferencingTable.Schema}.{foreignKey.ReferencingTable.Name}")
         {
             ImageKey = "table";
-            SelectedImageKey = "table";            
+            SelectedImageKey = "table";
             Columns = foreignKey.Columns.Select(col => new ColumnNode(col)).ToList();
             RowCount = foreignKey.ReferencingTable.RowCount;
             _queryEnabled = false;
         }
 
         public TableNode(Table parentTable, string parentColumn) : base($"{parentTable.Schema}.{parentTable.Name}.{parentColumn}", false)
-        {            
+        {
             ImageKey = "unique";
             SelectedImageKey = "unique";
             _queryEnabled = false;
@@ -28,12 +28,12 @@ namespace Zinger.Controls.Nodes
         {
             Table = table;
             ImageKey = "table";
-            SelectedImageKey = "table";            
+            SelectedImageKey = "table";
             Columns = new List<ColumnNode>();
             RowCount = table.RowCount;
             _queryEnabled = true;
         }
-               
+
         public long RowCount { get; }
 
         public Table Table { get; }

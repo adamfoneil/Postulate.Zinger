@@ -24,7 +24,7 @@ namespace Zinger.Controls.Nodes
         {
             ImageKey =
                 (column.InPrimaryKey) ? "primaryKey" :
-                (IsForeignKey(column, foreignKeys, out _, out _)) ? "shortcut" :                
+                (IsForeignKey(column, foreignKeys, out _, out _)) ? "shortcut" :
                 (column.Name.Equals(identityColumn)) ? "unique" :
                 "column";
 
@@ -32,7 +32,7 @@ namespace Zinger.Controls.Nodes
 
             if (IsForeignKey(column, foreignKeys, out Table referencedTable, out string referencedColumn))
             {
-                Nodes.Add(new TableNode(referencedTable, referencedColumn));                
+                Nodes.Add(new TableNode(referencedTable, referencedColumn));
             }
         }
 
@@ -51,7 +51,7 @@ namespace Zinger.Controls.Nodes
         {
             string result = column.Name;
 
-            result += $": {column.DisplayDataType()}, {nullable()}";            
+            result += $": {column.DisplayDataType()}, {nullable()}";
 
             return result;
 

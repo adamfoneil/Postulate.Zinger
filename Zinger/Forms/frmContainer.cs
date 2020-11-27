@@ -3,9 +3,7 @@ using JsonSettings.Library;
 using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using WinForms.Library;
 using WinForms.Library.Models;
 using Zinger.Models;
 
@@ -29,7 +27,7 @@ namespace Zinger.Forms
             try
             {
                 _options = SettingsBase.Load<Options>();
-                _options.MainFormPosition?.Apply(this);                                
+                _options.MainFormPosition?.Apply(this);
 
                 NewQueryWindow();
             }
@@ -52,10 +50,10 @@ namespace Zinger.Forms
             try
             {
                 frmConnections dlg = new frmConnections();
-                dlg.SavedConnections = GetSavedConnections();                
+                dlg.SavedConnections = GetSavedConnections();
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
-                    dlg.SavedConnections.Save();                    
+                    dlg.SavedConnections.Save();
                     return true;
                 }
             }

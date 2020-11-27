@@ -15,7 +15,7 @@ namespace Zinger.Controls.Nodes
 
             var folder = new FolderNode("Parameters", function.Arguments.Count());
             Nodes.Add(folder);
-            folder.Nodes.AddRange(function.Arguments.Select(p => new ParameterNode(p)).ToArray());            
+            folder.Nodes.AddRange(function.Arguments.Select(p => new ParameterNode(p)).ToArray());
         }
 
         public TableFunction TableFunction { get; }

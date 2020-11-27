@@ -15,7 +15,7 @@ namespace Zinger.Forms
         {
             InitializeComponent();
         }
-        
+
         public DataTable DataTable { get; set; }
         public IEnumerable<Table> DatabaseTables { get; set; }
 
@@ -24,7 +24,7 @@ namespace Zinger.Forms
             if (DatabaseTables?.Any() ?? false)
             {
                 cbTable.Items.AddRange(DatabaseTables.OrderBy(row => row.Name).ToArray());
-            }            
+            }
         }
 
         private async void btnCopy_Click(object sender, EventArgs e)
@@ -41,7 +41,7 @@ namespace Zinger.Forms
                     });
 
                     Clipboard.SetText(output.ToString());
-                }                
+                }
             }
             catch (Exception exc)
             {

@@ -57,7 +57,7 @@ namespace Zinger.Controls
                 tslQueryMetrics.Text = "Executing...";
                 var result = Provider.Execute(tbQuery.Text, QueryName, Parameters);
                 tslQueryMetrics.Text = $"{result.DataTable.Rows.Count} records, {Provider.Milleseconds:n0}ms";
-                dgvResults.DataSource = result.DataTable;                
+                dgvResults.DataSource = result.DataTable;
                 Executed?.Invoke(result, new EventArgs());
             }
             catch (Exception exc)
@@ -89,9 +89,9 @@ namespace Zinger.Controls
 
         private void QueryEditor_Load(object sender, EventArgs e)
         {
-            if (DesignMode) return;                        
+            if (DesignMode) return;
 
-            dgvParams.DataSource = new BindingList<Parameter>();            
+            dgvParams.DataSource = new BindingList<Parameter>();
         }
 
         private void dgvParams_DataError(object sender, DataGridViewDataErrorEventArgs e)
@@ -107,7 +107,7 @@ namespace Zinger.Controls
         }
 
         private BindingList<Parameter> ParametersFromEnumerable(IEnumerable<Parameter> parameters)
-        {            
+        {
             BindingList<Parameter> results = new BindingList<Parameter>();
             if (parameters == null) return results;
             foreach (var p in parameters) results.Add(p);

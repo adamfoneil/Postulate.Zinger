@@ -17,7 +17,7 @@ namespace Zinger.Services
             _timer.Tick += delegate (object sender, EventArgs e)
             {
                 _timer.Stop();
-                DelayedTextChanged?.Invoke(_textBox, e);                
+                DelayedTextChanged?.Invoke(_textBox, e);
             };
 
             _textBox.TextChanged += StartTimer;

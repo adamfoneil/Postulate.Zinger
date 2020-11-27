@@ -66,9 +66,9 @@ namespace Zinger.Models
                     using (var reader = cmd.ExecuteReader())
                     {
                         var schemaTable = reader.GetSchemaTable();
-                        result.ResultClass = _classBuilder.GetResultClass(schemaTable, queryName, BeautifyColumnNames);                        
+                        result.ResultClass = _classBuilder.GetResultClass(schemaTable, queryName, BeautifyColumnNames);
                     }
-                    
+
                     result.QueryClass = _classBuilder.GetQueryClass(cn, query, queryName, parameters, true);
 
                     var adapter = GetAdapter(cmd);
@@ -104,7 +104,7 @@ namespace Zinger.Models
             }
 
             return RegexHelper.RemovePlaceholders(result);
-        }       
+        }
 
         public class ExecuteResult
         {

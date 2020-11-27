@@ -24,7 +24,7 @@ namespace Zinger.Models
 
         protected override void Initialize()
         {
-            if (Connections == null) Connections = new List<SavedConnection>();            
+            if (Connections == null) Connections = new List<SavedConnection>();
         }
 
         public override string Filename => BuildPath(Environment.SpecialFolder.ApplicationData, "Zinger", "Connections.json");

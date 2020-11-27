@@ -111,7 +111,7 @@ namespace Zinger.Forms
         {
             frmContainer parent = MdiParent as frmContainer;
             var connections = parent.GetSavedConnections();
-            
+
             cbConnection.SelectedIndexChanged -= cbConnection_SelectedIndexChanged;
             cbConnection.Items.Clear();
 
@@ -119,7 +119,7 @@ namespace Zinger.Forms
             {
                 foreach (SavedConnection sc in connections.Connections) cbConnection.Items.Add(sc);
             }
-            
+
             cbConnection.SelectedIndexChanged += cbConnection_SelectedIndexChanged;
         }
 

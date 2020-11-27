@@ -7,7 +7,7 @@ namespace Zinger.Controls.Nodes
         public ViewNode(SqlSchema.Library.Models.View view) : base(view.Name)
         {
             ImageKey = "view";
-            SelectedImageKey = "view";            
+            SelectedImageKey = "view";
             Columns = view.Columns.Select(col => new ColumnNode(col)).ToList();
             View = view;
         }

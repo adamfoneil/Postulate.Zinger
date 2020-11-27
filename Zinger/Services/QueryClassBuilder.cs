@@ -164,7 +164,7 @@ namespace Zinger.Services
 
             using (var cmd = _getCommand.Invoke(dummyQuery, connection))
             {
-                Parameter.AddToQuery(includeParams, cmd);                
+                Parameter.AddToQuery(includeParams, cmd);
                 using (var reader = cmd.ExecuteReader())
                 {
                     var schemaTable = reader.GetSchemaTable();

@@ -37,7 +37,7 @@ namespace Zinger.Controls
 
             _searchBox = new TextBoxDelayHandler(tbSearch, 300);
             _searchBox.DelayedTextChanged += tbSearch_TextChanged;
-        }                
+        }
 
         private Dictionary<ProviderType, Analyzer> Analyzers
         {
@@ -60,12 +60,12 @@ namespace Zinger.Controls
         public async Task FillAsync(ProviderType providerType, Func<IDbConnection> getConnection)
         {
             try
-            {                
+            {
                 if (Analyzers.ContainsKey(providerType))
                 {
                     _providerType = providerType;
                     _getConnection = getConnection;
-                    await RefreshAsync();                    
+                    await RefreshAsync();
                 }
 
                 IsSchemaSupported = Analyzers.ContainsKey(providerType);
@@ -90,7 +90,7 @@ namespace Zinger.Controls
         private void LoadObjects(DbObjectSearch search = null)
         {
             try
-            {                
+            {
                 pbLoading.Visible = true;
                 OperationStarted?.Invoke(this, "Loading objects...");
 
@@ -141,7 +141,7 @@ namespace Zinger.Controls
                             }
                         }
                         folderNode.Expand();
-                    }                    
+                    }
 
                     var views = schemaGrp.OfType<SqlSchema.Library.Models.View>().OrderBy(obj => obj.Name);
                     if (views.Any())
@@ -174,7 +174,7 @@ namespace Zinger.Controls
             }
             finally
             {
-                tvwObjects.EndUpdate();                
+                tvwObjects.EndUpdate();
                 pbLoading.Visible = false;
                 OperationEnded?.Invoke(this, new EventArgs());
             }
@@ -223,7 +223,7 @@ namespace Zinger.Controls
                 MessageBox.Show(exc.Message);
             }
         }
-        
+
         private class DbObjectSearch
         {
             public string SchemaName { get; set; }
@@ -255,7 +255,7 @@ namespace Zinger.Controls
                     (parts.Length == 1) ? new DbObjectSearch() { TableName = parts[0] } :
                     (parts.Length == 2) ? new DbObjectSearch() { TableName = parts[0], ColumnName = parts[1] } :
                     (parts.Length > 2) ? new DbObjectSearch() { SchemaName = parts[0], TableName = parts[1], ColumnName = parts[2] } :
-                    null;                
+                    null;
             }
         }
 
@@ -269,7 +269,7 @@ namespace Zinger.Controls
         }
 
         private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-        {           
+        {
             if (_selectedTable != null)
             {
                 rowCountToolStripMenuItem.Visible = true;
