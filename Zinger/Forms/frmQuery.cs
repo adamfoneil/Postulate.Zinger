@@ -146,7 +146,7 @@ namespace Zinger.Forms
                 frmContainer parent = MdiParent as frmContainer;
                 parent.Options.ActiveConnection = sc.Name;
 
-                await schemaBrowser1.FillAsync(sc.ProviderType, provider.GetConnection);
+                await schemaBrowser1.FillAsync(sc.ProviderType, provider.GetConnection, sc.Name);
                 if (splitContainer1.Panel2Collapsed) splitContainer1.Panel2Collapsed = !schemaBrowser1.IsSchemaSupported;
             }
             else

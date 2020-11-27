@@ -41,5 +41,12 @@ namespace Zinger.Controls.Nodes
         public override bool SqlQueryEnabled => _queryEnabled;
         public override string SqlQuery => $"SELECT * FROM [{Table.Schema}].[{Table.Name}]";
         public override string ModelClassName => Table.Name;
+
+        private string _alias;
+        public string Alias 
+        { 
+            get => _alias; 
+            set { Text = $"{Table.Name} - {value}"; }
+        }
     }
 }

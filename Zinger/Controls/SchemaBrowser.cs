@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Zinger.Controls.Nodes;
+using Zinger.Forms;
 using Zinger.Models;
 using Zinger.Services;
 using Table = SqlSchema.Library.Models.Table;
@@ -19,6 +20,7 @@ namespace Zinger.Controls
     {
         private IEnumerable<DbObject> _objects;
         private readonly TextBoxDelayHandler _searchBox;
+        private readonly AliasManager _aliasManager;
 
         private ProviderType _providerType;
         private Func<IDbConnection> _getConnection;
@@ -37,6 +39,8 @@ namespace Zinger.Controls
 
             _searchBox = new TextBoxDelayHandler(tbSearch, 300);
             _searchBox.DelayedTextChanged += tbSearch_TextChanged;
+
+            _aliasManager = new AliasManager(new Options().Folder);
         }
 
         private Dictionary<ProviderType, Analyzer> Analyzers
@@ -57,7 +61,7 @@ namespace Zinger.Controls
 
         public bool IsSchemaSupported { get; private set; }
 
-        public async Task FillAsync(ProviderType providerType, Func<IDbConnection> getConnection)
+        public async Task FillAsync(ProviderType providerType, Func<IDbConnection> getConnection, string connectionName)
         {
             try
             {
@@ -65,11 +69,12 @@ namespace Zinger.Controls
                 {
                     _providerType = providerType;
                     _getConnection = getConnection;
+                    _aliasManager.ConnectionName = connectionName;
                     await RefreshAsync();
                 }
 
                 IsSchemaSupported = Analyzers.ContainsKey(providerType);
-                SchemaInspected?.Invoke(this, new EventArgs());
+                SchemaInspected?.Invoke(this, new EventArgs());                
             }
             catch (Exception exc)
             {
@@ -117,6 +122,7 @@ namespace Zinger.Controls
                         foreach (var table in tables)
                         {
                             var tableNode = new TableNode(table);
+                            if (_aliasManager.ContainsTable(table.ToString(), out string alias)) tableNode.Alias = alias;
                             folderNode.Nodes.Add(tableNode);
 
                             var foreignKeys = table.GetParentForeignKeys(_objects);
@@ -292,6 +298,21 @@ namespace Zinger.Controls
         private void createModelClassToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ModelClassRequested?.Invoke(this, _selectedObject);
+        }
+
+        private void setAliasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_selectedTable != null)
+            {
+                var dlg = new frmSetAlias();
+                dlg.Table = _selectedTable.Table;
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    _aliasManager.Aliases[dlg.Alias] = _selectedTable.Table.ToString();
+                    _aliasManager.Save();
+                    _selectedTable.Alias = dlg.Alias;
+                }
+            }            
         }
     }
 }

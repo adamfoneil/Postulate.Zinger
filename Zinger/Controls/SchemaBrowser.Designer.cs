@@ -40,6 +40,8 @@
             this.statusStrip2 = new System.Windows.Forms.StatusStrip();
             this.pbLoading = new System.Windows.Forms.ToolStripProgressBar();
             this.llRefresh = new System.Windows.Forms.ToolStripStatusLabel();
+            this.setAliasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeAliasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.statusStrip2.SuspendLayout();
             this.SuspendLayout();
@@ -79,9 +81,11 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectColumnsToolStripMenuItem,
             this.rowCountToolStripMenuItem,
-            this.createModelClassToolStripMenuItem});
+            this.createModelClassToolStripMenuItem,
+            this.setAliasToolStripMenuItem,
+            this.removeAliasToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 136);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // selectColumnsToolStripMenuItem
@@ -143,6 +147,19 @@
             this.llRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.llRefresh.Click += new System.EventHandler(this.llRefresh_Click);
             // 
+            // setAliasToolStripMenuItem
+            // 
+            this.setAliasToolStripMenuItem.Name = "setAliasToolStripMenuItem";
+            this.setAliasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.setAliasToolStripMenuItem.Text = "Set Alias...";
+            this.setAliasToolStripMenuItem.Click += new System.EventHandler(this.setAliasToolStripMenuItem_Click);
+            // 
+            // removeAliasToolStripMenuItem
+            // 
+            this.removeAliasToolStripMenuItem.Name = "removeAliasToolStripMenuItem";
+            this.removeAliasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.removeAliasToolStripMenuItem.Text = "Remove Alias {0}...";
+            // 
             // SchemaBrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -173,5 +190,7 @@
         private System.Windows.Forms.ToolStripProgressBar pbLoading;
         private System.Windows.Forms.ToolStripStatusLabel llRefresh;
         private System.Windows.Forms.ToolStripMenuItem createModelClassToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setAliasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeAliasToolStripMenuItem;
     }
 }
