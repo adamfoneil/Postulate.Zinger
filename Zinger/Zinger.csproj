@@ -138,7 +138,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AliasManager.cs" />
     <Compile Include="Services\AppInstallHelper.cs" />
-    <Compile Include="Services\DataScripter.cs" />
     <Compile Include="Services\QueryClassBuilder.cs" />
     <Compile Include="Services\TextBoxDelayHandler.cs" />
     <Compile Include="Static\JsonHelper.cs" />
