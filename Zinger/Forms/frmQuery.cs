@@ -315,5 +315,23 @@ namespace Zinger.Forms
                 MessageBox.Show(exc.Message);
             }
         }
+
+        private void queryEditor1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.J && e.Control)
+            {
+                if (schemaBrowser1.IsSchemaSupported)
+                {
+                    if (schemaBrowser1.ResolveJoin(queryEditor1.SelectedText, out string fromClause))
+                    {
+
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Schema browser not supported.");
+                }
+            }
+        }
     }
 }

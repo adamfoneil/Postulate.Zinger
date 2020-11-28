@@ -39,6 +39,8 @@ namespace Zinger.Controls
 
         public string Sql { get { return tbQuery.Text; } set { tbQuery.Text = value; } }
 
+        public string SelectedText { get => tbQuery.SelectedText; }
+
         public List<Parameter> Parameters
         {
             get { return (dgvParams.DataSource as BindingList<Parameter>)?.ToList(); }

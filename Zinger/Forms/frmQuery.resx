@@ -157,13 +157,13 @@
   <data name="btnSchema.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFHSURBVDhPzZK7SgNREIaD2GkjdoLaKvoIwlYLy96bFa2N
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFHSURBVDhPzZK7SgNREIaD2GkjdoLaKvoIwlbLwt6bFa2N
         QdQiLyDb+AKWotbGyzvoQ5iYxDL28V4Z4zcyy0BMIGDjDx9nMjP/7M7mlP6PsiybjqKoEobhJWcDnj3P
         63F+cb5w3sMVVKRXbSYKLejDLUPW0jSdzfN8QpBYctRutKetNpMW+r7vv9J8TnwA+8R7EmvuTXoEtZmK
         wriozUSyPdg0iiAImmozxXE8x2uWaajRUOfDdeFT6bLana6xlSTJvNpMFN4xnjJog3iFeMZxnElBYlgl
         v8mQMwZ+qM1EcejrjkJtJibvUngcbBxCh94dtZlIHsMCuy7TtA5VkL9SqLJaRn2J+iK/T9RmIvnzBHZt
-        csqNO4JDReJrKC7b7xWY/FAUx6ClNpPcb56+DRc0NHjdJ752T5CYfJ18jbjsuu6U2v6qUukbKD7+e1Tt
-        mx8AAAAASUVORK5CYII=
+        csqNO4JDReJrKC7b7xWY/FAUx6ClNpPcb56+DRc0NHjdJ752T5CYfJ18jbjsuu6U2v6qUukb8fn+YHiC
+        7ekAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="btnImportExcel.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

@@ -295,6 +295,11 @@ namespace Zinger.Controls
             await RefreshAsync();
         }
 
+        public bool ResolveJoin(string selectedText, out string fromClause)
+        {
+            throw new NotImplementedException();
+        }
+
         private void createModelClassToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ModelClassRequested?.Invoke(this, _selectedObject);
