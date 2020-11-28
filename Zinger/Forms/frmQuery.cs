@@ -48,6 +48,23 @@ namespace Zinger.Forms
             InitializeComponent();
             schemaBrowser1.ModelClassRequested += SchemaBrowser1_ModelClassRequested;
             schemaBrowser1.SchemaInspected += OnSchemaInspected;
+            queryEditor1.JoinResolutionRequested += QueryEditor1_JoinResolutionRequested;
+        }
+
+        private void QueryEditor1_JoinResolutionRequested(object sender, string e)
+        {
+            if (schemaBrowser1.IsSchemaSupported)
+            {
+                var result = schemaBrowser1.ResolveJoin(e);
+                if (result.IsSuccessful)
+                {
+                    queryEditor1.ReplaceSelection(result.FromClause);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Schema browser not supported.");
+            }
         }
 
         private void OnSchemaInspected(object sender, EventArgs e)
@@ -313,24 +330,6 @@ namespace Zinger.Forms
             catch (Exception exc)
             {
                 MessageBox.Show(exc.Message);
-            }
-        }
-
-        private void queryEditor1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.J && e.Control)
-            {
-                if (schemaBrowser1.IsSchemaSupported)
-                {
-                    if (schemaBrowser1.ResolveJoin(queryEditor1.SelectedText, out string fromClause))
-                    {
-
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Schema browser not supported.");
-                }
             }
         }
     }

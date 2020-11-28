@@ -170,8 +170,7 @@
             this.queryEditor1.Sql = "";
             this.queryEditor1.TabIndex = 0;
             this.queryEditor1.Executed += new System.EventHandler(this.queryEditor1_Executed);
-            this.queryEditor1.Modified += new System.EventHandler(this.queryEditor1_Modified);
-            this.queryEditor1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.queryEditor1_KeyDown);
+            this.queryEditor1.Modified += new System.EventHandler(this.queryEditor1_Modified);            
             // 
             // tabPage2
             // 

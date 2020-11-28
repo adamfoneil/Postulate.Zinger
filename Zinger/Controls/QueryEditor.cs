@@ -15,7 +15,7 @@ namespace Zinger.Controls
     public partial class QueryEditor : UserControl
     {
         public event EventHandler Executed;
-
+        public event EventHandler<string> JoinResolutionRequested;
         public event EventHandler Modified;
 
         public QueryEditor()
@@ -74,6 +74,11 @@ namespace Zinger.Controls
                 pbExecuting.Visible = false;
                 tslResolvedSQL.Visible = true;
             }
+        }
+
+        public void ReplaceSelection(string text)
+        {
+            tbQuery.SelectedText = text;
         }
 
         private string GetFullError(Exception exc)
@@ -166,6 +171,14 @@ namespace Zinger.Controls
             var frm = new frmResolvedSQL();
             frm.SQL = Provider.ResolvedQuery;
             frm.ShowDialog();
+        }
+
+        private void tbQuery_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.J && e.Control && tbQuery.SelectedText.Length > 0)
+            {
+                JoinResolutionRequested?.Invoke(this, tbQuery.SelectedText);
+            }
         }
     }
 }
