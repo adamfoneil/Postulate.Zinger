@@ -59,6 +59,11 @@ namespace Zinger.Forms
                 if (result.IsSuccessful)
                 {
                     queryEditor1.ReplaceSelection(result.FromClause);
+
+                    if (result.UnrecognziedAliases.Any())
+                    {
+                        MessageBox.Show($"There are one or more unrecognized aliases in your selection: {string.Join(", ", result.UnrecognziedAliases)}");
+                    }
                 }
             }
             else

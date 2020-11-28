@@ -309,19 +309,37 @@ namespace Zinger.Controls
                               select new
                               {
                                   Alias = a,
-                                  Table = t
+                                  Table = t as Table
                               };
 
-            // for easy access to aliases when building join syntax
+            // aliases that don't correspond to known tables
+            result.UnrecognziedAliases = aliases.Except(_aliasManager.Aliases.Select(kp => kp.Key));
+
+            // easy access to aliases when building join syntax
             var foundTablesByTable = foundTables.ToDictionary(item => item.Table);
+            
+            // easy access to tables by alias
+            var foundTablesByAlias = foundTables.ToDictionary(item => item.Alias);
 
             // foreign keys enclosed by the found tables
             result.ForeignKeys = _objects.OfType<ForeignKey>().Where(fk => IsEnclosed(fk));
 
-            result.FromClause = string.Join("\r\n", result.ForeignKeys.Select(fk => JoinSyntax(fk))); 
+            var fkNames = string.Join("\r\n", result.ForeignKeys.Select(fk => fk.Name));
 
-            // aliases that don't correspond to known tables
-            result.UnrecognziedAliases = aliases.Except(_aliasManager.Aliases.Select(kp => kp.Key));            
+            if (aliases.Length > 1)
+            {
+                List<string> joins = new List<string>();
+                
+
+
+
+                result.FromClause = string.Join("\r\n", joins);
+            }
+            else
+            {
+                // if just one table, then return it alone
+                result.FromClause = TableSyntax(foundTables.First().Table);
+            }                        
 
             return result;
             
@@ -334,13 +352,14 @@ namespace Zinger.Controls
                 var referencedAlias = foundTablesByTable[fk.ReferencedTable].Alias;
                 var referencingAlias = foundTablesByTable[fk.ReferencingTable].Alias;
 
-                string syntax = $"[{fk.ReferencedTable.Schema}].[{fk.ReferencedTable.Name}] [{referencedAlias}] INNER JOIN [{fk.ReferencingTable.Schema}].[{fk.ReferencingTable.Name}] [{referencingAlias}]";
+                string syntax = $"{TableSyntax(fk.ReferencedTable)} [{referencedAlias}] INNER JOIN {TableSyntax(fk.ReferencingTable)} [{referencingAlias}]";
 
                 syntax += $" ON {string.Join(" AND ", fk.Columns.Select(col => $"[{referencedAlias}].[{col.ReferencedName}]=[{referencingAlias}].[{col.ReferencingName}]"))}";
 
                 return syntax;
             }
-                
+
+            string TableSyntax(Table table) => $"[{table.Schema}].[{table.Name}]";
         }        
 
         private void createModelClassToolStripMenuItem_Click(object sender, EventArgs e)
