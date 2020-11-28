@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using WinForms.Library;
 using WinForms.Library.Extensions;
 using Zinger.Models;
+using Zinger.Services;
 
 namespace Zinger.Forms
 {

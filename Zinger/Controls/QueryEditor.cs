@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using WinForms.Library.Extensions;
 using Zinger.Forms;
 using Zinger.Models;
+using Zinger.Services;
 
 namespace Zinger.Controls
 {

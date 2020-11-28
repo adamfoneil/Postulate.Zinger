@@ -7,17 +7,10 @@ using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Zinger.Services;
 
 namespace Zinger.Models
 {
-    public enum ProviderType
-    {
-        MySql,
-        SqlServer,
-        OleDb,
-        SqlCe
-    }
-
     public class SavedConnections : SettingsBase
     {
         public List<SavedConnection> Connections { get; set; }

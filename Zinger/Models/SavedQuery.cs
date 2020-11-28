@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Zinger.Services;
 
 namespace Zinger.Models
 {

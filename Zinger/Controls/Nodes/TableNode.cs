@@ -46,7 +46,11 @@ namespace Zinger.Controls.Nodes
         public string Alias 
         { 
             get => _alias; 
-            set { Text = $"{Table.Name} - {value}"; }
+            set 
+            {
+                _alias = value;
+                Text = $"{Table.Name} - {_alias}"; 
+            }
         }
     }
 }

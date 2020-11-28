@@ -1,7 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data;
 
-namespace Zinger.Models
+namespace Zinger.Services.Providers
 {
     public class MySqlQueryProvider : QueryProvider
     {

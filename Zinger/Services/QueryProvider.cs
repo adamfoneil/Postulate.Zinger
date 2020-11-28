@@ -5,10 +5,17 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using Zinger.Services;
 
-namespace Zinger.Models
+namespace Zinger.Services
 {
+    public enum ProviderType
+    {
+        MySql,
+        SqlServer,
+        OleDb,
+        SqlCe
+    }
+
     public abstract class QueryProvider
     {
         protected readonly string _connectionString;

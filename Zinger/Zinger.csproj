@@ -125,14 +125,14 @@
     <Compile Include="Forms\frmSetAlias.Designer.cs">
       <DependentUpon>frmSetAlias.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\MySqlQueryProvider.cs" />
-    <Compile Include="Models\OleDbQueryProvider.cs" />
-    <Compile Include="Models\Parameter.cs" />
-    <Compile Include="Models\QueryProvider.cs" />
+    <Compile Include="Services\Providers\MySqlQueryProvider.cs" />
+    <Compile Include="Services\Providers\OleDbQueryProvider.cs" />
+    <Compile Include="Services\Parameter.cs" />
+    <Compile Include="Services\QueryProvider.cs" />
     <Compile Include="Models\SavedConnection.cs" />
     <Compile Include="Models\SavedQuery.cs" />
-    <Compile Include="Models\SqlCeQueryProvider.cs" />
-    <Compile Include="Models\SqlServerQueryProvider.cs" />
+    <Compile Include="Services\Providers\SqlCeQueryProvider.cs" />
+    <Compile Include="Services\Providers\SqlServerQueryProvider.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

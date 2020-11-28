@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace Zinger.Models
+namespace Zinger.Services
 {
     public class Parameter
     {

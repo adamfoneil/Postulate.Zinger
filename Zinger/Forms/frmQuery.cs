@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using Zinger.Controls.Nodes;
 using Zinger.Models;
 using Zinger.Services;
+using Zinger.Services.Providers;
 
 namespace Zinger.Forms
 {

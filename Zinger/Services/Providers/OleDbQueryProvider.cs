@@ -1,7 +1,8 @@
 ﻿using System.Data;
 using System.Data.OleDb;
+using Zinger.Services;
 
-namespace Zinger.Models
+namespace Zinger.Services.Providers
 {
     public class OleDbQueryProvider : QueryProvider
     {

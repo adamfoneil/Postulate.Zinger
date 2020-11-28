@@ -1,7 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data;
+using Zinger.Services;
 
-namespace Zinger.Models
+namespace Zinger.Services.Providers
 {
     public class SqlServerQueryProvider : QueryProvider
     {
