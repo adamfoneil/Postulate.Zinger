@@ -53,22 +53,29 @@ namespace Zinger.Forms
 
         private void QueryEditor1_JoinResolutionRequested(object sender, string e)
         {
-            if (schemaBrowser1.IsSchemaSupported)
+            try
             {
-                var result = schemaBrowser1.ResolveJoin(e);
-                if (result.IsSuccessful)
+                if (schemaBrowser1.IsSchemaSupported)
                 {
-                    queryEditor1.ReplaceSelection(result.FromClause);
-
-                    if (result.UnrecognziedAliases.Any())
+                    var result = schemaBrowser1.ResolveJoin(e);
+                    if (result.IsSuccessful)
                     {
-                        MessageBox.Show($"There are one or more unrecognized aliases in your selection: {string.Join(", ", result.UnrecognziedAliases)}");
+                        queryEditor1.ReplaceSelection(result.FromClause);
+
+                        if (result.UnrecognziedAliases.Any())
+                        {
+                            MessageBox.Show($"There are one or more unrecognized aliases in your selection: {string.Join(", ", result.UnrecognziedAliases)}");
+                        }
                     }
                 }
+                else
+                {
+                    MessageBox.Show("Schema browser not supported.");
+                }
             }
-            else
+            catch (Exception exc)
             {
-                MessageBox.Show("Schema browser not supported.");
+                MessageBox.Show(exc.Message);
             }
         }
 

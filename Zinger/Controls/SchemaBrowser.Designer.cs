@@ -36,12 +36,12 @@
             this.selectColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rowCountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createModelClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setAliasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeAliasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tbSearch = new System.Windows.Forms.TextBox();
             this.statusStrip2 = new System.Windows.Forms.StatusStrip();
             this.pbLoading = new System.Windows.Forms.ToolStripProgressBar();
             this.llRefresh = new System.Windows.Forms.ToolStripStatusLabel();
-            this.setAliasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeAliasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.statusStrip2.SuspendLayout();
             this.SuspendLayout();
@@ -110,6 +110,20 @@
             this.createModelClassToolStripMenuItem.Text = "Copy Model Class";
             this.createModelClassToolStripMenuItem.Click += new System.EventHandler(this.createModelClassToolStripMenuItem_Click);
             // 
+            // setAliasToolStripMenuItem
+            // 
+            this.setAliasToolStripMenuItem.Name = "setAliasToolStripMenuItem";
+            this.setAliasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.setAliasToolStripMenuItem.Text = "Set Alias...";
+            this.setAliasToolStripMenuItem.Click += new System.EventHandler(this.setAliasToolStripMenuItem_Click);
+            // 
+            // removeAliasToolStripMenuItem
+            // 
+            this.removeAliasToolStripMenuItem.Name = "removeAliasToolStripMenuItem";
+            this.removeAliasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.removeAliasToolStripMenuItem.Text = "Remove Alias...";
+            this.removeAliasToolStripMenuItem.Click += new System.EventHandler(this.removeAliasToolStripMenuItem_Click);
+            // 
             // tbSearch
             // 
             this.tbSearch.Dock = System.Windows.Forms.DockStyle.Top;
@@ -146,19 +160,6 @@
             this.llRefresh.Text = "Refresh";
             this.llRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.llRefresh.Click += new System.EventHandler(this.llRefresh_Click);
-            // 
-            // setAliasToolStripMenuItem
-            // 
-            this.setAliasToolStripMenuItem.Name = "setAliasToolStripMenuItem";
-            this.setAliasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.setAliasToolStripMenuItem.Text = "Set Alias...";
-            this.setAliasToolStripMenuItem.Click += new System.EventHandler(this.setAliasToolStripMenuItem_Click);
-            // 
-            // removeAliasToolStripMenuItem
-            // 
-            this.removeAliasToolStripMenuItem.Name = "removeAliasToolStripMenuItem";
-            this.removeAliasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.removeAliasToolStripMenuItem.Text = "Remove Alias {0}...";
             // 
             // SchemaBrowser
             // 

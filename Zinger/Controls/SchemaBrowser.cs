@@ -75,7 +75,7 @@ namespace Zinger.Controls
                 }
 
                 IsSchemaSupported = Analyzers.ContainsKey(providerType);
-                SchemaInspected?.Invoke(this, new EventArgs());                
+                SchemaInspected?.Invoke(this, new EventArgs());
             }
             catch (Exception exc)
             {
@@ -282,6 +282,7 @@ namespace Zinger.Controls
             {
                 rowCountToolStripMenuItem.Visible = true;
                 rowCountToolStripMenuItem.Text = $"{_selectedTable.RowCount:n0} rows";
+                removeAliasToolStripMenuItem.Visible = (_aliasManager.ContainsTable(_selectedTable.Table));
             }
             else
             {
@@ -316,7 +317,20 @@ namespace Zinger.Controls
                     _aliasManager.Save();
                     _selectedTable.Alias = dlg.Alias;
                 }
-            }            
+            }
+        }
+
+        private void removeAliasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_selectedTable != null)
+            {
+                if (MessageBox.Show($"This will remove alias {_selectedTable.Alias} from table {_selectedTable.Table}", "Remove Alias", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                {
+                    _aliasManager.Aliases.Remove(_selectedTable.Alias);
+                    _selectedTable.Alias = null;
+                    _aliasManager.Save();
+                }
+            }
         }
     }
 }

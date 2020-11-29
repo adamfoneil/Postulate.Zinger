@@ -1,6 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data;
-using Zinger.Services;
 
 namespace Zinger.Services.Providers
 {

@@ -43,13 +43,13 @@ namespace Zinger.Controls.Nodes
         public override string ModelClassName => Table.Name;
 
         private string _alias;
-        public string Alias 
-        { 
-            get => _alias; 
-            set 
+        public string Alias
+        {
+            get => _alias;
+            set
             {
                 _alias = value;
-                Text = $"{Table.Name} - {_alias}"; 
+                Text = (!string.IsNullOrEmpty(_alias)) ? $"{Table.Name} - {_alias}" : Table.Name;
             }
         }
     }

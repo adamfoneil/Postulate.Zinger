@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using System.Data.OleDb;
-using Zinger.Services;
 
 namespace Zinger.Services.Providers
 {

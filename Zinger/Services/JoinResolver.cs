@@ -48,8 +48,8 @@ namespace Zinger.Services
 
             // flattens overlapping FKs into a dictionary by a combo of left and right table aliases (default "Down" join direction)
             var fkDictionary = result.ForeignKeys
-                .GroupBy(fk => $"{foundTablesByTable[fk.ReferencedTable].Alias}.{foundTablesByTable[fk.ReferencingTable].Alias}")                
-                .ToDictionary(grp => grp.Key, grp => grp.First());            
+                .GroupBy(fk => $"{foundTablesByTable[fk.ReferencedTable].Alias}.{foundTablesByTable[fk.ReferencingTable].Alias}")
+                .ToDictionary(grp => grp.Key, grp => grp.First());
 
             List<string> joins = new List<string>();
             HashSet<string> completedAliases = new HashSet<string>();
@@ -97,7 +97,7 @@ namespace Zinger.Services
             }
 
             string JoinSyntax(string fromAlias, ForeignKey fk, JoinDirection joinDirection)
-            {                
+            {
                 var fromTable = foundTablesByAlias[fromAlias].Table;
                 string toAlias = null;
 
@@ -119,8 +119,8 @@ namespace Zinger.Services
                         syntax += $" ON {string.Join(" AND ", fk.Columns.Select(col => $"[{fromAlias}].[{col.ReferencingName}]=[{toAlias}].[{col.ReferencedName}]"))}";
                         break;
                 }
-                
-                return syntax;                
+
+                return syntax;
             }
 
             string TableSyntax(Table table, string alias) => $"[{table.Schema}].[{table.Name}] [{alias}]";
