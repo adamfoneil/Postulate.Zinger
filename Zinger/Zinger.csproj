@@ -126,6 +126,7 @@
       <DependentUpon>frmSetAlias.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ResolveJoinResult.cs" />
+    <Compile Include="Services\JoinResolver.cs" />
     <Compile Include="Services\Providers\MySqlQueryProvider.cs" />
     <Compile Include="Services\Providers\OleDbQueryProvider.cs" />
     <Compile Include="Services\Parameter.cs" />

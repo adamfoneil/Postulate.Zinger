@@ -1,0 +1,13 @@
+doc lib df
+
+FROM
+    [dbo].[Document] [doc]
+    INNER JOIN [dbo].[Library] [lib] ON [doc].[LibraryId]=[lib].[Id]
+    INNER JOIN [dbo].[DocumentField] [df] ON [doc].[Id]=[df].[DocumentId]
+
+lib doc df
+
+[dbo].[Library] [lib]
+INNER JOIN [dbo].[Document] [doc] ON [lib].[Id]=[doc].[LibraryId]
+INNER JOIN [dbo].[DocumentField] [df] ON [doc].[Id]=[df].[DocumentId]
+
