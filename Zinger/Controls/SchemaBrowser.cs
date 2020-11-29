@@ -311,6 +311,7 @@ namespace Zinger.Controls
             {
                 var dlg = new frmSetAlias();
                 dlg.Table = _selectedTable.Table;
+                dlg.AliasManager = _aliasManager;
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
                     _aliasManager.Aliases[dlg.Alias] = _selectedTable.Table.ToString();
