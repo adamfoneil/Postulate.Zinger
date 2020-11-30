@@ -11,19 +11,10 @@ namespace Zinger.Services.Providers
         {
         }
 
-        protected override IDbDataAdapter GetAdapter(IDbCommand command)
-        {
-            return new SqlDataAdapter(command as SqlCommand);
-        }
+        protected override IDbDataAdapter GetAdapter(IDbCommand command) => new SqlDataAdapter(command as SqlCommand);
 
-        public override IDbCommand GetCommand(string query, IDbConnection connection)
-        {
-            return new SqlCommand(query, connection as SqlConnection);
-        }
+        public override IDbCommand GetCommand(string query, IDbConnection connection) => new SqlCommand(query, connection as SqlConnection);
 
-        public override IDbConnection GetConnection()
-        {
-            return new SqlConnection(_connectionString);
-        }
+        public override IDbConnection GetConnection() => new SqlConnection(_connectionString);
     }
 }

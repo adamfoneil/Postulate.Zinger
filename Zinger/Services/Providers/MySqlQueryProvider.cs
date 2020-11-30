@@ -11,19 +11,10 @@ namespace Zinger.Services.Providers
         {
         }
 
-        protected override IDbDataAdapter GetAdapter(IDbCommand command)
-        {
-            return new MySqlDataAdapter(command as MySqlCommand);
-        }
+        protected override IDbDataAdapter GetAdapter(IDbCommand command) => new MySqlDataAdapter(command as MySqlCommand);
 
-        public override IDbCommand GetCommand(string query, IDbConnection connection)
-        {
-            return new MySqlCommand(query, connection as MySqlConnection);
-        }
+        public override IDbCommand GetCommand(string query, IDbConnection connection) => new MySqlCommand(query, connection as MySqlConnection);
 
-        public override IDbConnection GetConnection()
-        {
-            return new MySqlConnection(_connectionString);
-        }
+        public override IDbConnection GetConnection() => new MySqlConnection(_connectionString);
     }
 }
