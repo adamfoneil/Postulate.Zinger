@@ -159,7 +159,7 @@ namespace Zinger.Forms
             {
                 SavedConnection sc = cbConnection.SelectedItem as SavedConnection;
 
-                Dictionary<ProviderType, QueryProvider> providers = new Dictionary<ProviderType, QueryProvider>()
+                var providers = new Dictionary<ProviderType, QueryProvider>()
                 {
                     { ProviderType.SqlServer, new SqlServerQueryProvider(sc.ConnectionString) },
                     { ProviderType.MySql, new MySqlQueryProvider(sc.ConnectionString) },
