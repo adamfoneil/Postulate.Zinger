@@ -54,13 +54,17 @@ namespace Zinger.Services
             List<string> joins = new List<string>();
             HashSet<string> completedAliases = new HashSet<string>();
 
+            // first table in list is added without a join
             joins.Add(TableSyntax(foundTablesByAlias[aliases[0]].Table, aliases[0]));
             completedAliases.Add(aliases[0]);
 
             for (int i = 1; i < aliases.Length; i++)
             {
+                // find the FK that joins this table aliases[i] to any table previously done
                 var fk = FindForeignKey(aliases[i], out JoinDirection joinDirection);
+                // the syntax depends on whether the found FK is "above" or "below" the related table
                 joins.Add(JoinSyntax(aliases[i], fk, joinDirection));
+                // mark this alias as completed so it can be a source of future joins within this output
                 completedAliases.Add(aliases[i]);
             }
 
