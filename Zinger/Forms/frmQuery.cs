@@ -161,10 +161,10 @@ namespace Zinger.Forms
 
                 var providers = new Dictionary<ProviderType, QueryProvider>()
                 {
-                    { ProviderType.SqlServer, new SqlServerQueryProvider(sc.ConnectionString) },
-                    { ProviderType.MySql, new MySqlQueryProvider(sc.ConnectionString) },
-                    { ProviderType.OleDb, new OleDbQueryProvider(sc.ConnectionString) },
-                    { ProviderType.SqlCe, new SqlCeQueryProvider(sc.ConnectionString) }
+                    [ProviderType.SqlServer] = new SqlServerQueryProvider(sc.ConnectionString),
+                    [ProviderType.MySql] = new MySqlQueryProvider(sc.ConnectionString),
+                    [ProviderType.OleDb] = new OleDbQueryProvider(sc.ConnectionString),
+                    [ProviderType.SqlCe] = new SqlCeQueryProvider(sc.ConnectionString)
                 };
 
                 var provider = providers[sc.ProviderType];
