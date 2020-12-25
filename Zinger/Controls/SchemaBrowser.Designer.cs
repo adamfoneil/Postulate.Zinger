@@ -107,7 +107,7 @@
             this.createModelClassToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("createModelClassToolStripMenuItem.Image")));
             this.createModelClassToolStripMenuItem.Name = "createModelClassToolStripMenuItem";
             this.createModelClassToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.createModelClassToolStripMenuItem.Text = "Copy Model Class";
+            this.createModelClassToolStripMenuItem.Text = "Copy Model Class...";
             this.createModelClassToolStripMenuItem.Click += new System.EventHandler(this.createModelClassToolStripMenuItem_Click);
             // 
             // setAliasToolStripMenuItem

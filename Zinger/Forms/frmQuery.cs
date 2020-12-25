@@ -86,11 +86,15 @@ namespace Zinger.Forms
 
         private void SchemaBrowser1_ModelClassRequested(object sender, ColumnContainerNode node)
         {
-            var qcb = new QueryClassBuilder(queryEditor1.Provider.GetCommand);
-            var schemaTable = queryEditor1.Provider.GetSchemaTable(node.SqlQuery);
-            var modelClass = qcb.GetResultClass(schemaTable, node.ModelClassName, true, isResultClass: false);
-            Clipboard.SetText(modelClass);
-            MessageBox.Show($"Model class {node.ModelClassName} copied to clipboard.");
+            var dlg = new frmCopyModelClass() { ObjectName = node.DbObject.ToString() };
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                var qcb = new QueryClassBuilder(queryEditor1.Provider.GetCommand);
+                var schemaTable = queryEditor1.Provider.GetSchemaTable(node.SqlQuery);
+                var modelClass = qcb.GetResultClass(schemaTable, node.ModelClassName, true, isResultClass: false, withAttributes: dlg.IncludeAttributes);
+                Clipboard.SetText(modelClass);
+                MessageBox.Show($"Model class {node.ModelClassName} copied to clipboard.");
+            }
         }
 
         private void btnConnections_Click(object sender, EventArgs e)

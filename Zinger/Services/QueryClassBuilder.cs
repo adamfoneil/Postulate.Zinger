@@ -57,7 +57,7 @@ namespace Zinger.Services
 
         }
 
-        public string GetResultClass(DataTable schemaTable, string queryName, bool beautifyColumnNames, bool isResultClass = true)
+        public string GetResultClass(DataTable schemaTable, string queryName, bool beautifyColumnNames, bool isResultClass = true, bool withAttributes = false)
         {
             StringBuilder output = new StringBuilder();
 
@@ -73,12 +73,18 @@ namespace Zinger.Services
                 {
                     output.AppendLine($"\t[Column(\"{column.PropertyName}\")]");
                 }
+
+                if (withAttributes)
+                {
+                    foreach (var attr in column.GetAttributes()) output.AppendLine($"\t{attr}");
+                }
+
                 output.AppendLine($"\tpublic {column.CSharpType} {prettyName} {{ get; set; }}");
             }
 
             output.AppendLine("}"); // end class
 
-            return output.ToString();
+            return output.ToString();            
         }
 
         /// <summary>
@@ -197,6 +203,22 @@ namespace Zinger.Services
             public string ToColumnName()
             {
                 return (Name.StartsWith("@")) ? Name.Substring(1) : Name;
+            }
+
+            public IEnumerable<string> GetAttributes()
+            {
+                if (CSharpType.Equals("string"))
+                {
+                    if (Size.HasValue)
+                    {
+                        yield return $"[MaxLength({Size})]";
+                    }
+                    
+                    if (!IsNullable)
+                    {
+                        yield return $"[Required]";
+                    }
+                }                
             }
         }
     }

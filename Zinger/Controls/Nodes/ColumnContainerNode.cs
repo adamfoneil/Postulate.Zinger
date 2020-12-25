@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SqlSchema.Library.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -27,6 +28,7 @@ namespace Zinger.Controls.Nodes
 
         public abstract bool SqlQueryEnabled { get; }
         public abstract string SqlQuery { get; }
-        public abstract string ModelClassName { get; }
+        public abstract string ModelClassName { get; }        
+        public abstract DbObject DbObject { get; }
     }
 }
