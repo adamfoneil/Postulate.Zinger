@@ -58,7 +58,10 @@ namespace Zinger.Controls
             {
                 pbExecuting.Visible = true;
                 tslQueryMetrics.Text = "Executing...";
-                var result = Provider.Execute(tbQuery.Text, QueryName, Parameters);
+
+                string sql = (tbQuery.Selection.Length > 0) ? tbQuery.Selection.Text : tbQuery.Text;
+
+                var result = Provider.Execute(sql, QueryName, Parameters);
                 tslQueryMetrics.Text = $"{result.DataTable.Rows.Count} records, {Provider.Milleseconds:n0}ms";
                 dgvResults.DataSource = result.DataTable;
                 Executed?.Invoke(result, new EventArgs());
