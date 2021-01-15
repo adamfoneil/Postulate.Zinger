@@ -283,10 +283,14 @@ namespace Zinger.Controls
                 rowCountToolStripMenuItem.Visible = true;
                 rowCountToolStripMenuItem.Text = $"{_selectedTable.RowCount:n0} rows";
                 removeAliasToolStripMenuItem.Visible = (_aliasManager.ContainsTable(_selectedTable.Table));
+                buildInsertStatementToolStripMenuItem.Enabled = true;
+                buildClassInitializerToolStripMenuItem.Enabled = true;
             }
             else
             {
                 rowCountToolStripMenuItem.Visible = false;
+                buildInsertStatementToolStripMenuItem.Enabled = false;
+                buildClassInitializerToolStripMenuItem.Enabled = false;
             }
 
             createModelClassToolStripMenuItem.Enabled = _selectedObject?.SqlQueryEnabled ?? false;
@@ -331,6 +335,51 @@ namespace Zinger.Controls
                     _selectedTable.Alias = null;
                     _aliasManager.Save();
                 }
+            }
+        }
+
+        private void buildInsertStatementToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var table = _selectedTable.Table;
+                var columns = table.Columns.Where(col => !col.IsNullable && !col.Name.Equals(table.IdentityColumn));
+
+                string sql = $@"INSERT INTO [{table.Schema}].[{table.Name}] (
+                    {string.Join(", ", columns.Select(col => $"[{col.Name}]"))}
+                ) VALUES (
+                    {string.Join(", ", columns.Select(col => $"@{col.Name}"))}
+                )";
+
+                Clipboard.SetText(sql);
+                MessageBox.Show("Insert statement copied to clipboard.");
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+        }
+
+        private void buildClassInitializerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var table = _selectedTable.Table;
+                var columns = table.Columns.Where(col => !col.Name.Equals(table.IdentityColumn)).OrderBy(col => col.IsNullable);
+
+                var csharp = $@"new {table.Name}() 
+                {{
+                    {string.Join(",\r\n", columns.Select(col => (!col.IsNullable) ? 
+                        $"{col.Name} = /* required */" : 
+                        $"/* {col.Name} = optional */"))}
+                }}";
+
+                Clipboard.SetText(csharp);
+                MessageBox.Show("Class initializer statement copied to clipboard.");
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
             }
         }
     }

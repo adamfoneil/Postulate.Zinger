@@ -42,6 +42,8 @@
             this.statusStrip2 = new System.Windows.Forms.StatusStrip();
             this.pbLoading = new System.Windows.Forms.ToolStripProgressBar();
             this.llRefresh = new System.Windows.Forms.ToolStripStatusLabel();
+            this.buildInsertStatementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buildClassInitializerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.statusStrip2.SuspendLayout();
             this.SuspendLayout();
@@ -83,15 +85,17 @@
             this.rowCountToolStripMenuItem,
             this.createModelClassToolStripMenuItem,
             this.setAliasToolStripMenuItem,
-            this.removeAliasToolStripMenuItem});
+            this.removeAliasToolStripMenuItem,
+            this.buildInsertStatementToolStripMenuItem,
+            this.buildClassInitializerToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 136);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(191, 180);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // selectColumnsToolStripMenuItem
             // 
             this.selectColumnsToolStripMenuItem.Name = "selectColumnsToolStripMenuItem";
-            this.selectColumnsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.selectColumnsToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.selectColumnsToolStripMenuItem.Text = "Select Columns";
             this.selectColumnsToolStripMenuItem.Click += new System.EventHandler(this.selectColumnsToolStripMenuItem_Click);
             // 
@@ -99,28 +103,28 @@
             // 
             this.rowCountToolStripMenuItem.Enabled = false;
             this.rowCountToolStripMenuItem.Name = "rowCountToolStripMenuItem";
-            this.rowCountToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.rowCountToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.rowCountToolStripMenuItem.Text = "Row Count";
             // 
             // createModelClassToolStripMenuItem
             // 
             this.createModelClassToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("createModelClassToolStripMenuItem.Image")));
             this.createModelClassToolStripMenuItem.Name = "createModelClassToolStripMenuItem";
-            this.createModelClassToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.createModelClassToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.createModelClassToolStripMenuItem.Text = "Copy Model Class...";
             this.createModelClassToolStripMenuItem.Click += new System.EventHandler(this.createModelClassToolStripMenuItem_Click);
             // 
             // setAliasToolStripMenuItem
             // 
             this.setAliasToolStripMenuItem.Name = "setAliasToolStripMenuItem";
-            this.setAliasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.setAliasToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.setAliasToolStripMenuItem.Text = "Set Alias...";
             this.setAliasToolStripMenuItem.Click += new System.EventHandler(this.setAliasToolStripMenuItem_Click);
             // 
             // removeAliasToolStripMenuItem
             // 
             this.removeAliasToolStripMenuItem.Name = "removeAliasToolStripMenuItem";
-            this.removeAliasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.removeAliasToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.removeAliasToolStripMenuItem.Text = "Remove Alias...";
             this.removeAliasToolStripMenuItem.Click += new System.EventHandler(this.removeAliasToolStripMenuItem_Click);
             // 
@@ -161,6 +165,20 @@
             this.llRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.llRefresh.Click += new System.EventHandler(this.llRefresh_Click);
             // 
+            // buildInsertStatementToolStripMenuItem
+            // 
+            this.buildInsertStatementToolStripMenuItem.Name = "buildInsertStatementToolStripMenuItem";
+            this.buildInsertStatementToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.buildInsertStatementToolStripMenuItem.Text = "Build Insert Statement";
+            this.buildInsertStatementToolStripMenuItem.Click += new System.EventHandler(this.buildInsertStatementToolStripMenuItem_Click);
+            // 
+            // buildClassInitializerToolStripMenuItem
+            // 
+            this.buildClassInitializerToolStripMenuItem.Name = "buildClassInitializerToolStripMenuItem";
+            this.buildClassInitializerToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.buildClassInitializerToolStripMenuItem.Text = "Build Class Initializer";
+            this.buildClassInitializerToolStripMenuItem.Click += new System.EventHandler(this.buildClassInitializerToolStripMenuItem_Click);
+            // 
             // SchemaBrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -193,5 +211,7 @@
         private System.Windows.Forms.ToolStripMenuItem createModelClassToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setAliasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeAliasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buildInsertStatementToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buildClassInitializerToolStripMenuItem;
     }
 }
