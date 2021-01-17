@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using Zinger.Controls.Nodes;
 using Zinger.Models;
@@ -134,10 +135,40 @@ namespace Zinger.Forms
             try
             {
                 FillConnectionDropdown();
+                FillScriptGen();
             }
             catch (Exception exc)
             {
                 MessageBox.Show(exc.Message);
+            }
+        }
+
+        private void FillScriptGen()
+        {
+            var allTypes = Assembly.GetExecutingAssembly()
+                .GetExportedTypes();
+
+            var scriptGenTypes = allTypes
+                .Where(t => t.IsSubclassOf(typeof(ScriptGenBase)) && !t.IsAbstract);
+
+            foreach (var type in scriptGenTypes)
+            {
+                var gen = Activator.CreateInstance(type) as ScriptGenBase;
+                ToolStripMenuItem btn = new ToolStripMenuItem(gen.Title) { DisplayStyle = ToolStripItemDisplayStyle.Text };
+                btn.Click += delegate (object sender, EventArgs args)
+                {
+                    try
+                    {
+                        gen.GenerateAndCopy(queryEditor1.Provider);
+                    }
+                    catch (Exception exc)
+                    {
+                        MessageBox.Show(exc.Message);
+                    }
+                    
+                };
+
+                btnScriptGen.DropDownItems.Add(btn);
             }
         }
 
@@ -182,10 +213,13 @@ namespace Zinger.Forms
 
                 await schemaBrowser1.FillAsync(sc.ProviderType, provider.GetConnection, sc.Name);
                 if (splitContainer1.Panel2Collapsed) splitContainer1.Panel2Collapsed = !schemaBrowser1.IsSchemaSupported;
+
+                btnScriptGen.Enabled = true;
             }
             else
             {
                 queryEditor1.Enabled = false;
+                btnScriptGen.Enabled = false;
             }
 
             btnSchema.Enabled = cbConnection.SelectedItem != null;

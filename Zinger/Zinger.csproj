@@ -147,6 +147,8 @@
     <Compile Include="Services\AliasManager.cs" />
     <Compile Include="Services\AppInstallHelper.cs" />
     <Compile Include="Services\QueryClassBuilder.cs" />
+    <Compile Include="Services\ScriptGenBase.cs" />
+    <Compile Include="Services\ScriptGen\RebuildDisabledIndexes.cs" />
     <Compile Include="Services\TextBoxDelayHandler.cs" />
     <Compile Include="Static\JsonHelper.cs" />
     <EmbeddedResource Include="Controls\QueryEditor.resx">
@@ -261,6 +263,7 @@
   <ItemGroup>
     <Content Include="App.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>"C:\Users\Adamo\Source\Repos\AzDeploy\AzDeploy.Build\bin\Release\netcoreapp3.1\AzDeploy.Build.exe" "C:\Users\Adamo\Source\Repos\Postulate.Zinger\AzDeploy.json"</PostBuildEvent>

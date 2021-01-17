@@ -47,6 +47,7 @@
             this.tabNavigation = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.btnScriptGen = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -70,10 +71,11 @@
             this.btnRunQuery,
             this.btnDataToScript,
             this.btnSchema,
-            this.btnImportExcel});
+            this.btnImportExcel,
+            this.btnScriptGen});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(725, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(779, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -143,7 +145,7 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.Padding = new System.Drawing.Point(10, 5);
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(725, 461);
+            this.tabControl1.Size = new System.Drawing.Size(779, 461);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
@@ -152,7 +154,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 26);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(717, 431);
+            this.tabPage1.Size = new System.Drawing.Size(771, 431);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "SQL";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -164,13 +166,14 @@
             this.queryEditor1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.queryEditor1.Location = new System.Drawing.Point(3, 3);
             this.queryEditor1.Name = "queryEditor1";
+            this.queryEditor1.Parameters = null;
             this.queryEditor1.Provider = null;
             this.queryEditor1.QueryName = null;
-            this.queryEditor1.Size = new System.Drawing.Size(711, 425);
+            this.queryEditor1.Size = new System.Drawing.Size(765, 425);
             this.queryEditor1.Sql = "";
             this.queryEditor1.TabIndex = 0;
             this.queryEditor1.Executed += new System.EventHandler(this.queryEditor1_Executed);
-            this.queryEditor1.Modified += new System.EventHandler(this.queryEditor1_Modified);            
+            this.queryEditor1.Modified += new System.EventHandler(this.queryEditor1_Modified);
             // 
             // tabPage2
             // 
@@ -211,7 +214,7 @@
             // 
             this.splcQueryAndSourceTree.Panel2.Controls.Add(this.tabNavigation);
             this.splcQueryAndSourceTree.Panel2Collapsed = true;
-            this.splcQueryAndSourceTree.Size = new System.Drawing.Size(725, 461);
+            this.splcQueryAndSourceTree.Size = new System.Drawing.Size(779, 461);
             this.splcQueryAndSourceTree.SplitterDistance = 499;
             this.splcQueryAndSourceTree.TabIndex = 2;
             // 
@@ -230,7 +233,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.schemaBrowser1);
             this.splitContainer1.Panel2Collapsed = true;
-            this.splitContainer1.Size = new System.Drawing.Size(725, 461);
+            this.splitContainer1.Size = new System.Drawing.Size(779, 461);
             this.splitContainer1.SplitterDistance = 493;
             this.splitContainer1.TabIndex = 2;
             // 
@@ -274,11 +277,21 @@
             this.tabPage4.Text = "Source Files";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // btnScriptGen
+            // 
+            this.btnScriptGen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnScriptGen.Enabled = false;
+            this.btnScriptGen.Image = ((System.Drawing.Image)(resources.GetObject("btnScriptGen.Image")));
+            this.btnScriptGen.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnScriptGen.Name = "btnScriptGen";
+            this.btnScriptGen.Size = new System.Drawing.Size(74, 22);
+            this.btnScriptGen.Text = "Script Gen";
+            // 
             // frmQuery
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(725, 486);
+            this.ClientSize = new System.Drawing.Size(779, 486);
             this.Controls.Add(this.splcQueryAndSourceTree);
             this.Controls.Add(this.toolStrip1);
             this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -328,6 +341,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private Controls.SchemaBrowser schemaBrowser1;
         private System.Windows.Forms.ToolStripButton btnImportExcel;
+        private System.Windows.Forms.ToolStripDropDownButton btnScriptGen;
     }
 }
 
