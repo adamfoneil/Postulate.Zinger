@@ -148,6 +148,7 @@
     <Compile Include="Services\AppInstallHelper.cs" />
     <Compile Include="Services\QueryClassBuilder.cs" />
     <Compile Include="Services\ScriptGenBase.cs" />
+    <Compile Include="Services\ScriptGen\FindColumnLengths.cs" />
     <Compile Include="Services\ScriptGen\RebuildDisabledIndexes.cs" />
     <Compile Include="Services\TextBoxDelayHandler.cs" />
     <Compile Include="Static\JsonHelper.cs" />
