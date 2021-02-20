@@ -107,6 +107,12 @@
     <Compile Include="Forms\frmImportExcel.Designer.cs">
       <DependentUpon>frmImportExcel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmMigrationBuilder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmMigrationBuilder.Designer.cs">
+      <DependentUpon>frmMigrationBuilder.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmQuery.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -177,6 +183,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmImportExcel.resx">
       <DependentUpon>frmImportExcel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmMigrationBuilder.resx">
+      <DependentUpon>frmMigrationBuilder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmQuery.resx">
       <DependentUpon>frmQuery.cs</DependentUpon>
@@ -260,7 +269,7 @@
       <Version>5.0.1</Version>
     </PackageReference>
     <PackageReference Include="WinForms.Library">
-      <Version>1.0.58</Version>
+      <Version>1.0.61</Version>
     </PackageReference>
     <PackageReference Include="SqlSchema.SqlServer">
       <Version>1.0.0-alpha</Version>

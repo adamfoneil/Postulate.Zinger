@@ -219,5 +219,12 @@ namespace Zinger.Forms
                 wb.SaveAs(dlg.FileName);
             }
         }
+
+        private void dataMigratorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frm = new frmMigrationBuilder();
+            frm.SavedConnections = GetSavedConnections();
+            frm.Show();
+        }
     }
 }

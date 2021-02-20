@@ -25,8 +25,6 @@ namespace Zinger.Services
 
         /// <summary>
         /// initialize a Step object by comparing columns from a source and destination table,
-        /// and let me know what columns didn't match so I know what I have to fill in manually.
-        /// Todo: let me know incompatible columns (they have the same name, but mismatched types)
         /// </summary>
         public async Task<DataMigration.Step> CreateStepAsync(
             string sourceConnection, string destConnection, string fromWhere, string destTable, object parameters = null)
@@ -46,36 +44,44 @@ namespace Zinger.Services
                 var destCols = await dest.QuerySchemaTableAsync(destSql);
 
                 // add matching columns
-                var columns = (from src in sourceCols.AsEnumerable()
-                              join dst in destCols.AsEnumerable() on columnName(src) equals columnName(dst)
+                var columns = (from src in nonIdentityColumns(sourceCols)
+                              join dst in nonIdentityColumns(destCols) on columnName(src) equals columnName(dst)
                               select new DataMigration.Column()
                               {
                                   Source = columnName(src),
                                   Dest = columnName(dst)
                               }).ToList();
 
-                var notInDest = sourceCols.AsEnumerable().Select(row => columnName(row)).Except(destCols.AsEnumerable().Select(row => columnName(row)));
+                var notInDest = nonIdentityColumns(sourceCols).Select(row => columnName(row)).Except(nonIdentityColumns(destCols).Select(row => columnName(row)));
                 columns.AddRange(notInDest.Select(col => new DataMigration.Column()
                 {
                     Source = col
                 }));
                 
-                var notInSrc = destCols.AsEnumerable().Select(row => columnName(row)).Except(sourceCols.AsEnumerable().Select(row => columnName(row)));
+                var notInSrc = nonIdentityColumns(destCols).Select(row => columnName(row)).Except(nonIdentityColumns(sourceCols).Select(row => columnName(row)));
                 columns.AddRange(notInSrc.Select(col => new DataMigration.Column()
                 {
                     Dest = col
                 }));
 
-                step.Columns = columns.ToArray();    
-            });
+                step.Columns = columns.ToArray();
+
+                var srcIdCol = sourceCols.AsEnumerable().FirstOrDefault(row => isIdentity(row));
+                if (srcIdCol != null) step.SourceIdentityColumn = columnName(srcIdCol);
+
+                var destIdCol = destCols.AsEnumerable().FirstOrDefault(row => isIdentity(row));
+                if (destIdCol != null) step.DestIdentityColumn = columnName(destIdCol);
+            });            
 
             return step;
 
             string columnName(DataRow row) => row.Field<string>("ColumnName");
 
-            IEnumerable<DataRow> nonIdentityColumns(DataTable schemaTable) => 
-                schemaTable.AsEnumerable().Where(row => !row.Field<bool>("IsIdentityColumn"));
-         }
+            bool isIdentity(DataRow row) => row.Field<bool>("IsIdentity");            
+
+            IEnumerable<DataRow> nonIdentityColumns(DataTable schemaTable) =>
+                schemaTable.AsEnumerable().Where(row => isIdentity(row));
+        }
 
         private async Task ExecuteWithConnectionsAsync(string sourceConnection, string destConnection, Func<SqlConnection, SqlConnection, Task> execute)
         {
