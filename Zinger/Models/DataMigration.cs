@@ -5,6 +5,8 @@
         public string SourceConnection { get; set; }
         public string DestConnection { get; set; }
 
+        public Step[] Steps { get; set; }
+
         public class Step
         {
             public int Order { get; set; }
@@ -12,7 +14,7 @@
             /// <summary>
             /// query that provides rows to migrate
             /// </summary>
-            public string SourceSql { get; set; }
+            public string SourceFromWhere { get; set; }
 
             /// <summary>
             /// identity column in SourceSql results, provides the SourceId in migration tracking
@@ -40,6 +42,4 @@
             public string KeyMapTable { get; set; }
         }
     }
-
-
 }
