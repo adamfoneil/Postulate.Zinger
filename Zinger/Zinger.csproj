@@ -131,6 +131,7 @@
     <Compile Include="Forms\frmSetAlias.Designer.cs">
       <DependentUpon>frmSetAlias.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\DataMigration.cs" />
     <Compile Include="Models\ResolveJoinResult.cs" />
     <Compile Include="Services\JoinResolver.cs" />
     <Compile Include="Services\Providers\MySqlQueryProvider.cs" />
