@@ -224,6 +224,7 @@ namespace Zinger.Forms
         {
             var frm = new frmMigrationBuilder();
             frm.SavedConnections = GetSavedConnections();
+            frm.MdiParent = this;
             frm.Show();
         }
     }
