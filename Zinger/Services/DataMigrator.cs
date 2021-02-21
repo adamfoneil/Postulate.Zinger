@@ -47,28 +47,27 @@ namespace Zinger.Services
 
             await ExecuteWithConnectionsAsync(sourceConnection, destConnection, async (source, dest) =>
             {
-                var sourceCols = await getSchemaColumns(source, step.SourceFromWhere);                               
-                var destCols = await getSchemaColumns(dest, $"SELECT * FROM {step.DestTable}");
+                var schemaCols = await GetStepSchemaColumns(source, dest, step, parameters);
 
-                step.SourceIdentityColumn = findIdentityColumn(sourceCols);
-                step.DestIdentityColumn = findIdentityColumn(destCols);
+                step.SourceIdentityColumn = findIdentityColumn(schemaCols.sourceColumns);
+                step.DestIdentityColumn = findIdentityColumn(schemaCols.destColumns);
 
                 // add matching columns
-                var columns = (from src in nonIdentityColumns(sourceCols)
-                               join dst in nonIdentityColumns(destCols) on columnName(src) equals columnName(dst)
+                var columns = (from src in nonIdentityColumns(schemaCols.sourceColumns)
+                               join dst in nonIdentityColumns(schemaCols.destColumns) on columnName(src) equals columnName(dst)
                                select new DataMigration.Column()
                                {
                                    Source = columnName(src),
                                    Dest = columnName(dst)
                                }).ToList();
 
-                var notInDest = nonIdentityColumns(sourceCols).Select(row => columnName(row)).Except(nonIdentityColumns(destCols).Select(row => columnName(row)));
+                var notInDest = nonIdentityColumns(schemaCols.sourceColumns).Select(row => columnName(row)).Except(nonIdentityColumns(schemaCols.destColumns).Select(row => columnName(row)));
                 columns.AddRange(notInDest.Select(col => new DataMigration.Column()
                 {
                     Source = col
                 }));
 
-                var notInSrc = nonIdentityColumns(destCols).Select(row => columnName(row)).Except(nonIdentityColumns(sourceCols).Select(row => columnName(row)));
+                var notInSrc = nonIdentityColumns(schemaCols.destColumns).Select(row => columnName(row)).Except(nonIdentityColumns(schemaCols.sourceColumns).Select(row => columnName(row)));
                 columns.AddRange(notInSrc.Select(col => new DataMigration.Column()
                 {
                     Dest = col
@@ -83,18 +82,6 @@ namespace Zinger.Services
 
             IEnumerable<DataRow> nonIdentityColumns(DataTable schemaTable) => schemaTable.AsEnumerable().Where(row => !IsIdentity(row));
 
-            async Task<DataTable> getSchemaColumns(SqlConnection connection, string sql)
-            {
-                try
-                {
-                    return await connection.QuerySchemaTableAsync(sql, parameters);
-                }
-                catch (Exception exc)
-                {
-                    throw new Exception($"Error getting schema columns: {exc.Message} from query: {sql}");
-                }
-            }
-
             string findIdentityColumn(DataTable schemaTable)
             {
                 try
@@ -107,6 +94,27 @@ namespace Zinger.Services
                 }                
             }
         }
+
+        private async Task<(DataTable sourceColumns, DataTable destColumns)> GetStepSchemaColumns(SqlConnection source, SqlConnection dest, DataMigration.Step step, object parameters = null)
+        {
+            var sourceCols = await GetSchemaColumns(source, step.SourceFromWhere, parameters);
+            var destCols = await GetSchemaColumns(dest, $"SELECT * FROM {step.DestTable}", parameters);
+
+            return (sourceCols, destCols);
+        }
+
+        private async Task<DataTable> GetSchemaColumns(SqlConnection connection, string sql, object parameters = null)
+        {
+            try
+            {
+                return await connection.QuerySchemaTableAsync(sql, parameters);
+            }
+            catch (Exception exc)
+            {
+                throw new Exception($"Error getting schema columns: {exc.Message} from query: {sql}");
+            }
+        }
+
 
         private bool IsIdentity(DataRow row) => row.Field<bool>("IsIdentity");
 
@@ -185,6 +193,36 @@ namespace Zinger.Services
                 WriteIndented = true
             });
             File.WriteAllText(fileName, json);
+        }
+
+        /// <summary>
+        /// gets error messages associated with a step (i.e. missing required columns, incompatible types, under-sized dest columns)
+        /// </summary>
+        public async Task<ILookup<string, string>> ValidateStepAsync(DataMigration.Step step, DataMigration migration)
+        {
+            List<ValidationMessage> results = new List<ValidationMessage>();
+
+            await ExecuteWithConnectionsAsync(migration.SourceConnection, migration.DestConnection, async (source, dest) =>
+            {
+                var schemaCols = await GetStepSchemaColumns(source, dest, step, migration.GetParameters());
+
+                // missing required dest columns
+
+                // incompatible types
+
+                // under-sized dest columns
+            });
+
+            return results.ToLookup(row => row.Context, row => row.Message);
+        }
+
+        private class ValidationMessage
+        {
+            /// <summary>
+            /// DataMigration.Column.Key or "_step"
+            /// </summary>
+            public string Context { get; set; }
+            public string Message { get; set; }
         }
     }
 }

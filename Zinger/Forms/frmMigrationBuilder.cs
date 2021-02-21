@@ -63,6 +63,28 @@ namespace Zinger.Forms
                 BindingSource bsSteps = new BindingSource();
                 bsSteps.DataSource = new BindingList<DataMigration.Step>((_doc.Document?.Steps.OrderBy(row => row.Order) ?? Enumerable.Empty<DataMigration.Step>()).ToList());
                 dgvSteps.DataSource = bsSteps;
+                bsSteps.CurrentItemChanged += async delegate (object sender, EventArgs args)
+                {
+                    var messages = await _migrator.ValidateStepAsync(bsSteps.Current as DataMigration.Step, _doc.Document);
+
+                    dgvSteps.CurrentRow.ErrorText = (messages.Any()) ? "There are one or more error in this step." : null;
+
+                    if (messages.Any())
+                    {
+                        foreach (DataGridViewRow row in dgvColumns.Rows)
+                        {
+                            var key = (row.DataBoundItem as DataMigration.Column).Key;
+                            if (messages.Contains(key))
+                            {
+                                row.ErrorText = string.Join("\r\n", messages[key]);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (DataGridViewRow row in dgvColumns.Rows) row.ErrorText = null;
+                    }
+                };
 
                 tbSelectFrom.DataBindings.Add(new Binding("Text", bsSteps, nameof(DataMigration.Step.SourceFromWhere)));
                 tbSourceIdentityCol.DataBindings.Add(new Binding("Text", bsSteps, nameof(DataMigration.Step.SourceIdentityColumn)));

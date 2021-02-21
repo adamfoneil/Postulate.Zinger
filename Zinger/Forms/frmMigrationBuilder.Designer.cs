@@ -37,48 +37,48 @@ namespace Zinger.Forms
             this.cbSourceConnection = new System.Windows.Forms.ComboBox();
             this.cbDestConnection = new System.Windows.Forms.ComboBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.btnOpen = new System.Windows.Forms.ToolStripButton();
             this.btnSave = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnBuildColumns = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dgvSteps = new System.Windows.Forms.DataGridView();
             this.colOrder = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDestTable = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.tbSelectFrom = new FastColoredTextBoxNS.FastColoredTextBox();
-            this.dgvColumns = new System.Windows.Forms.DataGridView();
-            this.colSource = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDestColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMapFrom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnBuildColumns = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dgvParams = new System.Windows.Forms.DataGridView();
             this.colParamName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colParamVal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvColumns = new System.Windows.Forms.DataGridView();
+            this.colSource = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDestColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMapFrom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tbSourceIdentityCol = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
             this.tbDestIdentityCol = new System.Windows.Forms.TextBox();
+            this.tbSelectFrom = new FastColoredTextBoxNS.FastColoredTextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSteps)).BeginInit();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tbSelectFrom)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvColumns)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSteps)).BeginInit();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvParams)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvColumns)).BeginInit();
+            this.panel2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbSelectFrom)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -94,15 +94,16 @@ namespace Zinger.Forms
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 25);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(744, 49);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(744, 59);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 0);
+            this.label1.Location = new System.Drawing.Point(3, 11);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(90, 13);
             this.label1.TabIndex = 0;
@@ -110,8 +111,9 @@ namespace Zinger.Forms
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(375, 0);
+            this.label2.Location = new System.Drawing.Point(375, 11);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(80, 13);
             this.label2.TabIndex = 1;
@@ -122,7 +124,7 @@ namespace Zinger.Forms
             this.cbSourceConnection.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbSourceConnection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbSourceConnection.FormattingEnabled = true;
-            this.cbSourceConnection.Location = new System.Drawing.Point(3, 23);
+            this.cbSourceConnection.Location = new System.Drawing.Point(3, 27);
             this.cbSourceConnection.Name = "cbSourceConnection";
             this.cbSourceConnection.Size = new System.Drawing.Size(366, 21);
             this.cbSourceConnection.TabIndex = 2;
@@ -132,7 +134,7 @@ namespace Zinger.Forms
             this.cbDestConnection.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbDestConnection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDestConnection.FormattingEnabled = true;
-            this.cbDestConnection.Location = new System.Drawing.Point(375, 23);
+            this.cbDestConnection.Location = new System.Drawing.Point(375, 27);
             this.cbDestConnection.Name = "cbDestConnection";
             this.cbDestConnection.Size = new System.Drawing.Size(366, 21);
             this.cbDestConnection.TabIndex = 3;
@@ -150,6 +152,16 @@ namespace Zinger.Forms
             this.toolStrip1.Size = new System.Drawing.Size(744, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(35, 22);
+            this.toolStripButton1.Text = "New";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // btnOpen
             // 
@@ -171,21 +183,26 @@ namespace Zinger.Forms
             this.btnSave.Text = "Save";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // toolStripButton1
+            // toolStripSeparator1
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(35, 22);
-            this.toolStripButton1.Text = "New";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnBuildColumns
+            // 
+            this.btnBuildColumns.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnBuildColumns.Image = ((System.Drawing.Image)(resources.GetObject("btnBuildColumns.Image")));
+            this.btnBuildColumns.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnBuildColumns.Name = "btnBuildColumns";
+            this.btnBuildColumns.Size = new System.Drawing.Size(84, 22);
+            this.btnBuildColumns.Text = "Add Columns";
+            this.btnBuildColumns.Click += new System.EventHandler(this.btnBuildColumns_Click);
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 74);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 84);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -196,9 +213,31 @@ namespace Zinger.Forms
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dgvColumns);
             this.splitContainer1.Panel2.Controls.Add(this.panel2);
-            this.splitContainer1.Size = new System.Drawing.Size(744, 358);
+            this.splitContainer1.Size = new System.Drawing.Size(744, 348);
             this.splitContainer1.SplitterDistance = 253;
             this.splitContainer1.TabIndex = 3;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(253, 348);
+            this.tabControl1.TabIndex = 1;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.dgvSteps);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(245, 322);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Steps";
+            this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // dgvSteps
             // 
@@ -209,7 +248,7 @@ namespace Zinger.Forms
             this.dgvSteps.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSteps.Location = new System.Drawing.Point(3, 3);
             this.dgvSteps.Name = "dgvSteps";
-            this.dgvSteps.Size = new System.Drawing.Size(239, 326);
+            this.dgvSteps.Size = new System.Drawing.Size(239, 316);
             this.dgvSteps.TabIndex = 0;
             // 
             // colOrder
@@ -226,133 +265,6 @@ namespace Zinger.Forms
             this.colDestTable.DataPropertyName = "DestTable";
             this.colDestTable.HeaderText = "Into Table";
             this.colDestTable.Name = "colDestTable";
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.tableLayoutPanel2);
-            this.panel2.Controls.Add(this.tbSelectFrom);
-            this.panel2.Controls.Add(this.label3);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(487, 198);
-            this.panel2.TabIndex = 0;
-            // 
-            // label3
-            // 
-            this.label3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label3.Location = new System.Drawing.Point(0, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(487, 16);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Select From:";
-            // 
-            // tbSelectFrom
-            // 
-            this.tbSelectFrom.AutoCompleteBracketsList = new char[] {
-        '(',
-        ')',
-        '{',
-        '}',
-        '[',
-        ']',
-        '\"',
-        '\"',
-        '\'',
-        '\''};
-            this.tbSelectFrom.AutoIndentCharsPatterns = "";
-            this.tbSelectFrom.AutoScrollMinSize = new System.Drawing.Size(27, 14);
-            this.tbSelectFrom.BackBrush = null;
-            this.tbSelectFrom.CharHeight = 14;
-            this.tbSelectFrom.CharWidth = 8;
-            this.tbSelectFrom.CommentPrefix = "--";
-            this.tbSelectFrom.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbSelectFrom.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.tbSelectFrom.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbSelectFrom.Font = new System.Drawing.Font("Courier New", 9.75F);
-            this.tbSelectFrom.IsReplaceMode = false;
-            this.tbSelectFrom.Language = FastColoredTextBoxNS.Language.SQL;
-            this.tbSelectFrom.LeftBracket = '(';
-            this.tbSelectFrom.Location = new System.Drawing.Point(0, 16);
-            this.tbSelectFrom.Name = "tbSelectFrom";
-            this.tbSelectFrom.Paddings = new System.Windows.Forms.Padding(0);
-            this.tbSelectFrom.RightBracket = ')';
-            this.tbSelectFrom.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.tbSelectFrom.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("tbSelectFrom.ServiceColors")));
-            this.tbSelectFrom.Size = new System.Drawing.Size(487, 95);
-            this.tbSelectFrom.TabIndex = 1;
-            this.tbSelectFrom.Zoom = 100;
-            // 
-            // dgvColumns
-            // 
-            this.dgvColumns.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvColumns.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colSource,
-            this.colDestColumn,
-            this.colMapFrom});
-            this.dgvColumns.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvColumns.Location = new System.Drawing.Point(0, 198);
-            this.dgvColumns.Name = "dgvColumns";
-            this.dgvColumns.Size = new System.Drawing.Size(487, 160);
-            this.dgvColumns.TabIndex = 1;
-            // 
-            // colSource
-            // 
-            this.colSource.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colSource.DataPropertyName = "Source";
-            this.colSource.HeaderText = "Source Column";
-            this.colSource.Name = "colSource";
-            // 
-            // colDestColumn
-            // 
-            this.colDestColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colDestColumn.DataPropertyName = "Dest";
-            this.colDestColumn.HeaderText = "Dest Column";
-            this.colDestColumn.Name = "colDestColumn";
-            // 
-            // colMapFrom
-            // 
-            this.colMapFrom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colMapFrom.DataPropertyName = "KeyMapTable";
-            this.colMapFrom.HeaderText = "Map From Step";
-            this.colMapFrom.Name = "colMapFrom";
-            // 
-            // btnBuildColumns
-            // 
-            this.btnBuildColumns.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnBuildColumns.Image = ((System.Drawing.Image)(resources.GetObject("btnBuildColumns.Image")));
-            this.btnBuildColumns.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnBuildColumns.Name = "btnBuildColumns";
-            this.btnBuildColumns.Size = new System.Drawing.Size(84, 22);
-            this.btnBuildColumns.Text = "Add Columns";
-            this.btnBuildColumns.Click += new System.EventHandler(this.btnBuildColumns_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(253, 358);
-            this.tabControl1.TabIndex = 1;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.dgvSteps);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(245, 332);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Steps";
-            this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
@@ -391,22 +303,50 @@ namespace Zinger.Forms
             this.colParamVal.HeaderText = "Value";
             this.colParamVal.Name = "colParamVal";
             // 
-            // tbSourceIdentityCol
+            // dgvColumns
             // 
-            this.tbSourceIdentityCol.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbSourceIdentityCol.Location = new System.Drawing.Point(3, 21);
-            this.tbSourceIdentityCol.Name = "tbSourceIdentityCol";
-            this.tbSourceIdentityCol.Size = new System.Drawing.Size(183, 20);
-            this.tbSourceIdentityCol.TabIndex = 2;
+            this.dgvColumns.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvColumns.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colSource,
+            this.colDestColumn,
+            this.colMapFrom});
+            this.dgvColumns.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvColumns.Location = new System.Drawing.Point(0, 198);
+            this.dgvColumns.Name = "dgvColumns";
+            this.dgvColumns.Size = new System.Drawing.Size(487, 150);
+            this.dgvColumns.TabIndex = 1;
             // 
-            // label4
+            // colSource
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(119, 13);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Source Identity Column:";
+            this.colSource.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colSource.DataPropertyName = "Source";
+            this.colSource.HeaderText = "Source Column";
+            this.colSource.Name = "colSource";
+            // 
+            // colDestColumn
+            // 
+            this.colDestColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colDestColumn.DataPropertyName = "Dest";
+            this.colDestColumn.HeaderText = "Dest Column";
+            this.colDestColumn.Name = "colDestColumn";
+            // 
+            // colMapFrom
+            // 
+            this.colMapFrom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colMapFrom.DataPropertyName = "KeyMapTable";
+            this.colMapFrom.HeaderText = "Map From Step";
+            this.colMapFrom.Name = "colMapFrom";
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.tableLayoutPanel2);
+            this.panel2.Controls.Add(this.tbSelectFrom);
+            this.panel2.Controls.Add(this.label3);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(487, 198);
+            this.panel2.TabIndex = 0;
             // 
             // tableLayoutPanel2
             // 
@@ -425,6 +365,23 @@ namespace Zinger.Forms
             this.tableLayoutPanel2.Size = new System.Drawing.Size(379, 51);
             this.tableLayoutPanel2.TabIndex = 4;
             // 
+            // tbSourceIdentityCol
+            // 
+            this.tbSourceIdentityCol.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbSourceIdentityCol.Location = new System.Drawing.Point(3, 21);
+            this.tbSourceIdentityCol.Name = "tbSourceIdentityCol";
+            this.tbSourceIdentityCol.Size = new System.Drawing.Size(183, 20);
+            this.tbSourceIdentityCol.TabIndex = 2;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(119, 13);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Source Identity Column:";
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -441,6 +398,50 @@ namespace Zinger.Forms
             this.tbDestIdentityCol.Name = "tbDestIdentityCol";
             this.tbDestIdentityCol.Size = new System.Drawing.Size(184, 20);
             this.tbDestIdentityCol.TabIndex = 5;
+            // 
+            // tbSelectFrom
+            // 
+            this.tbSelectFrom.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.tbSelectFrom.AutoIndentCharsPatterns = "";
+            this.tbSelectFrom.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.tbSelectFrom.BackBrush = null;
+            this.tbSelectFrom.CharHeight = 14;
+            this.tbSelectFrom.CharWidth = 8;
+            this.tbSelectFrom.CommentPrefix = "--";
+            this.tbSelectFrom.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbSelectFrom.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.tbSelectFrom.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tbSelectFrom.IsReplaceMode = false;
+            this.tbSelectFrom.Language = FastColoredTextBoxNS.Language.SQL;
+            this.tbSelectFrom.LeftBracket = '(';
+            this.tbSelectFrom.Location = new System.Drawing.Point(0, 16);
+            this.tbSelectFrom.Name = "tbSelectFrom";
+            this.tbSelectFrom.Paddings = new System.Windows.Forms.Padding(0);
+            this.tbSelectFrom.RightBracket = ')';
+            this.tbSelectFrom.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.tbSelectFrom.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("tbSelectFrom.ServiceColors")));
+            this.tbSelectFrom.Size = new System.Drawing.Size(487, 95);
+            this.tbSelectFrom.TabIndex = 1;
+            this.tbSelectFrom.Zoom = 100;
+            // 
+            // label3
+            // 
+            this.label3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label3.Location = new System.Drawing.Point(0, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(487, 16);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Select From:";
             // 
             // frmMigrationBuilder
             // 
@@ -462,16 +463,16 @@ namespace Zinger.Forms
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSteps)).EndInit();
-            this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.tbSelectFrom)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvColumns)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSteps)).EndInit();
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvParams)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvColumns)).EndInit();
+            this.panel2.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbSelectFrom)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

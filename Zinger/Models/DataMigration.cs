@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace Zinger.Models
 {
@@ -46,6 +47,9 @@ namespace Zinger.Models
             public string Source { get; set; }
             public string Dest { get; set; }
             public string KeyMapTable { get; set; }
+            
+            [JsonIgnore]
+            public string Key { get => $"{Source}:{Dest}"; }
         }
 
         public class Parameter
