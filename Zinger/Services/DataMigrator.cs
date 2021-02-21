@@ -33,55 +33,82 @@ namespace Zinger.Services
             {
                 SourceFromWhere = fromWhere,
                 DestTable = destTable
-            };            
+            };
+            
+            await BuildColumnsAsync(sourceConnection, destConnection, step, parameters);
+
+            return step;
+        }
+
+        public async Task BuildColumnsAsync(
+            string sourceConnection, string destConnection, DataMigration.Step step, object parameters = null)
+        {
+            List<DataMigration.Column> result = new List<DataMigration.Column>();            
 
             await ExecuteWithConnectionsAsync(sourceConnection, destConnection, async (source, dest) =>
             {
-                var sourceSql = $"SELECT * FROM {fromWhere}";
-                var sourceCols = await source.QuerySchemaTableAsync(sourceSql, parameters);
+                var sourceCols = await getSchemaColumns(source, step.SourceFromWhere);                               
+                var destCols = await getSchemaColumns(dest, $"SELECT * FROM {step.DestTable}");
 
-                var destSql = $"SELECT * FROM {destTable}";
-                var destCols = await dest.QuerySchemaTableAsync(destSql);
+                step.SourceIdentityColumn = findIdentityColumn(sourceCols);
+                step.DestIdentityColumn = findIdentityColumn(destCols);
 
                 // add matching columns
                 var columns = (from src in nonIdentityColumns(sourceCols)
-                              join dst in nonIdentityColumns(destCols) on columnName(src) equals columnName(dst)
-                              select new DataMigration.Column()
-                              {
-                                  Source = columnName(src),
-                                  Dest = columnName(dst)
-                              }).ToList();
+                               join dst in nonIdentityColumns(destCols) on columnName(src) equals columnName(dst)
+                               select new DataMigration.Column()
+                               {
+                                   Source = columnName(src),
+                                   Dest = columnName(dst)
+                               }).ToList();
 
                 var notInDest = nonIdentityColumns(sourceCols).Select(row => columnName(row)).Except(nonIdentityColumns(destCols).Select(row => columnName(row)));
                 columns.AddRange(notInDest.Select(col => new DataMigration.Column()
                 {
                     Source = col
                 }));
-                
+
                 var notInSrc = nonIdentityColumns(destCols).Select(row => columnName(row)).Except(nonIdentityColumns(sourceCols).Select(row => columnName(row)));
                 columns.AddRange(notInSrc.Select(col => new DataMigration.Column()
                 {
                     Dest = col
                 }));
 
-                step.Columns = columns.ToArray();
+                result.AddRange(columns);
+            });
 
-                var srcIdCol = sourceCols.AsEnumerable().FirstOrDefault(row => isIdentity(row));
-                if (srcIdCol != null) step.SourceIdentityColumn = columnName(srcIdCol);
+            step.Columns = result.ToArray();
 
-                var destIdCol = destCols.AsEnumerable().FirstOrDefault(row => isIdentity(row));
-                if (destIdCol != null) step.DestIdentityColumn = columnName(destIdCol);
-            });            
+            string columnName(DataRow row) => row.Field<string>("ColumnName");            
 
-            return step;
+            IEnumerable<DataRow> nonIdentityColumns(DataTable schemaTable) => schemaTable.AsEnumerable().Where(row => !IsIdentity(row));
 
-            string columnName(DataRow row) => row.Field<string>("ColumnName");
+            async Task<DataTable> getSchemaColumns(SqlConnection connection, string sql)
+            {
+                try
+                {
+                    return await connection.QuerySchemaTableAsync(sql, parameters);
+                }
+                catch (Exception exc)
+                {
+                    throw new Exception($"Error getting schema columns: {exc.Message} from query: {sql}");
+                }
+            }
 
-            bool isIdentity(DataRow row) => row.Field<bool>("IsIdentity");            
-
-            IEnumerable<DataRow> nonIdentityColumns(DataTable schemaTable) =>
-                schemaTable.AsEnumerable().Where(row => isIdentity(row));
+            string findIdentityColumn(DataTable schemaTable)
+            {
+                try
+                {
+                    return columnName(schemaTable.AsEnumerable().First(row => IsIdentity(row)));
+                }
+                catch 
+                {
+                    return null;
+                }                
+            }
         }
+
+        private bool IsIdentity(DataRow row) => row.Field<bool>("IsIdentity");
 
         private async Task ExecuteWithConnectionsAsync(string sourceConnection, string destConnection, Func<SqlConnection, SqlConnection, Task> execute)
         {
@@ -89,8 +116,10 @@ namespace Zinger.Services
 
             using (var cnSource = new SqlConnection(allConnections[sourceConnection]))
             {
+                cnSource.Open();
                 using (var cnDest = new SqlConnection(allConnections[destConnection]))
                 {
+                    cnDest.Open();
                     await execute.Invoke(cnSource, cnDest);
                 }
             }
@@ -126,11 +155,11 @@ namespace Zinger.Services
                 .Where(col => !string.IsNullOrEmpty(col.KeyMapTable))
                 .ToDictionary(col => col.Source, col => col.KeyMapTable);
         
-        private async Task<DataTable> QuerySourceTableAsync(SqlConnection cnSource, DataMigration.Step step, object parameters)
+        private async Task<DataTable> QuerySourceTableAsync(SqlConnection cnSource, DataMigration.Step step, object parameters = null)
         {
             var columns = string.Join(", ", step.Columns
                 .Select(col => (col.Source.StartsWith("=")) ? 
-                    col.Source : 
+                    col.Source.Substring(1) : 
                     $"[{col.Source}]"));
 
             var query = $"SELECT {columns} FROM {step.SourceFromWhere}";
@@ -138,10 +167,24 @@ namespace Zinger.Services
             return await cnSource.QueryTableAsync(query, parameters);
         }
 
-        public class ColumnInfo
+        public async Task AddColumnsAsync(string fileName, bool overwrite = false, object parameters = null)
         {
-            public string Name { get; set; }
-            public bool Required { get; set; }
+            var json = File.ReadAllText(fileName);
+            var migration = JsonSerializer.Deserialize<DataMigration>(json);
+
+            foreach (var step in migration.Steps)
+            {
+                if (overwrite || (!step.Columns?.Any() ?? true))
+                {
+                    await BuildColumnsAsync(migration.SourceConnection, migration.DestConnection, step, parameters);
+                }
+            }
+
+            json = JsonSerializer.Serialize(migration, new JsonSerializerOptions()
+            {
+                WriteIndented = true
+            });
+            File.WriteAllText(fileName, json);
         }
     }
 }

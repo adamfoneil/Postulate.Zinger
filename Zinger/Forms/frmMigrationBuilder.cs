@@ -1,28 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using WinForms.Library;
 using WinForms.Library.Extensions.ComboBoxes;
 using Zinger.Models;
+using Zinger.Services;
 
 namespace Zinger.Forms
 {
     public partial class frmMigrationBuilder : Form
     {
-        JsonSDI<DataMigration> _doc = new JsonSDI<DataMigration>(".json", "Json Files|*.json", "Save changes?");        
+        JsonSDI<DataMigration> _doc = new JsonSDI<DataMigration>(".json", "Json Files|*.json", "Save changes?");
+        
+        private DataMigrator _migrator;
 
         public frmMigrationBuilder()
         {
             InitializeComponent();
             dgvSteps.AutoGenerateColumns = false;
             dgvColumns.AutoGenerateColumns = false;
+            dgvParams.AutoGenerateColumns = false;
         }
 
         public SavedConnections SavedConnections { get; set; }
 
-        private void frmMigrationBuilder_Load(object sender, System.EventArgs e)
+        private void frmMigrationBuilder_Load(object sender, EventArgs e)
         {
+            _migrator = new DataMigrator(SavedConnections);
+
             InitBinding();
         }
 
@@ -32,11 +39,13 @@ namespace Zinger.Forms
             _doc.SavingFile += delegate (object sender, EventArgs args)
             {
                 _doc.Document.Steps = ((dgvSteps.DataSource as BindingSource).DataSource as BindingList<DataMigration.Step>).ToArray();
+                _doc.Document.Parameters = ((dgvParams.DataSource as BindingSource).DataSource as BindingList<DataMigration.Parameter>).ToArray();
             };
 
             _doc.FileOpened += delegate (object sender, EventArgs args)
             {
                 InitStepsDataGridView();
+                InitParamsDataGridView();
             };
 
             _doc.Controls.AddItems(cbSourceConnection,
@@ -56,26 +65,50 @@ namespace Zinger.Forms
                 dgvSteps.DataSource = bsSteps;
 
                 tbSelectFrom.DataBindings.Add(new Binding("Text", bsSteps, nameof(DataMigration.Step.SourceFromWhere)));
+                tbSourceIdentityCol.DataBindings.Add(new Binding("Text", bsSteps, nameof(DataMigration.Step.SourceIdentityColumn)));
+                tbDestIdentityCol.DataBindings.Add(new Binding("Text", bsSteps, nameof(DataMigration.Step.DestIdentityColumn)));
 
                 BindingSource bsColumns = new BindingSource();
                 bsColumns.DataSource = bsSteps;
-                //bsColumns.DataMember = ""
+                bsColumns.DataMember = nameof(DataMigration.Step.Columns);
+                dgvColumns.DataSource = bsColumns;
+            }
+
+            void InitParamsDataGridView()
+            {
+                BindingSource bsParams = new BindingSource();
+                var data = _doc.Document?.Parameters?.ToList() ?? new List<DataMigration.Parameter>();
+                bsParams.DataSource = new BindingList<DataMigration.Parameter>(data);
+                dgvParams.DataSource = bsParams;
             }
         }
 
-        private async void btnSave_Click(object sender, System.EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e)
         {
             await _doc.SaveAsync();
         }
 
-        private async void btnOpen_Click(object sender, System.EventArgs e)
+        private async void btnOpen_Click(object sender, EventArgs e)
         {
             await _doc.PromptOpenAsync();            
         }
 
-        private async void toolStripButton1_Click(object sender, System.EventArgs e)
+        private async void toolStripButton1_Click(object sender, EventArgs e)
         {
             await _doc.NewAsync();
+        }
+
+        private async void btnBuildColumns_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                await _migrator.AddColumnsAsync(_doc.Filename, overwrite: true, _doc.Document.GetParameters());
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+            
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿namespace Zinger.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Zinger.Models
 {
     public class DataMigration
     {
@@ -6,6 +10,8 @@
         public string DestConnection { get; set; }
 
         public Step[] Steps { get; set; }
+
+        public Parameter[] Parameters { get; set; }
 
         public class Step
         {
@@ -41,5 +47,13 @@
             public string Dest { get; set; }
             public string KeyMapTable { get; set; }
         }
+
+        public class Parameter
+        {
+            public string Name { get; set; }
+            public string Value { get; set; }
+        }
+
+        public Dictionary<string, string> GetParameters() => Parameters?.ToDictionary(row => row.Name, row => row.Value);        
     }
 }
