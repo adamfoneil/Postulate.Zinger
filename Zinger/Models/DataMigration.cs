@@ -50,6 +50,12 @@ namespace Zinger.Models
             
             [JsonIgnore]
             public string Key { get => $"{Source}:{Dest}"; }
+
+            [JsonIgnore]
+            public bool SourceIsEmpty { get => string.IsNullOrEmpty(Source); }
+
+            [JsonIgnore]
+            public bool DestIsEmpty { get => string.IsNullOrEmpty(Dest); }
         }
 
         public class Parameter

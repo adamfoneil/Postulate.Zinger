@@ -54,20 +54,20 @@ namespace Zinger.Services
 
                 // add matching columns
                 var columns = (from src in nonIdentityColumns(schemaCols.sourceColumns)
-                               join dst in nonIdentityColumns(schemaCols.destColumns) on columnName(src) equals columnName(dst)
+                               join dst in nonIdentityColumns(schemaCols.destColumns) on ColumnName(src) equals ColumnName(dst)
                                select new DataMigration.Column()
                                {
-                                   Source = columnName(src),
-                                   Dest = columnName(dst)
+                                   Source = ColumnName(src),
+                                   Dest = ColumnName(dst)
                                }).ToList();
 
-                var notInDest = nonIdentityColumns(schemaCols.sourceColumns).Select(row => columnName(row)).Except(nonIdentityColumns(schemaCols.destColumns).Select(row => columnName(row)));
+                var notInDest = nonIdentityColumns(schemaCols.sourceColumns).Select(row => ColumnName(row)).Except(nonIdentityColumns(schemaCols.destColumns).Select(row => ColumnName(row)));
                 columns.AddRange(notInDest.Select(col => new DataMigration.Column()
                 {
                     Source = col
                 }));
 
-                var notInSrc = nonIdentityColumns(schemaCols.destColumns).Select(row => columnName(row)).Except(nonIdentityColumns(schemaCols.sourceColumns).Select(row => columnName(row)));
+                var notInSrc = nonIdentityColumns(schemaCols.destColumns).Select(row => ColumnName(row)).Except(nonIdentityColumns(schemaCols.sourceColumns).Select(row => ColumnName(row)));
                 columns.AddRange(notInSrc.Select(col => new DataMigration.Column()
                 {
                     Dest = col
@@ -76,9 +76,7 @@ namespace Zinger.Services
                 result.AddRange(columns);
             });
 
-            step.Columns = result.ToArray();
-
-            string columnName(DataRow row) => row.Field<string>("ColumnName");            
+            step.Columns = result.ToArray();            
 
             IEnumerable<DataRow> nonIdentityColumns(DataTable schemaTable) => schemaTable.AsEnumerable().Where(row => !IsIdentity(row));
 
@@ -86,7 +84,7 @@ namespace Zinger.Services
             {
                 try
                 {
-                    return columnName(schemaTable.AsEnumerable().First(row => IsIdentity(row)));
+                    return ColumnName(schemaTable.AsEnumerable().First(row => IsIdentity(row)));
                 }
                 catch 
                 {
@@ -94,6 +92,10 @@ namespace Zinger.Services
                 }                
             }
         }
+
+        private string ColumnName(DataRow row) => row.Field<string>("ColumnName");
+
+        private bool IsRequired(DataRow row) => !row.Field<bool>("AllowDbNull");
 
         private async Task<(DataTable sourceColumns, DataTable destColumns)> GetStepSchemaColumns(SqlConnection source, SqlConnection dest, DataMigration.Step step, object parameters = null)
         {
@@ -206,7 +208,18 @@ namespace Zinger.Services
             {
                 var schemaCols = await GetStepSchemaColumns(source, dest, step, migration.GetParameters());
 
+                AddUnrecognizedColumns(step.Columns, col => col.Source, schemaCols.sourceColumns);               
+                AddUnrecognizedColumns(step.Columns, col => col.Dest, schemaCols.destColumns);
+
                 // missing required dest columns
+                var required = schemaCols.destColumns.AsEnumerable().Where(row => IsRequired(row)).Select(row => ColumnName(row)).ToHashSet();
+                var missing = step.Columns.Where(col => col.SourceIsEmpty && required.Contains(col.Dest)).Select(col => new ValidationMessage()
+                {
+                    Context = col.Key,
+                    Message = $"{col.Dest} is required, but not provided."
+                });
+
+                results.AddRange(missing);
 
                 // incompatible types
 
@@ -214,6 +227,18 @@ namespace Zinger.Services
             });
 
             return results.ToLookup(row => row.Context, row => row.Message);
+
+            void AddUnrecognizedColumns(IEnumerable<DataMigration.Column> columns, Func<DataMigration.Column, string> columnSelector, DataTable schemaColumns)
+            {                
+                var schemaColumnNames = schemaColumns.AsEnumerable().Select(row => ColumnName(row)).ToHashSet();
+                var unrecognized = columns.Where(col => !string.IsNullOrEmpty(columnSelector.Invoke(col)) && !schemaColumnNames.Contains(columnSelector.Invoke(col))).Select(col => new { column = col, name = columnSelector.Invoke(col) });
+
+                results.AddRange(unrecognized.Select(col => new ValidationMessage()
+                {
+                    Context = col.column.Key,
+                    Message = $"Column name {col.name} is not recognized."
+                }));
+            }
         }
 
         private class ValidationMessage
