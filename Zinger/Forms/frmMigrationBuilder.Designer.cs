@@ -56,6 +56,9 @@ namespace Zinger.Forms
             this.colSource = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDestColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colMapFrom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.pbValidation = new System.Windows.Forms.PictureBox();
+            this.lblValidationError = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tbSourceIdentityCol = new System.Windows.Forms.TextBox();
@@ -64,10 +67,10 @@ namespace Zinger.Forms
             this.tbDestIdentityCol = new System.Windows.Forms.TextBox();
             this.tbSelectFrom = new FastColoredTextBoxNS.FastColoredTextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.lblValidationError = new System.Windows.Forms.Label();
-            this.imgValidation = new System.Windows.Forms.PictureBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.btnValidateStep = new System.Windows.Forms.Button();
+            this.llSourceSql = new System.Windows.Forms.LinkLabel();
+            this.llInsertSql = new System.Windows.Forms.LinkLabel();
             this.tableLayoutPanel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -80,11 +83,11 @@ namespace Zinger.Forms
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvParams)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvColumns)).BeginInit();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbValidation)).BeginInit();
             this.panel2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbSelectFrom)).BeginInit();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.imgValidation)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -320,7 +323,7 @@ namespace Zinger.Forms
             this.dgvColumns.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvColumns.Location = new System.Drawing.Point(0, 181);
             this.dgvColumns.Name = "dgvColumns";
-            this.dgvColumns.Size = new System.Drawing.Size(487, 121);
+            this.dgvColumns.Size = new System.Drawing.Size(487, 101);
             this.dgvColumns.TabIndex = 1;
             // 
             // colSource
@@ -343,6 +346,39 @@ namespace Zinger.Forms
             this.colMapFrom.DataPropertyName = "KeyMapTable";
             this.colMapFrom.HeaderText = "Map From Step";
             this.colMapFrom.Name = "colMapFrom";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.llInsertSql);
+            this.panel1.Controls.Add(this.llSourceSql);
+            this.panel1.Controls.Add(this.btnValidateStep);
+            this.panel1.Controls.Add(this.pbValidation);
+            this.panel1.Controls.Add(this.lblValidationError);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 282);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(487, 66);
+            this.panel1.TabIndex = 2;
+            // 
+            // pbValidation
+            // 
+            this.pbValidation.Location = new System.Drawing.Point(77, 14);
+            this.pbValidation.Name = "pbValidation";
+            this.pbValidation.Size = new System.Drawing.Size(17, 20);
+            this.pbValidation.TabIndex = 1;
+            this.pbValidation.TabStop = false;
+            // 
+            // lblValidationError
+            // 
+            this.lblValidationError.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblValidationError.Location = new System.Drawing.Point(100, 10);
+            this.lblValidationError.Name = "lblValidationError";
+            this.lblValidationError.Size = new System.Drawing.Size(375, 29);
+            this.lblValidationError.TabIndex = 0;
+            this.lblValidationError.Text = "label6";
+            this.lblValidationError.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // panel2
             // 
@@ -428,7 +464,6 @@ namespace Zinger.Forms
             this.tbSelectFrom.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbSelectFrom.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.tbSelectFrom.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbSelectFrom.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.tbSelectFrom.IsReplaceMode = false;
             this.tbSelectFrom.Language = FastColoredTextBoxNS.Language.SQL;
             this.tbSelectFrom.LeftBracket = '(';
@@ -451,42 +486,43 @@ namespace Zinger.Forms
             this.label3.TabIndex = 0;
             this.label3.Text = "Select From:";
             // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.imgValidation);
-            this.panel1.Controls.Add(this.lblValidationError);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 302);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(487, 46);
-            this.panel1.TabIndex = 2;
-            // 
-            // lblValidationError
-            // 
-            this.lblValidationError.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblValidationError.Location = new System.Drawing.Point(42, 10);
-            this.lblValidationError.Name = "lblValidationError";
-            this.lblValidationError.Size = new System.Drawing.Size(433, 26);
-            this.lblValidationError.TabIndex = 0;
-            this.lblValidationError.Text = "label6";
-            this.lblValidationError.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // imgValidation
-            // 
-            this.imgValidation.Location = new System.Drawing.Point(12, 15);
-            this.imgValidation.Name = "imgValidation";
-            this.imgValidation.Size = new System.Drawing.Size(17, 20);
-            this.imgValidation.TabIndex = 1;
-            this.imgValidation.TabStop = false;
-            // 
             // imageList1
             // 
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "success");
             this.imageList1.Images.SetKeyName(1, "fail");
+            this.imageList1.Images.SetKeyName(2, "loading");
+            // 
+            // btnValidateStep
+            // 
+            this.btnValidateStep.Location = new System.Drawing.Point(10, 13);
+            this.btnValidateStep.Name = "btnValidateStep";
+            this.btnValidateStep.Size = new System.Drawing.Size(59, 23);
+            this.btnValidateStep.TabIndex = 2;
+            this.btnValidateStep.Text = "Test";
+            this.btnValidateStep.UseVisualStyleBackColor = true;
+            this.btnValidateStep.Click += new System.EventHandler(this.btnValidateStep_Click);
+            // 
+            // llSourceSql
+            // 
+            this.llSourceSql.AutoSize = true;
+            this.llSourceSql.Location = new System.Drawing.Point(100, 43);
+            this.llSourceSql.Name = "llSourceSql";
+            this.llSourceSql.Size = new System.Drawing.Size(65, 13);
+            this.llSourceSql.TabIndex = 3;
+            this.llSourceSql.TabStop = true;
+            this.llSourceSql.Text = "Source SQL";
+            // 
+            // llInsertSql
+            // 
+            this.llInsertSql.AutoSize = true;
+            this.llInsertSql.Location = new System.Drawing.Point(171, 43);
+            this.llInsertSql.Name = "llInsertSql";
+            this.llInsertSql.Size = new System.Drawing.Size(57, 13);
+            this.llInsertSql.TabIndex = 4;
+            this.llInsertSql.TabStop = true;
+            this.llInsertSql.Text = "Insert SQL";
             // 
             // frmMigrationBuilder
             // 
@@ -515,12 +551,13 @@ namespace Zinger.Forms
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvParams)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvColumns)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbValidation)).EndInit();
             this.panel2.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbSelectFrom)).EndInit();
-            this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.imgValidation)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -562,8 +599,11 @@ namespace Zinger.Forms
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tbDestIdentityCol;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.PictureBox imgValidation;
+        private System.Windows.Forms.PictureBox pbValidation;
         private System.Windows.Forms.Label lblValidationError;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.Button btnValidateStep;
+        private System.Windows.Forms.LinkLabel llInsertSql;
+        private System.Windows.Forms.LinkLabel llSourceSql;
     }
 }

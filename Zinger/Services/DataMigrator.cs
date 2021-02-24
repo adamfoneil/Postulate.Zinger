@@ -119,6 +119,9 @@ namespace Zinger.Services
 
         private bool IsIdentity(DataRow row) => row.Field<bool>("IsIdentity");
 
+        private async Task ExecuteWithConnectionsAsync(DataMigration migration, Func<SqlConnection, SqlConnection, Task> execute) =>
+            await ExecuteWithConnectionsAsync(migration.SourceConnection, migration.DestConnection, execute);
+
         private async Task ExecuteWithConnectionsAsync(string sourceConnection, string destConnection, Func<SqlConnection, SqlConnection, Task> execute)
         {
             var allConnections = _savedConnections.Connections.ToDictionary(item => item.Name, item => item.ConnectionString);
@@ -154,7 +157,7 @@ namespace Zinger.Services
                     var sourceTable = await QuerySourceTableAsync(source, step, parameters);
                     var dbobj = DbObject.Parse(step.DestTable);
                     var fkmapping = GetForeignKeyMapping(step);
-                    await migrator.CopyRowsAsync(dest, sourceTable, step.SourceIdentityColumn, dbobj.Schema, dbobj.Name, fkmapping);                    
+                    await migrator.CopyRowsAsync(dest, sourceTable.table, step.SourceIdentityColumn, dbobj.Schema, dbobj.Name, fkmapping);                    
                 }
             });
         }
@@ -164,16 +167,18 @@ namespace Zinger.Services
                 .Where(col => !string.IsNullOrEmpty(col.KeyMapTable))
                 .ToDictionary(col => col.Source, col => col.KeyMapTable);
         
-        private async Task<DataTable> QuerySourceTableAsync(SqlConnection cnSource, DataMigration.Step step, object parameters = null)
+        private async Task<(DataTable table, string sql)> QuerySourceTableAsync(SqlConnection cnSource, DataMigration.Step step, object parameters = null)
         {
             var columns = string.Join(", ", step.Columns
+                .Where(col => !string.IsNullOrWhiteSpace(col.Source) && !string.IsNullOrWhiteSpace(col.Dest))
                 .Select(col => (col.Source.StartsWith("=")) ? 
-                    col.Source.Substring(1) : 
-                    $"[{col.Source}]"));
+                    $"{col.Source.Substring(1)} AS [{col.Dest}]" : 
+                    $"[{col.Source}] AS [{col.Dest}]"));
 
-            var query = $"SELECT {columns} FROM {step.SourceFromWhere}";
+            var query = $"SELECT {columns}, [{step.SourceIdentityColumn}] FROM {step.SourceFromWhere}";
 
-            return await cnSource.QueryTableAsync(query, parameters);
+            var dataTable = await cnSource.QueryTableAsync(query, parameters);
+            return (dataTable, query);
         }
 
         public async Task AddColumnsAsync(string fileName, bool overwrite = false, object parameters = null)
@@ -199,28 +204,43 @@ namespace Zinger.Services
         /// <summary>
         /// gets error messages associated with a step (i.e. missing required columns, incompatible types, under-sized dest columns)
         /// </summary>
-        public async Task<ILookup<string, string>> ValidateStepAsync(DataMigration.Step step, DataMigration migration)
+        public async Task<(bool success, string message, string sourceSql, string insertStatement)> ValidateStepAsync(DataMigration.Step step, DataMigration migration, int maxRows = 10)
         {
-            List<ValidationMessage> results = new List<ValidationMessage>();
+            bool success = false;
+            string message = null;
+            string sourceSql = null;
+            string insertSql = null;
 
-            await ExecuteWithConnectionsAsync(migration.SourceConnection, migration.DestConnection, async (source, dest) =>
+            await ExecuteWithConnectionsAsync(migration, async (source, dest) =>
             {
-                // todo: rework this as test insert with transaction rollback
+                var sourceData = await QuerySourceTableAsync(source, step, migration.GetParameters());
+                sourceSql = sourceData.sql;
+
+                var migrator = await SqlMigrator<int>.InitializeAsync(dest);
+                var intoTable = DbObject.Parse(step.DestTable);
+                var mappings = GetForeignKeyMapping(step);
+
+                using (var txn = dest.BeginTransaction())
+                {
+                    try
+                    {
+                        await migrator.CopyRowsAsync(dest, sourceData.table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name, mappings, txn: txn, maxRows: maxRows);
+                        success = true;
+                        message = "Step succeeded.";
+                    }
+                    catch (Exception exc)
+                    {
+                        message = exc.Message;
+                        insertSql = migrator.MigrateCommand.GetInsertStatement();
+                    }
+                    finally
+                    {
+                        txn.Rollback();
+                    }                    
+                }                
             });
 
-            return results.ToLookup(row => row.Context, row => row.Message);
-
-            void AddUnrecognizedColumns(IEnumerable<DataMigration.Column> columns, Func<DataMigration.Column, string> columnSelector, DataTable schemaColumns)
-            {                
-                var schemaColumnNames = schemaColumns.AsEnumerable().Select(row => ColumnName(row)).ToHashSet();
-                var unrecognized = columns.Where(col => !string.IsNullOrEmpty(columnSelector.Invoke(col)) && !schemaColumnNames.Contains(columnSelector.Invoke(col))).Select(col => new { column = col, name = columnSelector.Invoke(col) });
-
-                results.AddRange(unrecognized.Select(col => new ValidationMessage()
-                {
-                    Context = col.column.Key,
-                    Message = $"Column name {col.name} is not recognized."
-                }));
-            }
+            return (success, message, sourceSql, insertSql);
         }
 
         private class ValidationMessage

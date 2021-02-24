@@ -63,28 +63,10 @@ namespace Zinger.Forms
                 BindingSource bsSteps = new BindingSource();
                 bsSteps.DataSource = new BindingList<DataMigration.Step>((_doc.Document?.Steps.OrderBy(row => row.Order) ?? Enumerable.Empty<DataMigration.Step>()).ToList());
                 dgvSteps.DataSource = bsSteps;
-                bsSteps.CurrentItemChanged += async delegate (object sender, EventArgs args)
+                bsSteps.CurrentItemChanged += delegate (object sender, EventArgs args)
                 {
-                    var messages = await _migrator.ValidateStepAsync(bsSteps.Current as DataMigration.Step, _doc.Document);
-
-                    dgvSteps.CurrentRow.ErrorText = (messages.Any()) ? "There are one or more error in this step." : null;
-
-                    if (messages.Any())
-                    {
-                        foreach (DataGridViewRow row in dgvColumns.Rows)
-                        {
-                            if (row.IsNewRow) continue;
-                            var key = (row.DataBoundItem as DataMigration.Column).Key;
-                            if (messages.Contains(key))
-                            {
-                                row.ErrorText = string.Join("\r\n", messages[key]);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        foreach (DataGridViewRow row in dgvColumns.Rows) row.ErrorText = null;
-                    }
+                    pbValidation.Image = null;
+                    lblValidationError.Text = null;
                 };
 
                 tbSelectFrom.DataBindings.Add(new Binding("Text", bsSteps, nameof(DataMigration.Step.SourceFromWhere)));
@@ -136,6 +118,25 @@ namespace Zinger.Forms
         private async void frmMigrationBuilder_FormClosing(object sender, FormClosingEventArgs e)
         {
             await _doc.FormClosingAsync(e);
+        }
+
+        private async void btnValidateStep_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                pbValidation.Image = imageList1.Images["loading"];
+                var result = await _migrator.ValidateStepAsync((dgvSteps.DataSource as BindingSource).Current as DataMigration.Step, _doc.Document);
+                pbValidation.Image = (result.success) ? imageList1.Images["success"] : imageList1.Images["fail"];
+                lblValidationError.Text = result.message;
+                
+                llSourceSql.LinkClicked += delegate (object sender2, LinkLabelLinkClickedEventArgs e2) { Clipboard.SetText(result.sourceSql); };
+                llInsertSql.LinkClicked += delegate (object sender3, LinkLabelLinkClickedEventArgs e3) { Clipboard.SetText(result.insertStatement); };
+            }
+            catch (Exception exc)
+            {
+                pbValidation.Image = imageList1.Images["fail"];
+                lblValidationError.Text = exc.Message;
+            }
         }
     }
 }
