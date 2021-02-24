@@ -39,7 +39,7 @@ namespace Zinger.Models
             /// </summary>
             public string DestIdentityColumn { get; set; }
             
-            public Column[] Columns { get; set; }
+            public List<Column> Columns { get; set; }
         }
 
         public class Column

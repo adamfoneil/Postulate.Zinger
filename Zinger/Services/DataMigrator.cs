@@ -76,7 +76,7 @@ namespace Zinger.Services
                 result.AddRange(columns);
             });
 
-            step.Columns = result.ToArray();            
+            step.Columns = result;            
 
             IEnumerable<DataRow> nonIdentityColumns(DataTable schemaTable) => schemaTable.AsEnumerable().Where(row => !IsIdentity(row));
 
@@ -116,7 +116,6 @@ namespace Zinger.Services
                 throw new Exception($"Error getting schema columns: {exc.Message} from query: {sql}");
             }
         }
-
 
         private bool IsIdentity(DataRow row) => row.Field<bool>("IsIdentity");
 
@@ -206,24 +205,7 @@ namespace Zinger.Services
 
             await ExecuteWithConnectionsAsync(migration.SourceConnection, migration.DestConnection, async (source, dest) =>
             {
-                var schemaCols = await GetStepSchemaColumns(source, dest, step, migration.GetParameters());
-
-                AddUnrecognizedColumns(step.Columns, col => col.Source, schemaCols.sourceColumns);               
-                AddUnrecognizedColumns(step.Columns, col => col.Dest, schemaCols.destColumns);
-
-                // missing required dest columns
-                var required = schemaCols.destColumns.AsEnumerable().Where(row => IsRequired(row)).Select(row => ColumnName(row)).ToHashSet();
-                var missing = step.Columns.Where(col => col.SourceIsEmpty && required.Contains(col.Dest)).Select(col => new ValidationMessage()
-                {
-                    Context = col.Key,
-                    Message = $"{col.Dest} is required, but not provided."
-                });
-
-                results.AddRange(missing);
-
-                // incompatible types
-
-                // under-sized dest columns
+                // todo: rework this as test insert with transaction rollback
             });
 
             return results.ToLookup(row => row.Context, row => row.Message);

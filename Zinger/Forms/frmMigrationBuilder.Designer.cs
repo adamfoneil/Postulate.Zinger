@@ -64,6 +64,10 @@ namespace Zinger.Forms
             this.tbDestIdentityCol = new System.Windows.Forms.TextBox();
             this.tbSelectFrom = new FastColoredTextBoxNS.FastColoredTextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.lblValidationError = new System.Windows.Forms.Label();
+            this.imgValidation = new System.Windows.Forms.PictureBox();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -79,6 +83,8 @@ namespace Zinger.Forms
             this.panel2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbSelectFrom)).BeginInit();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imgValidation)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -212,6 +218,7 @@ namespace Zinger.Forms
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dgvColumns);
+            this.splitContainer1.Panel2.Controls.Add(this.panel1);
             this.splitContainer1.Panel2.Controls.Add(this.panel2);
             this.splitContainer1.Size = new System.Drawing.Size(744, 348);
             this.splitContainer1.SplitterDistance = 253;
@@ -272,7 +279,7 @@ namespace Zinger.Forms
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(245, 332);
+            this.tabPage2.Size = new System.Drawing.Size(245, 322);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Parameters";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -286,7 +293,7 @@ namespace Zinger.Forms
             this.dgvParams.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvParams.Location = new System.Drawing.Point(3, 3);
             this.dgvParams.Name = "dgvParams";
-            this.dgvParams.Size = new System.Drawing.Size(239, 326);
+            this.dgvParams.Size = new System.Drawing.Size(239, 316);
             this.dgvParams.TabIndex = 0;
             // 
             // colParamName
@@ -311,9 +318,9 @@ namespace Zinger.Forms
             this.colDestColumn,
             this.colMapFrom});
             this.dgvColumns.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvColumns.Location = new System.Drawing.Point(0, 198);
+            this.dgvColumns.Location = new System.Drawing.Point(0, 181);
             this.dgvColumns.Name = "dgvColumns";
-            this.dgvColumns.Size = new System.Drawing.Size(487, 150);
+            this.dgvColumns.Size = new System.Drawing.Size(487, 121);
             this.dgvColumns.TabIndex = 1;
             // 
             // colSource
@@ -345,7 +352,7 @@ namespace Zinger.Forms
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(487, 198);
+            this.panel2.Size = new System.Drawing.Size(487, 181);
             this.panel2.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -357,7 +364,7 @@ namespace Zinger.Forms
             this.tableLayoutPanel2.Controls.Add(this.label4, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.label5, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.tbDestIdentityCol, 1, 1);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(20, 127);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(20, 117);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 36.36364F));
@@ -421,6 +428,7 @@ namespace Zinger.Forms
             this.tbSelectFrom.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbSelectFrom.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.tbSelectFrom.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tbSelectFrom.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.tbSelectFrom.IsReplaceMode = false;
             this.tbSelectFrom.Language = FastColoredTextBoxNS.Language.SQL;
             this.tbSelectFrom.LeftBracket = '(';
@@ -430,7 +438,7 @@ namespace Zinger.Forms
             this.tbSelectFrom.RightBracket = ')';
             this.tbSelectFrom.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.tbSelectFrom.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("tbSelectFrom.ServiceColors")));
-            this.tbSelectFrom.Size = new System.Drawing.Size(487, 95);
+            this.tbSelectFrom.Size = new System.Drawing.Size(487, 85);
             this.tbSelectFrom.TabIndex = 1;
             this.tbSelectFrom.Zoom = 100;
             // 
@@ -443,6 +451,43 @@ namespace Zinger.Forms
             this.label3.TabIndex = 0;
             this.label3.Text = "Select From:";
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.imgValidation);
+            this.panel1.Controls.Add(this.lblValidationError);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 302);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(487, 46);
+            this.panel1.TabIndex = 2;
+            // 
+            // lblValidationError
+            // 
+            this.lblValidationError.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblValidationError.Location = new System.Drawing.Point(42, 10);
+            this.lblValidationError.Name = "lblValidationError";
+            this.lblValidationError.Size = new System.Drawing.Size(433, 26);
+            this.lblValidationError.TabIndex = 0;
+            this.lblValidationError.Text = "label6";
+            this.lblValidationError.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // imgValidation
+            // 
+            this.imgValidation.Location = new System.Drawing.Point(12, 15);
+            this.imgValidation.Name = "imgValidation";
+            this.imgValidation.Size = new System.Drawing.Size(17, 20);
+            this.imgValidation.TabIndex = 1;
+            this.imgValidation.TabStop = false;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "success");
+            this.imageList1.Images.SetKeyName(1, "fail");
+            // 
             // frmMigrationBuilder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -454,6 +499,7 @@ namespace Zinger.Forms
             this.Name = "frmMigrationBuilder";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Data Migrator";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMigrationBuilder_FormClosing);
             this.Load += new System.EventHandler(this.frmMigrationBuilder_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -473,6 +519,8 @@ namespace Zinger.Forms
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbSelectFrom)).EndInit();
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.imgValidation)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -513,5 +561,9 @@ namespace Zinger.Forms
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tbDestIdentityCol;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.PictureBox imgValidation;
+        private System.Windows.Forms.Label lblValidationError;
+        private System.Windows.Forms.ImageList imageList1;
     }
 }

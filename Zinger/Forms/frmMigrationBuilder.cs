@@ -73,6 +73,7 @@ namespace Zinger.Forms
                     {
                         foreach (DataGridViewRow row in dgvColumns.Rows)
                         {
+                            if (row.IsNewRow) continue;
                             var key = (row.DataBoundItem as DataMigration.Column).Key;
                             if (messages.Contains(key))
                             {
@@ -129,8 +130,12 @@ namespace Zinger.Forms
             catch (Exception exc)
             {
                 MessageBox.Show(exc.Message);
-            }
-            
+            }            
+        }
+
+        private async void frmMigrationBuilder_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            await _doc.FormClosingAsync(e);
         }
     }
 }
