@@ -202,7 +202,7 @@ namespace Zinger.Services
         }
 
         /// <summary>
-        /// gets error messages associated with a step (i.e. missing required columns, incompatible types, under-sized dest columns)
+        /// runs a step then rolls it back, collecting any error messages and SQL artifacts that result
         /// </summary>
         public async Task<(bool success, string message, string sourceSql, string insertStatement)> ValidateStepAsync(DataMigration.Step step, DataMigration migration, int maxRows = 10)
         {
