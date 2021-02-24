@@ -227,11 +227,11 @@ namespace Zinger.Services
                         await migrator.CopyRowsAsync(dest, sourceData.table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name, mappings, txn: txn, maxRows: maxRows);
                         success = true;
                         message = "Step succeeded.";
+                        insertSql = migrator.MigrateCommand.GetInsertStatement();
                     }
                     catch (Exception exc)
                     {
-                        message = exc.Message;
-                        insertSql = migrator.MigrateCommand.GetInsertStatement();
+                        message = exc.Message;                        
                     }
                     finally
                     {
