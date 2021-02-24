@@ -204,7 +204,7 @@ namespace Zinger.Services
         /// <summary>
         /// runs a step then rolls it back, collecting any error messages and SQL artifacts that result
         /// </summary>
-        public async Task<(bool success, string message, string sourceSql, string insertStatement)> ValidateStepAsync(DataMigration.Step step, DataMigration migration, int maxRows = 10)
+        public async Task<(bool success, string message, string sourceSql, string insertSql)> ValidateStepAsync(DataMigration.Step step, DataMigration migration, int maxRows = 10)
         {
             bool success = false;
             string message = null;

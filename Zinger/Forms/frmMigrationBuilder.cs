@@ -130,7 +130,7 @@ namespace Zinger.Forms
                 lblValidationError.Text = result.message;
                 
                 llSourceSql.LinkClicked += delegate (object sender2, LinkLabelLinkClickedEventArgs e2) { Clipboard.SetText(result.sourceSql); };
-                llInsertSql.LinkClicked += delegate (object sender3, LinkLabelLinkClickedEventArgs e3) { Clipboard.SetText(result.insertStatement); };
+                llInsertSql.LinkClicked += delegate (object sender3, LinkLabelLinkClickedEventArgs e3) { Clipboard.SetText(result.insertSql); };
             }
             catch (Exception exc)
             {
