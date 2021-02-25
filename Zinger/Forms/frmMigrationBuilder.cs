@@ -66,7 +66,7 @@ namespace Zinger.Forms
                 bsSteps.CurrentItemChanged += delegate (object sender, EventArgs args)
                 {
                     pbValidation.Image = null;
-                    lblValidationError.Text = null;
+                    lblStepResult.Text = null;
                 };
 
                 tbSelectFrom.DataBindings.Add(new Binding("Text", bsSteps, nameof(DataMigration.Step.SourceFromWhere)));
@@ -127,7 +127,7 @@ namespace Zinger.Forms
                 pbValidation.Image = imageList1.Images["loading"];
                 var result = await _migrator.ValidateStepAsync((dgvSteps.DataSource as BindingSource).Current as DataMigration.Step, _doc.Document);
                 pbValidation.Image = (result.success) ? imageList1.Images["success"] : imageList1.Images["fail"];
-                lblValidationError.Text = result.message;
+                lblStepResult.Text = result.message;
                 
                 llSourceSql.LinkClicked += delegate (object sender2, LinkLabelLinkClickedEventArgs e2) { Clipboard.SetText(result.sourceSql); };
                 llInsertSql.LinkClicked += delegate (object sender3, LinkLabelLinkClickedEventArgs e3) { Clipboard.SetText(result.insertSql); };
@@ -135,7 +135,20 @@ namespace Zinger.Forms
             catch (Exception exc)
             {
                 pbValidation.Image = imageList1.Images["fail"];
-                lblValidationError.Text = exc.Message;
+                lblStepResult.Text = exc.Message;
+            }
+        }
+
+        private void btnRun_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+            }
+            catch (Exception exc)
+            {
+                pbValidation.Image = imageList1.Images["fail"];
+                lblStepResult.Text = exc.Message;
             }
         }
     }
