@@ -46,6 +46,7 @@ namespace Zinger.Forms
 
             _doc.FileOpened += delegate (object sender, EventArgs args)
             {
+                _migrator.CurrentFilename = _doc.Filename;
                 InitStepsDataGridView();
                 InitParamsDataGridView();
             };

@@ -1,4 +1,5 @@
-﻿using DataTables.Library;
+﻿using Dapper.CX.SqlServer;
+using DataTables.Library;
 using Microsoft.Data.SqlClient;
 using SqlIntegration.Library;
 using SqlSchema.Library;
@@ -22,6 +23,8 @@ namespace Zinger.Services
         {
             _savedConnections = savedConnections;            
         }
+
+        public string CurrentFilename { get; set; }
 
         /// <summary>
         /// initialize a Step object by comparing columns from a source and destination table,
@@ -164,7 +167,7 @@ namespace Zinger.Services
 
         private Dictionary<string, string> GetForeignKeyMapping(DataMigration.Step step) =>
             step.Columns
-                .Where(col => !string.IsNullOrEmpty(col.KeyMapTable))
+                .Where(col => !string.IsNullOrEmpty(col.KeyMapTable) && !col.KeyMapTable.StartsWith("@"))
                 .ToDictionary(col => col.Dest, col => col.KeyMapTable);
         
         private async Task<(DataTable table, string sql)> QuerySourceTableAsync(SqlConnection cnSource, DataMigration.Step step, object parameters = null)
@@ -222,7 +225,9 @@ namespace Zinger.Services
                 {
                     try
                     {                        
-                        await migrator.CopyRowsAsync(dest, sourceData.table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name, mappings, txn: txn, maxRows: maxRows);
+                        await migrator.CopyRowsAsync(dest, 
+                            sourceData.table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name, 
+                            mappings, onEachRow: (cmd, row) => ApplyInlineMapping(step, cmd, row), txn: txn, maxRows: maxRows);
                         result.Success = true;
                         result.Message = "Step succeeded.";
                         result.InsertSql = migrator.MigrateCommand.GetInsertStatement();
@@ -241,6 +246,40 @@ namespace Zinger.Services
             return result;
         }
 
+        /// <summary>
+        /// use this for mapping enum values that are inconvenient to use with a table.
+        /// Create a json file in the same folder as the migration you loaded that can deserialize to Dictionary string, int
+        /// </summary>
+        private void ApplyInlineMapping(DataMigration.Step step, SqlServerCmd cmd, DataRow row)
+        {
+            try
+            {
+                var inlineMappedCols = step.Columns
+                    .Where(col => col.KeyMapTable?.StartsWith("@") ?? false)
+                    .Select(col => new
+                    {
+                        Column = col,
+                        MappingFile = Path.Combine(Path.GetDirectoryName(CurrentFilename), col.KeyMapTable.Substring(1))
+                    });
+
+                foreach (var col in inlineMappedCols)
+                {
+                    if (!row.IsNull(col.Column.Dest))
+                    {
+                        var json = File.ReadAllText(col.MappingFile);
+                        var map = JsonSerializer.Deserialize<Dictionary<string, int>>(json);
+                        var key = row.Field<int>(col.Column.Dest).ToString();
+                        var value = map[key];
+                        cmd[col.Column.Dest] = value;
+                    }                                       
+                }
+            }
+            catch (Exception exc)
+            {
+                throw new Exception($"Error with inline mapping: {exc.Message}");
+            }
+        }
+
         public async Task<MigrationResult> RunStepAsync(DataMigration.Step step, DataMigration migration, int maxRows = 0)
         {
             var result = new MigrationResult();
@@ -257,7 +296,9 @@ namespace Zinger.Services
                 
                 try
                 {                    
-                    result.RowsCopied = await migrator.CopyRowsAsync(dest, sourceData.table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name, mappings, maxRows: maxRows);
+                    result.RowsCopied = await migrator.CopyRowsAsync(
+                        dest, sourceData.table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name, 
+                        mappings, onEachRow: (cmd, row) => ApplyInlineMapping(step, cmd, row), maxRows: maxRows);
                     result.Success = true;
                     result.Message = "Step succeeded.";
                     result.InsertSql = migrator.MigrateCommand.GetInsertStatement();
