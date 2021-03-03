@@ -165,7 +165,7 @@ namespace Zinger.Services
         private Dictionary<string, string> GetForeignKeyMapping(DataMigration.Step step) =>
             step.Columns
                 .Where(col => !string.IsNullOrEmpty(col.KeyMapTable))
-                .ToDictionary(col => col.Source, col => col.KeyMapTable);
+                .ToDictionary(col => col.Dest, col => col.KeyMapTable);
         
         private async Task<(DataTable table, string sql)> QuerySourceTableAsync(SqlConnection cnSource, DataMigration.Step step, object parameters = null)
         {
@@ -204,17 +204,15 @@ namespace Zinger.Services
         /// <summary>
         /// runs a step then rolls it back, collecting any error messages and SQL artifacts that result
         /// </summary>
-        public async Task<(bool success, string message, string sourceSql, string insertSql)> ValidateStepAsync(DataMigration.Step step, DataMigration migration, int maxRows = 10)
+        public async Task<MigrationResult> ValidateStepAsync(DataMigration.Step step, DataMigration migration, int maxRows = 10)
         {
-            bool success = false;
-            string message = null;
-            string sourceSql = null;
-            string insertSql = null;
+            var result = new MigrationResult();
 
             await ExecuteWithConnectionsAsync(migration, async (source, dest) =>
             {
                 var sourceData = await QuerySourceTableAsync(source, step, migration.GetParameters());
-                sourceSql = sourceData.sql;
+                result.SourceSql = sourceData.sql;
+                result.Action = "tested";
 
                 var migrator = await SqlMigrator<int>.InitializeAsync(dest);
                 var intoTable = DbObject.Parse(step.DestTable);
@@ -223,15 +221,15 @@ namespace Zinger.Services
                 using (var txn = dest.BeginTransaction())
                 {
                     try
-                    {
+                    {                        
                         await migrator.CopyRowsAsync(dest, sourceData.table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name, mappings, txn: txn, maxRows: maxRows);
-                        success = true;
-                        message = "Step succeeded.";
-                        insertSql = migrator.MigrateCommand.GetInsertStatement();
+                        result.Success = true;
+                        result.Message = "Step succeeded.";
+                        result.InsertSql = migrator.MigrateCommand.GetInsertStatement();
                     }
                     catch (Exception exc)
                     {
-                        message = exc.Message;                        
+                        result.Message = exc.Message;                        
                     }
                     finally
                     {
@@ -240,7 +238,37 @@ namespace Zinger.Services
                 }                
             });
 
-            return (success, message, sourceSql, insertSql);
+            return result;
+        }
+
+        public async Task<MigrationResult> RunStepAsync(DataMigration.Step step, DataMigration migration, int maxRows = 0)
+        {
+            var result = new MigrationResult();
+            result.Action = "copied";
+
+            await ExecuteWithConnectionsAsync(migration, async (source, dest) =>
+            {
+                var sourceData = await QuerySourceTableAsync(source, step, migration.GetParameters());
+                result.SourceSql = sourceData.sql;
+
+                var migrator = await SqlMigrator<int>.InitializeAsync(dest);
+                var intoTable = DbObject.Parse(step.DestTable);
+                var mappings = GetForeignKeyMapping(step);
+                
+                try
+                {                    
+                    result.RowsCopied = await migrator.CopyRowsAsync(dest, sourceData.table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name, mappings, maxRows: maxRows);
+                    result.Success = true;
+                    result.Message = "Step succeeded.";
+                    result.InsertSql = migrator.MigrateCommand.GetInsertStatement();
+                }
+                catch (Exception exc)
+                {
+                    result.Message = exc.Message;
+                }                                
+            });
+
+            return result;
         }
 
         private class ValidationMessage
@@ -250,6 +278,16 @@ namespace Zinger.Services
             /// </summary>
             public string Context { get; set; }
             public string Message { get; set; }
+        }
+
+        public class MigrationResult
+        {
+            public bool Success { get; set; }
+            public string Message { get; set; }
+            public string SourceSql { get; set; }
+            public string InsertSql { get; set; }            
+            public int RowsCopied { get; set; }
+            public string Action { get; set; }            
         }
     }
 }

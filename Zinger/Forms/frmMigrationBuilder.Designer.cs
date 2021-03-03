@@ -52,14 +52,16 @@ namespace Zinger.Forms
             this.dgvParams = new System.Windows.Forms.DataGridView();
             this.colParamName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colParamVal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.dgvColumns = new System.Windows.Forms.DataGridView();
             this.colSource = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDestColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colMapFrom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnRun = new System.Windows.Forms.Button();
             this.llInsertSql = new System.Windows.Forms.LinkLabel();
+            this.pbValidation = new System.Windows.Forms.PictureBox();
             this.llSourceSql = new System.Windows.Forms.LinkLabel();
             this.btnValidateStep = new System.Windows.Forms.Button();
-            this.pbValidation = new System.Windows.Forms.PictureBox();
             this.lblStepResult = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -70,8 +72,6 @@ namespace Zinger.Forms
             this.tbSelectFrom = new FastColoredTextBoxNS.FastColoredTextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.btnRun = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -83,15 +83,15 @@ namespace Zinger.Forms
             ((System.ComponentModel.ISupportInitialize)(this.dgvSteps)).BeginInit();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvParams)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvColumns)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbValidation)).BeginInit();
             this.panel2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbSelectFrom)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -316,6 +316,28 @@ namespace Zinger.Forms
             this.colParamVal.HeaderText = "Value";
             this.colParamVal.Name = "colParamVal";
             // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 159);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.dgvColumns);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.btnRun);
+            this.splitContainer2.Panel2.Controls.Add(this.llInsertSql);
+            this.splitContainer2.Panel2.Controls.Add(this.pbValidation);
+            this.splitContainer2.Panel2.Controls.Add(this.llSourceSql);
+            this.splitContainer2.Panel2.Controls.Add(this.btnValidateStep);
+            this.splitContainer2.Panel2.Controls.Add(this.lblStepResult);
+            this.splitContainer2.Size = new System.Drawing.Size(575, 189);
+            this.splitContainer2.SplitterDistance = 326;
+            this.splitContainer2.TabIndex = 3;
+            // 
             // dgvColumns
             // 
             this.dgvColumns.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -350,6 +372,19 @@ namespace Zinger.Forms
             this.colMapFrom.HeaderText = "Map From Step";
             this.colMapFrom.Name = "colMapFrom";
             // 
+            // btnRun
+            // 
+            this.btnRun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRun.Image = ((System.Drawing.Image)(resources.GetObject("btnRun.Image")));
+            this.btnRun.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnRun.Location = new System.Drawing.Point(162, 13);
+            this.btnRun.Name = "btnRun";
+            this.btnRun.Size = new System.Drawing.Size(71, 23);
+            this.btnRun.TabIndex = 5;
+            this.btnRun.Text = "Run";
+            this.btnRun.UseVisualStyleBackColor = true;
+            this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
+            // 
             // llInsertSql
             // 
             this.llInsertSql.AutoSize = true;
@@ -359,6 +394,15 @@ namespace Zinger.Forms
             this.llInsertSql.TabIndex = 4;
             this.llInsertSql.TabStop = true;
             this.llInsertSql.Text = "Insert SQL";
+            this.llInsertSql.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llInsertSql_LinkClicked);
+            // 
+            // pbValidation
+            // 
+            this.pbValidation.Location = new System.Drawing.Point(13, 43);
+            this.pbValidation.Name = "pbValidation";
+            this.pbValidation.Size = new System.Drawing.Size(17, 20);
+            this.pbValidation.TabIndex = 1;
+            this.pbValidation.TabStop = false;
             // 
             // llSourceSql
             // 
@@ -369,6 +413,7 @@ namespace Zinger.Forms
             this.llSourceSql.TabIndex = 3;
             this.llSourceSql.TabStop = true;
             this.llSourceSql.Text = "Source SQL";
+            this.llSourceSql.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llSourceSql_LinkClicked);
             // 
             // btnValidateStep
             // 
@@ -379,14 +424,6 @@ namespace Zinger.Forms
             this.btnValidateStep.Text = "Test";
             this.btnValidateStep.UseVisualStyleBackColor = true;
             this.btnValidateStep.Click += new System.EventHandler(this.btnValidateStep_Click);
-            // 
-            // pbValidation
-            // 
-            this.pbValidation.Location = new System.Drawing.Point(13, 43);
-            this.pbValidation.Name = "pbValidation";
-            this.pbValidation.Size = new System.Drawing.Size(17, 20);
-            this.pbValidation.TabIndex = 1;
-            this.pbValidation.TabStop = false;
             // 
             // lblStepResult
             // 
@@ -483,7 +520,6 @@ namespace Zinger.Forms
             this.tbSelectFrom.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbSelectFrom.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.tbSelectFrom.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbSelectFrom.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.tbSelectFrom.IsReplaceMode = false;
             this.tbSelectFrom.Language = FastColoredTextBoxNS.Language.SQL;
             this.tbSelectFrom.LeftBracket = '(';
@@ -514,41 +550,6 @@ namespace Zinger.Forms
             this.imageList1.Images.SetKeyName(1, "fail");
             this.imageList1.Images.SetKeyName(2, "loading");
             // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 159);
-            this.splitContainer2.Name = "splitContainer2";
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.dgvColumns);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.btnRun);
-            this.splitContainer2.Panel2.Controls.Add(this.llInsertSql);
-            this.splitContainer2.Panel2.Controls.Add(this.pbValidation);
-            this.splitContainer2.Panel2.Controls.Add(this.llSourceSql);
-            this.splitContainer2.Panel2.Controls.Add(this.btnValidateStep);
-            this.splitContainer2.Panel2.Controls.Add(this.lblStepResult);
-            this.splitContainer2.Size = new System.Drawing.Size(575, 189);
-            this.splitContainer2.SplitterDistance = 326;
-            this.splitContainer2.TabIndex = 3;
-            // 
-            // btnRun
-            // 
-            this.btnRun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRun.Image = ((System.Drawing.Image)(resources.GetObject("btnRun.Image")));
-            this.btnRun.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRun.Location = new System.Drawing.Point(162, 13);
-            this.btnRun.Name = "btnRun";
-            this.btnRun.Size = new System.Drawing.Size(71, 23);
-            this.btnRun.TabIndex = 5;
-            this.btnRun.Text = "Run";
-            this.btnRun.UseVisualStyleBackColor = true;
-            this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
-            // 
             // frmMigrationBuilder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -575,17 +576,17 @@ namespace Zinger.Forms
             ((System.ComponentModel.ISupportInitialize)(this.dgvSteps)).EndInit();
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvParams)).EndInit();
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvColumns)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbValidation)).EndInit();
             this.panel2.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbSelectFrom)).EndInit();
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            this.splitContainer2.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

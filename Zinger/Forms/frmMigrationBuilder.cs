@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinForms.Library;
 using WinForms.Library.Extensions.ComboBoxes;
@@ -15,6 +16,7 @@ namespace Zinger.Forms
         JsonSDI<DataMigration> _doc = new JsonSDI<DataMigration>(".json", "Json Files|*.json", "Save changes?");
         
         private DataMigrator _migrator;
+        private DataMigrator.MigrationResult _migrationResult;
 
         public frmMigrationBuilder()
         {
@@ -122,15 +124,27 @@ namespace Zinger.Forms
 
         private async void btnValidateStep_Click(object sender, EventArgs e)
         {
+            await RunMigrationTaskAsync(async (step, migration) => await _migrator.ValidateStepAsync(step, migration));
+        }
+
+        private async void btnRun_Click(object sender, EventArgs e)
+        {
+            await RunMigrationTaskAsync(async (step, migration) => await _migrator.RunStepAsync(step, migration));
+        }
+
+        private async Task RunMigrationTaskAsync(Func<DataMigration.Step, DataMigration, Task<DataMigrator.MigrationResult>> func)
+        {
             try
             {
+                var step = (dgvSteps.DataSource as BindingSource).Current as DataMigration.Step;
+
                 pbValidation.Image = imageList1.Images["loading"];
-                var result = await _migrator.ValidateStepAsync((dgvSteps.DataSource as BindingSource).Current as DataMigration.Step, _doc.Document);
-                pbValidation.Image = (result.success) ? imageList1.Images["success"] : imageList1.Images["fail"];
-                lblStepResult.Text = result.message;
-                
-                llSourceSql.LinkClicked += delegate (object sender2, LinkLabelLinkClickedEventArgs e2) { Clipboard.SetText(result.sourceSql); };
-                llInsertSql.LinkClicked += delegate (object sender3, LinkLabelLinkClickedEventArgs e3) { Clipboard.SetText(result.insertSql); };
+                _migrationResult = await func.Invoke(step, _doc.Document);
+                pbValidation.Image = (_migrationResult.Success) ? imageList1.Images["success"] : imageList1.Images["fail"];
+                lblStepResult.Text = $"{_migrationResult.Message} {_migrationResult.RowsCopied:n0} rows {_migrationResult.Action}";
+
+                llSourceSql.Enabled = !string.IsNullOrEmpty(_migrationResult.SourceSql);
+                llInsertSql.Enabled = !string.IsNullOrEmpty(_migrationResult.InsertSql);
             }
             catch (Exception exc)
             {
@@ -139,17 +153,26 @@ namespace Zinger.Forms
             }
         }
 
-        private void btnRun_Click(object sender, EventArgs e)
+        private void SaveToClipboard(string text)
         {
             try
             {
-
+                Clipboard.SetText(text);
             }
             catch (Exception exc)
             {
-                pbValidation.Image = imageList1.Images["fail"];
-                lblStepResult.Text = exc.Message;
+                MessageBox.Show(exc.Message);
             }
+        }
+
+        private void llSourceSql_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            SaveToClipboard(_migrationResult.SourceSql);
+        }
+
+        private void llInsertSql_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            SaveToClipboard(_migrationResult.InsertSql);
         }
     }
 }
