@@ -141,31 +141,6 @@ namespace Zinger.Services
             }
         }
 
-        public async Task ExecuteAsync(string fileName, CancellationTokenSource cts, object parameters = null)
-        {
-            var json = File.ReadAllText(fileName);
-            var migration = JsonSerializer.Deserialize<DataMigration>(json);
-            await ExecuteAsync(migration, cts, parameters);
-        }
-
-        public async Task ExecuteAsync(DataMigration migration, CancellationTokenSource cts, object parameters = null)
-        {
-            await ExecuteWithConnectionsAsync(migration.SourceConnection, migration.DestConnection, async (source, dest) =>
-            {
-                var migrator = await SqlMigrator<int>.InitializeAsync(dest);
-
-                foreach (var step in migration.Steps.OrderBy(s => s.Order))
-                {
-                    if (cts.IsCancellationRequested) break;
-
-                    var sourceTable = await QuerySourceTableAsync(source, step, parameters);
-                    var dbobj = DbObject.Parse(step.DestTable);
-                    var fkmapping = GetForeignKeyMapping(step);
-                    await migrator.CopyRowsAsync(dest, sourceTable.table, step.SourceIdentityColumn, dbobj.Schema, dbobj.Name, fkmapping);                    
-                }
-            });
-        }
-
         private Dictionary<string, string> GetForeignKeyMapping(DataMigration.Step step) =>
             step.Columns
                 .Where(col => !string.IsNullOrEmpty(col.KeyMapTable) && !col.KeyMapTable.StartsWith("@"))
