@@ -220,6 +220,7 @@ namespace Zinger.Services
                 var migrator = await SqlMigrator<int>.InitializeAsync(dest);
                 var intoTable = DbObject.Parse(step.DestTable);
                 var mappings = GetForeignKeyMapping(step);
+                var inlineMappings = GetInlineMappings(step);
 
                 using (var txn = dest.BeginTransaction())
                 {
@@ -227,7 +228,7 @@ namespace Zinger.Services
                     {                        
                         await migrator.CopyRowsAsync(dest, 
                             sourceData.table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name, 
-                            mappings, onEachRow: (cmd, row) => ApplyInlineMapping(step, cmd, row), txn: txn, maxRows: maxRows);
+                            mappings, onEachRow: (cmd, row) => ApplyInlineMapping(step, cmd, row, inlineMappings), txn: txn, maxRows: maxRows);
                         result.Success = true;
                         result.Message = "Step succeeded.";
                         result.InsertSql = migrator.MigrateCommand.GetInsertStatement();
@@ -246,37 +247,56 @@ namespace Zinger.Services
             return result;
         }
 
-        /// <summary>
-        /// use this for mapping enum values that are inconvenient to use with a table.
-        /// Create a json file in the same folder as the migration you loaded that can deserialize to Dictionary string, int
-        /// </summary>
-        private void ApplyInlineMapping(DataMigration.Step step, SqlServerCmd cmd, DataRow row)
+        private Dictionary<string, Dictionary<int, int>> GetInlineMappings(DataMigration.Step step)
         {
             try
             {
                 var inlineMappedCols = step.Columns
-                    .Where(col => col.KeyMapTable?.StartsWith("@") ?? false)
+                    .Where(col => col.KeyMapTable?.StartsWith("@") ?? false && !string.IsNullOrEmpty(col.Dest))
                     .Select(col => new
                     {
                         Column = col,
                         MappingFile = Path.Combine(Path.GetDirectoryName(CurrentFilename), col.KeyMapTable.Substring(1))
                     });
 
-                foreach (var col in inlineMappedCols)
+                return inlineMappedCols.Select(colInfo =>
                 {
-                    if (!row.IsNull(col.Column.Dest))
+                    var json = File.ReadAllText(colInfo.MappingFile);
+                    var map = JsonSerializer.Deserialize<Dictionary<string, int>>(json);
+                    return new
                     {
-                        var json = File.ReadAllText(col.MappingFile);
-                        var map = JsonSerializer.Deserialize<Dictionary<string, int>>(json);
-                        var key = row.Field<int>(col.Column.Dest).ToString();
-                        var value = map[key];
-                        cmd[col.Column.Dest] = value;
-                    }                                       
+                        ColumnName = colInfo.Column.Dest,
+                        Mappings = map.Select(kp => new KeyValuePair<int, int>(int.Parse(kp.Key), kp.Value)).ToDictionary(item => item.Key, item => item.Value)
+                    };
+                }).ToDictionary(item => item.ColumnName, item => item.Mappings);
+            }
+            catch (Exception exc)
+            {
+                throw new Exception($"Error getting inline mappings: {exc.Message}");
+            }
+        }
+
+        /// <summary>
+        /// use this for mapping enum values that are inconvenient to use with a table.
+        /// Create a json file in the same folder as the migration you loaded that can deserialize to Dictionary string, int
+        /// </summary>
+        private void ApplyInlineMapping(DataMigration.Step step, SqlServerCmd cmd, DataRow row, Dictionary<string, Dictionary<int, int>> inlineMappings)
+        {
+            try
+            {
+                foreach (var col in inlineMappings)
+                {
+                    if (!row.IsNull(col.Key))
+                    {
+                        var key = row.Field<int>(col.Key);
+                        var value = col.Value[key];
+                        cmd[col.Key] = value;
+                    }
                 }
             }
             catch (Exception exc)
             {
-                throw new Exception($"Error with inline mapping: {exc.Message}");
+                throw new Exception($"Error using inline mapping: {exc.Message}");
             }
         }
 
@@ -293,12 +313,13 @@ namespace Zinger.Services
                 var migrator = await SqlMigrator<int>.InitializeAsync(dest);
                 var intoTable = DbObject.Parse(step.DestTable);
                 var mappings = GetForeignKeyMapping(step);
-                
+                var inlineMappings = GetInlineMappings(step);
+
                 try
                 {                    
                     result.RowsCopied = await migrator.CopyRowsAsync(
                         dest, sourceData.table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name, 
-                        mappings, onEachRow: (cmd, row) => ApplyInlineMapping(step, cmd, row), maxRows: maxRows);
+                        mappings, onEachRow: (cmd, row) => ApplyInlineMapping(step, cmd, row, inlineMappings), maxRows: maxRows);
                     result.Success = true;
                     result.Message = "Step succeeded.";
                     result.InsertSql = migrator.MigrateCommand.GetInsertStatement();
