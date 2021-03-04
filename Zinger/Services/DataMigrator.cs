@@ -1,4 +1,5 @@
-﻿using Dapper.CX.SqlServer;
+﻿using AO.Models.Static;
+using Dapper.CX.SqlServer;
 using DataTables.Library;
 using Microsoft.Data.SqlClient;
 using SqlIntegration.Library;
@@ -176,12 +177,19 @@ namespace Zinger.Services
                 .Where(col => !string.IsNullOrWhiteSpace(col.Source) && !string.IsNullOrWhiteSpace(col.Dest))
                 .Select(col => (col.Source.StartsWith("=")) ? 
                     $"{col.Source.Substring(1)} AS [{col.Dest}]" : 
-                    $"[{col.Source}] AS [{col.Dest}]"));
+                    $"{SqlBuilder.ApplyDelimiter(col.Source, '[', ']')} AS [{col.Dest}]"));
 
-            var query = $"SELECT {columns}, [{step.SourceIdentityColumn}] FROM {step.SourceFromWhere}";
+            var query = $"SELECT {columns}, {SqlBuilder.ApplyDelimiter(step.SourceIdentityColumn, '[', ']')} FROM {step.SourceFromWhere}";
 
-            var dataTable = await cnSource.QueryTableAsync(query, parameters);
-            return (dataTable, query);
+            try
+            {
+                var dataTable = await cnSource.QueryTableAsync(query, parameters);
+                return (dataTable, query);
+            }
+            catch (Exception exc)
+            {
+                throw new QueryException(query, exc);
+            }
         }
 
         public async Task AddColumnsAsync(string fileName, bool overwrite = false, object parameters = null)
@@ -213,36 +221,55 @@ namespace Zinger.Services
 
             await ExecuteWithConnectionsAsync(migration, async (source, dest) =>
             {
-                var sourceData = await QuerySourceTableAsync(source, step, migration.GetParameters());
-                result.SourceSql = sourceData.sql;
-                result.Action = "tested";
-
-                var migrator = await SqlMigrator<int>.InitializeAsync(dest);
-                var intoTable = DbObject.Parse(step.DestTable);
-                var mappings = GetForeignKeyMapping(step);
-                var inlineMappings = GetInlineMappings(step);
-
-                using (var txn = dest.BeginTransaction())
+                try
                 {
-                    try
-                    {                        
-                        await migrator.CopyRowsAsync(dest, 
-                            sourceData.table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name, 
-                            mappings, onEachRow: (cmd, row) => ApplyInlineMapping(step, cmd, row, inlineMappings), txn: txn, maxRows: maxRows);
-                        result.Success = true;
-                        result.Message = "Step succeeded.";
-                        result.InsertSql = migrator.MigrateCommand.GetInsertStatement();
-                    }
-                    catch (Exception exc)
+                    var sourceData = await QuerySourceTableAsync(source, step, migration.GetParameters());
+                    result.SourceSql = sourceData.sql;
+                    result.Action = "tested";
+
+                    var migrator = await GetMigratorAsync(dest);
+                    var intoTable = DbObject.Parse(step.DestTable);
+                    var mappings = GetForeignKeyMapping(step);
+                    var inlineMappings = GetInlineMappings(step);
+
+                    using (var txn = dest.BeginTransaction())
                     {
-                        result.Message = exc.Message;                        
+                        try
+                        {
+                            await migrator.CopyRowsAsync(dest,
+                                sourceData.table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name,
+                                mappings, onEachRow: (cmd, row) => ApplyInlineMapping(step, cmd, row, inlineMappings), txn: txn, maxRows: maxRows);
+                            result.Success = true;
+                            result.Message = "Step succeeded.";
+                            result.InsertSql = migrator.MigrateCommand.GetInsertStatement();
+                        }
+                        catch (Exception exc)
+                        {
+                            result.Message = exc.Message;
+                        }
+                        finally
+                        {
+                            txn.Rollback();
+                        }
                     }
-                    finally
-                    {
-                        txn.Rollback();
-                    }                    
-                }                
+                }
+                catch (QueryException exc)
+                {
+                    result.Success = false;
+                    result.SourceSql = exc.Sql;
+                    result.Message = exc.Message;
+                }
             });
+
+            return result;
+        }
+
+        private async Task<SqlMigrator<int>> GetMigratorAsync(SqlConnection dest)
+        {
+            var result = await SqlMigrator<int>.InitializeAsync(dest);
+
+            // I'm just ignoring all errors
+            result.OnInsertException = async (cn, dataRow, exc) => await Task.FromResult(true);
 
             return result;
         }
@@ -307,27 +334,36 @@ namespace Zinger.Services
 
             await ExecuteWithConnectionsAsync(migration, async (source, dest) =>
             {
-                var sourceData = await QuerySourceTableAsync(source, step, migration.GetParameters());
-                result.SourceSql = sourceData.sql;
-
-                var migrator = await SqlMigrator<int>.InitializeAsync(dest);
-                var intoTable = DbObject.Parse(step.DestTable);
-                var mappings = GetForeignKeyMapping(step);
-                var inlineMappings = GetInlineMappings(step);
-
                 try
-                {                    
-                    result.RowsCopied = await migrator.CopyRowsAsync(
-                        dest, sourceData.table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name, 
-                        mappings, onEachRow: (cmd, row) => ApplyInlineMapping(step, cmd, row, inlineMappings), maxRows: maxRows);
-                    result.Success = true;
-                    result.Message = "Step succeeded.";
-                    result.InsertSql = migrator.MigrateCommand.GetInsertStatement();
-                }
-                catch (Exception exc)
                 {
+                    var sourceData = await QuerySourceTableAsync(source, step, migration.GetParameters());
+                    result.SourceSql = sourceData.sql;
+
+                    var migrator = await GetMigratorAsync(dest);
+                    var intoTable = DbObject.Parse(step.DestTable);
+                    var mappings = GetForeignKeyMapping(step);
+                    var inlineMappings = GetInlineMappings(step);
+
+                    try
+                    {
+                        result.RowsCopied = await migrator.CopyRowsAsync(
+                            dest, sourceData.table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name,
+                            mappings, onEachRow: (cmd, row) => ApplyInlineMapping(step, cmd, row, inlineMappings), maxRows: maxRows);
+                        result.Success = true;
+                        result.Message = "Step succeeded.";
+                        result.InsertSql = migrator.MigrateCommand.GetInsertStatement();
+                    }
+                    catch (Exception exc)
+                    {
+                        result.Message = exc.Message;
+                    }
+                }
+                catch (QueryException exc)
+                {
+                    result.Success = false;
+                    result.SourceSql = exc.Sql;
                     result.Message = exc.Message;
-                }                                
+                }
             });
 
             return result;
@@ -349,7 +385,18 @@ namespace Zinger.Services
             public string SourceSql { get; set; }
             public string InsertSql { get; set; }            
             public int RowsCopied { get; set; }
+            public int RowsSkipped { get; set; }
             public string Action { get; set; }            
         }
-    }
+
+        public class QueryException : Exception
+        {
+            public QueryException(string sql, Exception innerException) : base(innerException.Message, innerException)
+            {
+                Sql = sql;
+            }
+
+            public string Sql { get; }
+        }
+    }    
 }

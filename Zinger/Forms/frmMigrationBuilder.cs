@@ -143,14 +143,16 @@ namespace Zinger.Forms
                 _migrationResult = await func.Invoke(step, _doc.Document);
                 pbValidation.Image = (_migrationResult.Success) ? imageList1.Images["success"] : imageList1.Images["fail"];
                 lblStepResult.Text = $"{_migrationResult.Message} {_migrationResult.RowsCopied:n0} rows {_migrationResult.Action}";
-
-                llSourceSql.Enabled = !string.IsNullOrEmpty(_migrationResult.SourceSql);
-                llInsertSql.Enabled = !string.IsNullOrEmpty(_migrationResult.InsertSql);
             }
             catch (Exception exc)
             {
                 pbValidation.Image = imageList1.Images["fail"];
-                lblStepResult.Text = exc.Message;
+                lblStepResult.Text = exc.Message;                
+            }
+            finally
+            {
+                llSourceSql.Enabled = !string.IsNullOrEmpty(_migrationResult?.SourceSql);
+                llInsertSql.Enabled = !string.IsNullOrEmpty(_migrationResult?.InsertSql);
             }
         }
 
