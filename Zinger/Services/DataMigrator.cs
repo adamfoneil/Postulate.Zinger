@@ -243,9 +243,9 @@ namespace Zinger.Services
         {
             var result = await SqlMigrator<int>.InitializeAsync(dest);
 
-            // I'm just ignoring all errors
-            result.OnInsertException = async (cn, dataRow, exc) => await Task.FromResult(true);
-
+            // ignore PK violations, but throw all others
+            result.OnInsertException = async (cn, dataRow, exc) => await Task.FromResult(exc.Message.Contains("duplicate key"));
+            
             return result;
         }
 
