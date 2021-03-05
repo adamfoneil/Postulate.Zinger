@@ -39,6 +39,8 @@ namespace Zinger.Models
             /// </summary>
             public string DestIdentityColumn { get; set; }
             
+            public string Description { get; set; }
+
             public List<Column> Columns { get; set; }
         }
 
@@ -46,8 +48,7 @@ namespace Zinger.Models
         {
             public string Source { get; set; }
             public string Dest { get; set; }
-            public string KeyMapTable { get; set; }            
-            public Dictionary<int, int> InlineMapping { get; set; }
+            public string KeyMapTable { get; set; }                        
 
             [JsonIgnore]
             public string Key { get => $"{Source}:{Dest}"; }

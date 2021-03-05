@@ -177,5 +177,11 @@ namespace Zinger.Forms
         {
             SaveToClipboard(_migrationResult.InsertSql);
         }
+
+        private async void btnAddStepColumns_Click(object sender, EventArgs e)
+        {
+            var step = (dgvSteps.DataSource as BindingSource).Current as DataMigration.Step;
+            await _migrator.AddStepColumnsAsync(_doc.Document, step);
+        }
     }
 }

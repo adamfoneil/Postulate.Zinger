@@ -3,14 +3,12 @@ using Dapper.CX.SqlServer;
 using DataTables.Library;
 using Microsoft.Data.SqlClient;
 using SqlIntegration.Library;
-using SqlSchema.Library;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 using Zinger.Models;
 
@@ -24,6 +22,16 @@ namespace Zinger.Services
         {
             _savedConnections = savedConnections;            
         }
+
+        /// <summary>
+        /// built-in actions we can take on rows before they get migrated.
+        /// This is because I don't know how to build expressions dynamically from text,
+        /// and all I really need is the ability to invert some Id values for root level AH folders
+        /// </summary>
+        private Dictionary<string, Action<SqlServerCmd, string, DataRow>> Transforms => new Dictionary<string, Action<SqlServerCmd, string, DataRow>>()
+        {
+            ["invert"] = (cmd, col, row) => cmd[col] = Convert.ToInt32(row[col]) * -1
+        };
 
         public string CurrentFilename { get; set; }
 
@@ -39,12 +47,15 @@ namespace Zinger.Services
                 DestTable = destTable
             };
             
-            await BuildColumnsAsync(sourceConnection, destConnection, step, parameters);
+            await AddStepColumnsAsync(sourceConnection, destConnection, step, parameters);
 
             return step;
         }
 
-        public async Task BuildColumnsAsync(
+        public async Task AddStepColumnsAsync(DataMigration migration, DataMigration.Step step) =>
+            await AddStepColumnsAsync(migration.SourceConnection, migration.DestConnection, step, migration.GetParameters());
+        
+        public async Task AddStepColumnsAsync(
             string sourceConnection, string destConnection, DataMigration.Step step, object parameters = null)
         {
             List<DataMigration.Column> result = new List<DataMigration.Column>();            
@@ -103,7 +114,7 @@ namespace Zinger.Services
 
         private async Task<(DataTable sourceColumns, DataTable destColumns)> GetStepSchemaColumns(SqlConnection source, SqlConnection dest, DataMigration.Step step, object parameters = null)
         {
-            var sourceCols = await GetSchemaColumns(source, step.SourceFromWhere, parameters);
+            var sourceCols = await GetSchemaColumns(source, $"SELECT * FROM {step.SourceFromWhere}", parameters);
             var destCols = await GetSchemaColumns(dest, $"SELECT * FROM {step.DestTable}", parameters);
 
             return (sourceCols, destCols);
@@ -144,8 +155,23 @@ namespace Zinger.Services
         private Dictionary<string, string> GetForeignKeyMapping(DataMigration.Step step) =>
             step.Columns
                 .Where(col => !string.IsNullOrEmpty(col.KeyMapTable) && !col.KeyMapTable.StartsWith("@"))
-                .ToDictionary(col => col.Dest, col => col.KeyMapTable);
-        
+                .ToDictionary(col => col.Dest, col => ParseKeyMapExpression(col.KeyMapTable).tableName);        
+
+        /// <summary>
+        /// parses a table name and expression from a DataMigration.Step.Column.KeyMapTable
+        /// </summary>
+        private (string tableName, string transform) ParseKeyMapExpression(string keyMapExpression)
+        {
+            if (string.IsNullOrEmpty(keyMapExpression)) return (null, null);
+
+            const string separator = "=>";
+
+            int separatorIndex = keyMapExpression.IndexOf(separator);
+            return (separatorIndex < 0) ?
+                (keyMapExpression.Trim(), null) :
+                (keyMapExpression.Substring(0, separatorIndex).Trim(), keyMapExpression.Substring(separatorIndex + separator.Length).Trim());
+        }
+
         private async Task<(DataTable table, string sql)> QuerySourceTableAsync(SqlConnection cnSource, DataMigration.Step step, object parameters = null)
         {
             var columns = string.Join(", ", step.Columns
@@ -176,7 +202,7 @@ namespace Zinger.Services
             {
                 if (overwrite || (!step.Columns?.Any() ?? true))
                 {
-                    await BuildColumnsAsync(migration.SourceConnection, migration.DestConnection, step, parameters);
+                    await AddStepColumnsAsync(migration.SourceConnection, migration.DestConnection, step, parameters);
                 }
             }
 
@@ -185,59 +211,12 @@ namespace Zinger.Services
                 WriteIndented = true
             });
             File.WriteAllText(fileName, json);
-        }
+        }       
 
-        /// <summary>
-        /// runs a step then rolls it back, collecting any error messages and SQL artifacts that result
-        /// </summary>
-        public async Task<MigrationResult> ValidateStepAsync(DataMigration.Step step, DataMigration migration, int maxRows = 10)
-        {
-            var result = new MigrationResult();
-
-            await ExecuteWithConnectionsAsync(migration, async (source, dest) =>
-            {
-                try
-                {
-                    var sourceData = await QuerySourceTableAsync(source, step, migration.GetParameters());
-                    result.SourceSql = sourceData.sql;
-                    result.Action = "tested";
-
-                    var migrator = await GetMigratorAsync(dest);
-                    var intoTable = DbObject.Parse(step.DestTable);
-                    var mappings = GetForeignKeyMapping(step);
-                    var inlineMappings = GetInlineMappings(step);
-
-                    using (var txn = dest.BeginTransaction())
-                    {
-                        try
-                        {
-                            await migrator.CopyRowsAsync(dest,
-                                sourceData.table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name,
-                                mappings, onEachRow: (cmd, row) => ApplyInlineMapping(step, cmd, row, inlineMappings), txn: txn, maxRows: maxRows);
-                            result.Success = true;
-                            result.Message = "Step succeeded.";
-                            result.InsertSql = migrator.MigrateCommand.GetInsertStatement();
-                        }
-                        catch (Exception exc)
-                        {
-                            result.Message = exc.Message;
-                        }
-                        finally
-                        {
-                            txn.Rollback();
-                        }
-                    }
-                }
-                catch (QueryException exc)
-                {
-                    result.Success = false;
-                    result.SourceSql = exc.Sql;
-                    result.Message = exc.Message;
-                }
-            });
-
-            return result;
-        }
+        private Dictionary<string, Action<SqlServerCmd, string, DataRow>> GetTransforms(DataMigration.Step step) =>
+            step.Columns
+                .Where(col => !string.IsNullOrEmpty(ParseKeyMapExpression(col.KeyMapTable).transform) && !string.IsNullOrEmpty(col.Dest))
+                .ToDictionary(col => col.Dest, col => Transforms[ParseKeyMapExpression(col.KeyMapTable).transform]);                
 
         private async Task<SqlMigrator<int>> GetMigratorAsync(SqlConnection dest)
         {
@@ -313,24 +292,46 @@ namespace Zinger.Services
                 {
                     var sourceData = await QuerySourceTableAsync(source, step, migration.GetParameters());
                     result.SourceSql = sourceData.sql;
-
                     var migrator = await GetMigratorAsync(dest);
-                    var intoTable = DbObject.Parse(step.DestTable);
-                    var mappings = GetForeignKeyMapping(step);
-                    var inlineMappings = GetInlineMappings(step);
+                    await RunStepInnerAsync(step, maxRows, dest, migrator, result, sourceData);
+                }
+                catch (QueryException exc)
+                {
+                    result.Success = false;
+                    result.SourceSql = exc.Sql;
+                    result.Message = exc.Message;
+                }
+            });
 
-                    try
+            return result;
+        }
+
+        /// <summary>
+        /// runs a step then rolls it back, collecting any error messages and SQL artifacts that result
+        /// </summary>
+        public async Task<MigrationResult> ValidateStepAsync(DataMigration.Step step, DataMigration migration, int maxRows = 10)
+        {
+            var result = new MigrationResult();
+            result.Action = "tested";
+
+            await ExecuteWithConnectionsAsync(migration, async (source, dest) =>
+            {
+                try
+                {
+                    var sourceData = await QuerySourceTableAsync(source, step, migration.GetParameters());
+                    result.SourceSql = sourceData.sql;
+                    var migrator = await GetMigratorAsync(dest);
+
+                    using (var txn = dest.BeginTransaction())
                     {
-                        result.RowsCopied = await migrator.CopyRowsAsync(
-                            dest, sourceData.table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name,
-                            mappings, onEachRow: (cmd, row) => ApplyInlineMapping(step, cmd, row, inlineMappings), maxRows: maxRows);
-                        result.Success = true;
-                        result.Message = "Step succeeded.";
-                        result.InsertSql = migrator.MigrateCommand.GetInsertStatement();
-                    }
-                    catch (Exception exc)
-                    {
-                        result.Message = exc.Message;
+                        try
+                        {
+                            await RunStepInnerAsync(step, maxRows, dest, migrator, result, sourceData, txn);
+                        }
+                        finally
+                        {
+                            txn.Rollback();
+                        }
                     }
                 }
                 catch (QueryException exc)
@@ -342,6 +343,43 @@ namespace Zinger.Services
             });
 
             return result;
+        }
+
+        private async Task RunStepInnerAsync(
+            DataMigration.Step step, int maxRows, 
+            SqlConnection dest, SqlMigrator<int> migrator, MigrationResult result, 
+            (DataTable table, string sql) sourceData, SqlTransaction txn = null)
+        {            
+            var intoTable = DbObject.Parse(step.DestTable);
+            var mappings = GetForeignKeyMapping(step);
+            var inlineMappings = GetInlineMappings(step);
+            var transforms = GetTransforms(step);
+
+            try
+            {
+                result.RowsCopied = await migrator.CopyRowsAsync(
+                    dest, sourceData.table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name,
+                    mappings, onEachRow: (cmd, row) =>
+                    {
+                        //ApplyTransforms(cmd, row, transforms);
+                        ApplyInlineMapping(step, cmd, row, inlineMappings);
+                    }, txn: txn, maxRows: maxRows);
+                result.Success = true;
+                result.Message = "Step succeeded.";
+                result.InsertSql = migrator.MigrateCommand.GetInsertStatement();
+            }
+            catch (Exception exc)
+            {
+                result.Message = exc.Message;
+            }
+        }
+
+        private void ApplyTransforms(SqlServerCmd cmd, DataRow row, Dictionary<string, Action<SqlServerCmd, string, DataRow>> transforms)
+        {
+            foreach (var t in transforms)
+            {
+                t.Value.Invoke(cmd, t.Key, row);
+            }
         }
 
         private class ValidationMessage
