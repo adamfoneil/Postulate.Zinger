@@ -293,7 +293,7 @@ namespace Zinger.Services
                     var sourceData = await QuerySourceTableAsync(source, step, migration.GetParameters());
                     result.SourceSql = sourceData.sql;
                     var migrator = await GetMigratorAsync(dest);
-                    await RunStepInnerAsync(step, maxRows, dest, migrator, result, sourceData);
+                    await RunStepInnerAsync(step, maxRows, dest, migrator, result, sourceData.table);
                 }
                 catch (QueryException exc)
                 {
@@ -326,7 +326,7 @@ namespace Zinger.Services
                     {
                         try
                         {
-                            await RunStepInnerAsync(step, maxRows, dest, migrator, result, sourceData, txn);
+                            await RunStepInnerAsync(step, maxRows, dest, migrator, result, sourceData.table, txn);
                         }
                         finally
                         {
@@ -348,7 +348,7 @@ namespace Zinger.Services
         private async Task RunStepInnerAsync(
             DataMigration.Step step, int maxRows, 
             SqlConnection dest, SqlMigrator<int> migrator, MigrationResult result, 
-            (DataTable table, string sql) sourceData, SqlTransaction txn = null)
+            DataTable table, SqlTransaction txn = null)
         {            
             var intoTable = DbObject.Parse(step.DestTable);
             var mappings = GetForeignKeyMapping(step);
@@ -358,7 +358,7 @@ namespace Zinger.Services
             try
             {
                 result.RowsCopied = await migrator.CopyRowsAsync(
-                    dest, sourceData.table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name,
+                    dest, table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name,
                     mappings, onEachRow: (cmd, row) =>
                     {
                         //ApplyTransforms(cmd, row, transforms);
