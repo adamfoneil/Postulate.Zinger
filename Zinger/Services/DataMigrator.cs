@@ -224,7 +224,17 @@ namespace Zinger.Services
 
             // ignore PK violations, but throw all others
             result.OnInsertException = async (cn, dataRow, exc) => await Task.FromResult(exc.Message.Contains("duplicate key"));
-            
+
+            result.OnMappingException = async (exc, cn, obj, sourceId, txn) => 
+            {                
+                if (sourceId < 0 && obj.Equals(DbObject.Parse("dbo.Customer")))
+                {
+                    return await result.GetNewIdAsync(cn, obj, sourceId * -1, txn);
+                }
+
+                return default;
+            };
+
             return result;
         }
 
