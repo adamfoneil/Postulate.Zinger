@@ -4,6 +4,7 @@ using Dapper.CX.SqlServer;
 using DataTables.Library;
 using Microsoft.Data.SqlClient;
 using SqlIntegration.Library;
+using SqlIntegration.Library.Classes;
 using SqlIntegration.Library.Extensions;
 using System;
 using System.Collections.Generic;
@@ -199,9 +200,10 @@ namespace Zinger.Services
         /// copies the key map table from the dest connection to the source
         /// so you can do inspect and troubleshoot the mapping in the source connection
         /// </summary>
-        public async Task<DbObject> ImportKeyMapTableAsync(DataMigration dataMigration)
+        public async Task<(DbObject @object, int rowCount)> ImportKeyMapTableAsync(DataMigration dataMigration)
         {
             DbObject result = null;
+            int rowCount = 0;
 
             await ExecuteWithConnectionsAsync(dataMigration, async (source, dest) =>
             {
@@ -213,12 +215,24 @@ namespace Zinger.Services
                     await source.ExecuteAsync($"DROP TABLE [{result.Schema}].[{result.Name}]");
                 }
 
+                if (!await source.SchemaExistsAsync(result.Schema))
+                {
+                    await source.ExecuteAsync($"CREATE SCHEMA [{result.Schema}]");
+                }
+
                 string query = $"SELECT * FROM [{result.Schema}].[{result.Name}]";
                 var data = await dest.QueryTableAsync(query);
-                var schema = await dest.QuerySchemaTableAsync(query);
+                rowCount = data.Rows.Count;
+                var createTable = await dest.SqlCreateTableAsync(result.Schema, result.Name, query);
+                await source.ExecuteAsync(createTable);
+
+                await BulkInsert.ExecuteAsync(data, source, result, 30, new BulkInsertOptions()
+                {
+                    IdentityInsert = true
+                });
             });
 
-            return result;
+            return (result, rowCount);
         }
 
         public async Task AddColumnsAsync(string fileName, bool overwrite = false, object parameters = null)

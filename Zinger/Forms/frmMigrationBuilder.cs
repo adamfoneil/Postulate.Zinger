@@ -190,8 +190,8 @@ namespace Zinger.Forms
         {
             try
             {
-                DbObject tableName = await _migrator.ImportKeyMapTableAsync(_doc.Document);
-                MessageBox.Show($"Imported table {tableName}");
+                var result = await _migrator.ImportKeyMapTableAsync(_doc.Document);
+                MessageBox.Show($"Imported table {result.@object} with {result.rowCount:n0} rows.");
             }
             catch (Exception exc)
             {
