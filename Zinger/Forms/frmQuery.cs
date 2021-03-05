@@ -182,7 +182,7 @@ namespace Zinger.Forms
 
             if (connections.Connections?.Any() ?? false)
             {
-                foreach (SavedConnection sc in connections.Connections) cbConnection.Items.Add(sc);
+                foreach (SavedConnection sc in connections.Connections.OrderBy(sc => sc.Name)) cbConnection.Items.Add(sc);
             }
 
             cbConnection.SelectedIndexChanged += cbConnection_SelectedIndexChanged;
