@@ -1,8 +1,10 @@
 ﻿using AO.Models.Static;
+using Dapper;
 using Dapper.CX.SqlServer;
 using DataTables.Library;
 using Microsoft.Data.SqlClient;
 using SqlIntegration.Library;
+using SqlIntegration.Library.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -191,6 +193,32 @@ namespace Zinger.Services
             {
                 throw new QueryException(query, exc);
             }
+        }
+
+        /// <summary>
+        /// copies the key map table from the dest connection to the source
+        /// so you can do inspect and troubleshoot the mapping in the source connection
+        /// </summary>
+        public async Task<DbObject> ImportKeyMapTableAsync(DataMigration dataMigration)
+        {
+            DbObject result = null;
+
+            await ExecuteWithConnectionsAsync(dataMigration, async (source, dest) =>
+            {
+                var migrator = await GetMigratorAsync(dest);
+                result = migrator.KeyMapTable;
+
+                if (await source.TableExistsAsync(result))
+                {
+                    await source.ExecuteAsync($"DROP TABLE [{result.Schema}].[{result.Name}]");
+                }
+
+                string query = $"SELECT * FROM [{result.Schema}].[{result.Name}]";
+                var data = await dest.QueryTableAsync(query);
+                var schema = await dest.QuerySchemaTableAsync(query);
+            });
+
+            return result;
         }
 
         public async Task AddColumnsAsync(string fileName, bool overwrite = false, object parameters = null)

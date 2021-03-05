@@ -46,6 +46,9 @@ namespace Zinger.Forms
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dgvSteps = new System.Windows.Forms.DataGridView();
+            this.colOrder = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDestTable = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dgvParams = new System.Windows.Forms.DataGridView();
             this.colParamName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -55,6 +58,7 @@ namespace Zinger.Forms
             this.colSource = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDestColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colMapFrom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnAddStepColumns = new System.Windows.Forms.Button();
             this.btnRun = new System.Windows.Forms.Button();
             this.llInsertSql = new System.Windows.Forms.LinkLabel();
             this.pbValidation = new System.Windows.Forms.PictureBox();
@@ -70,10 +74,7 @@ namespace Zinger.Forms
             this.tbSelectFrom = new FastColoredTextBoxNS.FastColoredTextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.btnAddStepColumns = new System.Windows.Forms.Button();
-            this.colOrder = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDestTable = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnImportKeyMap = new System.Windows.Forms.ToolStripButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -161,7 +162,8 @@ namespace Zinger.Forms
             this.btnOpen,
             this.btnSave,
             this.toolStripSeparator1,
-            this.btnBuildColumns});
+            this.btnBuildColumns,
+            this.btnImportKeyMap});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(832, 25);
@@ -267,13 +269,36 @@ namespace Zinger.Forms
             this.dgvSteps.Size = new System.Drawing.Size(327, 316);
             this.dgvSteps.TabIndex = 0;
             // 
+            // colOrder
+            // 
+            this.colOrder.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colOrder.DataPropertyName = "Order";
+            this.colOrder.HeaderText = "Order";
+            this.colOrder.Name = "colOrder";
+            this.colOrder.Width = 58;
+            // 
+            // colDestTable
+            // 
+            this.colDestTable.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colDestTable.DataPropertyName = "DestTable";
+            this.colDestTable.HeaderText = "Into Table";
+            this.colDestTable.Name = "colDestTable";
+            this.colDestTable.Width = 80;
+            // 
+            // colDescription
+            // 
+            this.colDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colDescription.DataPropertyName = "Description";
+            this.colDescription.HeaderText = "Description";
+            this.colDescription.Name = "colDescription";
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.dgvParams);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(245, 322);
+            this.tabPage2.Size = new System.Drawing.Size(333, 322);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Parameters";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -287,7 +312,7 @@ namespace Zinger.Forms
             this.dgvParams.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvParams.Location = new System.Drawing.Point(3, 3);
             this.dgvParams.Name = "dgvParams";
-            this.dgvParams.Size = new System.Drawing.Size(239, 316);
+            this.dgvParams.Size = new System.Drawing.Size(327, 316);
             this.dgvParams.TabIndex = 0;
             // 
             // colParamName
@@ -360,6 +385,16 @@ namespace Zinger.Forms
             this.colMapFrom.DataPropertyName = "KeyMapTable";
             this.colMapFrom.HeaderText = "Map From Step";
             this.colMapFrom.Name = "colMapFrom";
+            // 
+            // btnAddStepColumns
+            // 
+            this.btnAddStepColumns.Location = new System.Drawing.Point(13, 130);
+            this.btnAddStepColumns.Name = "btnAddStepColumns";
+            this.btnAddStepColumns.Size = new System.Drawing.Size(115, 23);
+            this.btnAddStepColumns.TabIndex = 6;
+            this.btnAddStepColumns.Text = "Add Columns";
+            this.btnAddStepColumns.UseVisualStyleBackColor = true;
+            this.btnAddStepColumns.Click += new System.EventHandler(this.btnAddStepColumns_Click);
             // 
             // btnRun
             // 
@@ -509,6 +544,7 @@ namespace Zinger.Forms
             this.tbSelectFrom.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbSelectFrom.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.tbSelectFrom.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tbSelectFrom.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.tbSelectFrom.IsReplaceMode = false;
             this.tbSelectFrom.Language = FastColoredTextBoxNS.Language.SQL;
             this.tbSelectFrom.LeftBracket = '(';
@@ -539,38 +575,15 @@ namespace Zinger.Forms
             this.imageList1.Images.SetKeyName(1, "fail");
             this.imageList1.Images.SetKeyName(2, "loading");
             // 
-            // btnAddStepColumns
+            // btnImportKeyMap
             // 
-            this.btnAddStepColumns.Location = new System.Drawing.Point(13, 130);
-            this.btnAddStepColumns.Name = "btnAddStepColumns";
-            this.btnAddStepColumns.Size = new System.Drawing.Size(115, 23);
-            this.btnAddStepColumns.TabIndex = 6;
-            this.btnAddStepColumns.Text = "Add Columns";
-            this.btnAddStepColumns.UseVisualStyleBackColor = true;
-            this.btnAddStepColumns.Click += new System.EventHandler(this.btnAddStepColumns_Click);
-            // 
-            // colOrder
-            // 
-            this.colOrder.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colOrder.DataPropertyName = "Order";
-            this.colOrder.HeaderText = "Order";
-            this.colOrder.Name = "colOrder";
-            this.colOrder.Width = 58;
-            // 
-            // colDestTable
-            // 
-            this.colDestTable.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colDestTable.DataPropertyName = "DestTable";
-            this.colDestTable.HeaderText = "Into Table";
-            this.colDestTable.Name = "colDestTable";
-            this.colDestTable.Width = 80;
-            // 
-            // colDescription
-            // 
-            this.colDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colDescription.DataPropertyName = "Description";
-            this.colDescription.HeaderText = "Description";
-            this.colDescription.Name = "colDescription";
+            this.btnImportKeyMap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnImportKeyMap.Image = ((System.Drawing.Image)(resources.GetObject("btnImportKeyMap.Image")));
+            this.btnImportKeyMap.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnImportKeyMap.Name = "btnImportKeyMap";
+            this.btnImportKeyMap.Size = new System.Drawing.Size(126, 22);
+            this.btnImportKeyMap.Text = "Import Key Map Table";
+            this.btnImportKeyMap.Click += new System.EventHandler(this.btnImportKeyMap_Click);
             // 
             // frmMigrationBuilder
             // 
@@ -659,5 +672,6 @@ namespace Zinger.Forms
         private System.Windows.Forms.DataGridViewTextBoxColumn colOrder;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDestTable;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDescription;
+        private System.Windows.Forms.ToolStripButton btnImportKeyMap;
     }
 }

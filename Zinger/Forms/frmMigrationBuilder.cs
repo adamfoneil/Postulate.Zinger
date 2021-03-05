@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SqlIntegration.Library;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -156,10 +157,11 @@ namespace Zinger.Forms
             }
         }
 
-        private void SaveToClipboard(string text)
+        private void SaveToClipboard(Func<string> getText)
         {
             try
             {
+                var text = getText.Invoke();
                 Clipboard.SetText(text);
             }
             catch (Exception exc)
@@ -170,18 +172,31 @@ namespace Zinger.Forms
 
         private void llSourceSql_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            SaveToClipboard(_migrationResult.SourceSql);
+            SaveToClipboard(() => _migrationResult.SourceSql);
         }
 
         private void llInsertSql_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            SaveToClipboard(_migrationResult.InsertSql);
+            SaveToClipboard(() => _migrationResult.InsertSql);
         }
 
         private async void btnAddStepColumns_Click(object sender, EventArgs e)
         {
             var step = (dgvSteps.DataSource as BindingSource).Current as DataMigration.Step;
             await _migrator.AddStepColumnsAsync(_doc.Document, step);
+        }
+
+        private async void btnImportKeyMap_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DbObject tableName = await _migrator.ImportKeyMapTableAsync(_doc.Document);
+                MessageBox.Show($"Imported table {tableName}");
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
         }
     }
 }
