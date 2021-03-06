@@ -148,22 +148,7 @@ namespace Zinger.Services
         private Dictionary<string, string> GetForeignKeyMapping(DataMigration.Step step) =>
             step.Columns
                 .Where(col => !string.IsNullOrEmpty(col.KeyMapTable) && !col.KeyMapTable.StartsWith("@"))
-                .ToDictionary(col => col.Dest, col => ParseKeyMapExpression(col.KeyMapTable).tableName);        
-
-        /// <summary>
-        /// parses a table name and expression from a DataMigration.Step.Column.KeyMapTable
-        /// </summary>
-        private (string tableName, string transform) ParseKeyMapExpression(string keyMapExpression)
-        {
-            if (string.IsNullOrEmpty(keyMapExpression)) return (null, null);
-
-            const string separator = "=>";
-
-            int separatorIndex = keyMapExpression.IndexOf(separator);
-            return (separatorIndex < 0) ?
-                (keyMapExpression.Trim(), null) :
-                (keyMapExpression.Substring(0, separatorIndex).Trim(), keyMapExpression.Substring(separatorIndex + separator.Length).Trim());
-        }
+                .ToDictionary(col => col.Dest, col => col.KeyMapTable);        
 
         private async Task<(DataTable table, string sql)> QuerySourceTableAsync(SqlConnection cnSource, DataMigration.Step step, object parameters = null)
         {
@@ -397,10 +382,8 @@ namespace Zinger.Services
             {
                 result.RowsCopied = await migrator.CopyRowsAsync(
                     dest, table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name,
-                    mappings, onEachRow: (cmd, row) =>
-                    {                        
-                        ApplyInlineMapping(step, cmd, row, inlineMappings);
-                    }, txn: txn, maxRows: maxRows);
+                    mappings, onEachRow: (cmd, row) => ApplyInlineMapping(step, cmd, row, inlineMappings), 
+                    txn: txn, maxRows: maxRows);
                 result.Success = true;
                 result.Message = "Step succeeded.";
                 result.InsertSql = migrator.MigrateCommand.GetInsertStatement();
