@@ -66,18 +66,18 @@ namespace Zinger.Forms
             this.llSourceSql = new System.Windows.Forms.LinkLabel();
             this.btnValidateStep = new System.Windows.Forms.Button();
             this.lblStepResult = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tbSourceIdentityCol = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.tbDestIdentityCol = new System.Windows.Forms.TextBox();
-            this.tbSelectFrom = new FastColoredTextBoxNS.FastColoredTextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tslProgress = new System.Windows.Forms.ToolStripStatusLabel();
             this.pbMain = new System.Windows.Forms.ToolStripProgressBar();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.tbSelectFrom = new FastColoredTextBoxNS.FastColoredTextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -95,10 +95,13 @@ namespace Zinger.Forms
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvColumns)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbValidation)).BeginInit();
-            this.panel2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tbSelectFrom)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbSelectFrom)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -242,8 +245,7 @@ namespace Zinger.Forms
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Panel2.Controls.Add(this.panel2);
+            this.splitContainer1.Panel2.Controls.Add(this.splitContainer3);
             this.splitContainer1.Size = new System.Drawing.Size(832, 326);
             this.splitContainer1.SplitterDistance = 341;
             this.splitContainer1.TabIndex = 3;
@@ -346,7 +348,7 @@ namespace Zinger.Forms
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 159);
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
@@ -362,7 +364,7 @@ namespace Zinger.Forms
             this.splitContainer2.Panel2.Controls.Add(this.llSourceSql);
             this.splitContainer2.Panel2.Controls.Add(this.btnValidateStep);
             this.splitContainer2.Panel2.Controls.Add(this.lblStepResult);
-            this.splitContainer2.Size = new System.Drawing.Size(487, 167);
+            this.splitContainer2.Size = new System.Drawing.Size(487, 159);
             this.splitContainer2.SplitterDistance = 276;
             this.splitContainer2.TabIndex = 3;
             // 
@@ -376,7 +378,7 @@ namespace Zinger.Forms
             this.dgvColumns.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvColumns.Location = new System.Drawing.Point(0, 0);
             this.dgvColumns.Name = "dgvColumns";
-            this.dgvColumns.Size = new System.Drawing.Size(276, 167);
+            this.dgvColumns.Size = new System.Drawing.Size(276, 159);
             this.dgvColumns.TabIndex = 1;
             // 
             // colSource
@@ -470,20 +472,9 @@ namespace Zinger.Forms
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStepResult.Location = new System.Drawing.Point(36, 43);
             this.lblStepResult.Name = "lblStepResult";
-            this.lblStepResult.Size = new System.Drawing.Size(159, 40);
+            this.lblStepResult.Size = new System.Drawing.Size(159, 32);
             this.lblStepResult.TabIndex = 0;
             this.lblStepResult.Text = "label6";
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.tableLayoutPanel2);
-            this.panel2.Controls.Add(this.tbSelectFrom);
-            this.panel2.Controls.Add(this.label3);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(487, 159);
-            this.panel2.TabIndex = 0;
             // 
             // tableLayoutPanel2
             // 
@@ -494,26 +485,28 @@ namespace Zinger.Forms
             this.tableLayoutPanel2.Controls.Add(this.label4, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.label5, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.tbDestIdentityCol, 1, 1);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(10, 89);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 109);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 36.36364F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 63.63636F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(379, 51);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(487, 54);
             this.tableLayoutPanel2.TabIndex = 4;
             // 
             // tbSourceIdentityCol
             // 
             this.tbSourceIdentityCol.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbSourceIdentityCol.Location = new System.Drawing.Point(3, 21);
+            this.tbSourceIdentityCol.Location = new System.Drawing.Point(3, 30);
             this.tbSourceIdentityCol.Name = "tbSourceIdentityCol";
-            this.tbSourceIdentityCol.Size = new System.Drawing.Size(183, 20);
+            this.tbSourceIdentityCol.Size = new System.Drawing.Size(237, 20);
             this.tbSourceIdentityCol.TabIndex = 2;
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 0);
+            this.label4.Location = new System.Drawing.Point(3, 14);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(119, 13);
             this.label4.TabIndex = 3;
@@ -521,8 +514,9 @@ namespace Zinger.Forms
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(192, 0);
+            this.label5.Location = new System.Drawing.Point(246, 14);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(107, 13);
             this.label5.TabIndex = 4;
@@ -531,46 +525,10 @@ namespace Zinger.Forms
             // tbDestIdentityCol
             // 
             this.tbDestIdentityCol.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbDestIdentityCol.Location = new System.Drawing.Point(192, 21);
+            this.tbDestIdentityCol.Location = new System.Drawing.Point(246, 30);
             this.tbDestIdentityCol.Name = "tbDestIdentityCol";
-            this.tbDestIdentityCol.Size = new System.Drawing.Size(184, 20);
+            this.tbDestIdentityCol.Size = new System.Drawing.Size(238, 20);
             this.tbDestIdentityCol.TabIndex = 5;
-            // 
-            // tbSelectFrom
-            // 
-            this.tbSelectFrom.AutoCompleteBracketsList = new char[] {
-        '(',
-        ')',
-        '{',
-        '}',
-        '[',
-        ']',
-        '\"',
-        '\"',
-        '\'',
-        '\''};
-            this.tbSelectFrom.AutoIndentCharsPatterns = "";
-            this.tbSelectFrom.AutoScrollMinSize = new System.Drawing.Size(27, 14);
-            this.tbSelectFrom.BackBrush = null;
-            this.tbSelectFrom.CharHeight = 14;
-            this.tbSelectFrom.CharWidth = 8;
-            this.tbSelectFrom.CommentPrefix = "--";
-            this.tbSelectFrom.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbSelectFrom.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.tbSelectFrom.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbSelectFrom.Font = new System.Drawing.Font("Courier New", 9.75F);
-            this.tbSelectFrom.IsReplaceMode = false;
-            this.tbSelectFrom.Language = FastColoredTextBoxNS.Language.SQL;
-            this.tbSelectFrom.LeftBracket = '(';
-            this.tbSelectFrom.Location = new System.Drawing.Point(0, 16);
-            this.tbSelectFrom.Name = "tbSelectFrom";
-            this.tbSelectFrom.Paddings = new System.Windows.Forms.Padding(0);
-            this.tbSelectFrom.RightBracket = ')';
-            this.tbSelectFrom.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.tbSelectFrom.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("tbSelectFrom.ServiceColors")));
-            this.tbSelectFrom.Size = new System.Drawing.Size(487, 67);
-            this.tbSelectFrom.TabIndex = 1;
-            this.tbSelectFrom.Zoom = 100;
             // 
             // label3
             // 
@@ -612,6 +570,61 @@ namespace Zinger.Forms
             this.pbMain.Size = new System.Drawing.Size(300, 16);
             this.pbMain.Visible = false;
             // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.tbSelectFrom);
+            this.splitContainer3.Panel1.Controls.Add(this.label3);
+            this.splitContainer3.Panel1.Controls.Add(this.tableLayoutPanel2);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.splitContainer2);
+            this.splitContainer3.Size = new System.Drawing.Size(487, 326);
+            this.splitContainer3.SplitterDistance = 163;
+            this.splitContainer3.TabIndex = 5;
+            // 
+            // tbSelectFrom
+            // 
+            this.tbSelectFrom.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.tbSelectFrom.AutoIndentCharsPatterns = "";
+            this.tbSelectFrom.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.tbSelectFrom.BackBrush = null;
+            this.tbSelectFrom.CharHeight = 14;
+            this.tbSelectFrom.CharWidth = 8;
+            this.tbSelectFrom.CommentPrefix = "--";
+            this.tbSelectFrom.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbSelectFrom.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.tbSelectFrom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbSelectFrom.IsReplaceMode = false;
+            this.tbSelectFrom.Language = FastColoredTextBoxNS.Language.SQL;
+            this.tbSelectFrom.LeftBracket = '(';
+            this.tbSelectFrom.Location = new System.Drawing.Point(0, 16);
+            this.tbSelectFrom.Name = "tbSelectFrom";
+            this.tbSelectFrom.Paddings = new System.Windows.Forms.Padding(0);
+            this.tbSelectFrom.RightBracket = ')';
+            this.tbSelectFrom.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.tbSelectFrom.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("tbSelectFrom.ServiceColors")));
+            this.tbSelectFrom.Size = new System.Drawing.Size(487, 93);
+            this.tbSelectFrom.TabIndex = 2;
+            this.tbSelectFrom.Zoom = 100;
+            // 
             // frmMigrationBuilder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -646,12 +659,15 @@ namespace Zinger.Forms
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvColumns)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbValidation)).EndInit();
-            this.panel2.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tbSelectFrom)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tbSelectFrom)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -670,8 +686,6 @@ namespace Zinger.Forms
         private System.Windows.Forms.ToolStripButton btnSave;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.DataGridView dgvSteps;
-        private System.Windows.Forms.Panel panel2;
-        private FastColoredTextBoxNS.FastColoredTextBox tbSelectFrom;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dgvColumns;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSource;
@@ -706,5 +720,7 @@ namespace Zinger.Forms
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar pbMain;
         private System.Windows.Forms.ToolStripStatusLabel tslProgress;
+        private System.Windows.Forms.SplitContainer splitContainer3;
+        private FastColoredTextBoxNS.FastColoredTextBox tbSelectFrom;
     }
 }

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using WinForms.Library.Models;
+using Zinger.Interfaces;
 using Zinger.Models;
 
 namespace Zinger.Forms
@@ -97,13 +98,13 @@ namespace Zinger.Forms
             return Path.Combine(SavedConnectionPath(), "SavedConnections.xml");
         }
 
-        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                frmQuery activeQuery = ActiveMdiChild as frmQuery;
-                if (activeQuery == null) throw new Exception("No query is open");
-                if (PromptSaveFile(out string fileName)) activeQuery.SaveQuery(fileName);
+                var activeForm = ActiveMdiChild as ISaveable;
+                if (activeForm == null) throw new Exception("No saveable window is open");
+                if (PromptSaveFile(activeForm.DefaultExtension, out string fileName)) await activeForm.SaveAsync(fileName);
             }
             catch (Exception exc)
             {
@@ -111,17 +112,17 @@ namespace Zinger.Forms
             }
         }
 
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                frmQuery activeQuery = ActiveMdiChild as frmQuery;
-                if (activeQuery == null) throw new Exception("No query is open");
+                var activeForm = ActiveMdiChild as ISaveable;
+                if (activeForm == null) throw new Exception("No saveable window is open");
 
                 string fileName;
-                if (!PromptSaveFileInner(activeQuery, out fileName)) return;
+                if (!PromptSaveFileInner(activeForm, out fileName)) return;
 
-                activeQuery.SaveQuery(fileName);
+                await activeForm.SaveAsync(fileName);
             }
             catch (Exception exc)
             {
@@ -132,13 +133,13 @@ namespace Zinger.Forms
         /// <summary>
         /// Returns true if a file name is set on the form or false if user cancels the Save As dialog
         /// </summary>
-        public static bool PromptSaveFileInner(frmQuery form, out string fileName)
+        public static bool PromptSaveFileInner(ISaveable form, out string fileName)
         {
             fileName = form.Filename;
 
             if (string.IsNullOrEmpty(fileName))
             {
-                return PromptSaveFile(out fileName);
+                return PromptSaveFile(form.DefaultExtension, out fileName);
             }
 
             return true;
@@ -160,13 +161,13 @@ namespace Zinger.Forms
             }
         }
 
-        public static bool PromptSaveFile(out string fileName)
+        public static bool PromptSaveFile(string defaultExtension, out string fileName)
         {
             fileName = null;
 
             var dlg = new SaveFileDialog();
             dlg.Filter = FileDialogFilter;
-            dlg.DefaultExt = "pqh";
+            dlg.DefaultExt = defaultExtension;
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 fileName = dlg.FileName;

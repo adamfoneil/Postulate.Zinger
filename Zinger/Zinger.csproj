@@ -137,6 +137,7 @@
     <Compile Include="Forms\frmSetAlias.Designer.cs">
       <DependentUpon>frmSetAlias.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\ISaveable.cs" />
     <Compile Include="Models\DataMigration.cs" />
     <Compile Include="Models\ResolveJoinResult.cs" />
     <Compile Include="Services\DataMigrator.cs" />

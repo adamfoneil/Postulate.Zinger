@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinForms.Library;
 using WinForms.Library.Extensions.ComboBoxes;
+using Zinger.Interfaces;
 using Zinger.Models;
 using Zinger.Services;
 
 namespace Zinger.Forms
 {
-    public partial class frmMigrationBuilder : Form
+    public partial class frmMigrationBuilder : Form, ISaveable
     {
         JsonSDI<DataMigration> _doc = new JsonSDI<DataMigration>(".json", "Json Files|*.json", "Save changes?");
         
@@ -28,6 +29,10 @@ namespace Zinger.Forms
         }
 
         public SavedConnections SavedConnections { get; set; }
+
+        public string Filename => _doc.Filename;
+
+        public string DefaultExtension => ".json";
 
         private void frmMigrationBuilder_Load(object sender, EventArgs e)
         {
@@ -78,13 +83,15 @@ namespace Zinger.Forms
                 {
                     pbValidation.Image = null;
                     lblStepResult.Text = null;
-                };
+                    var step = bsSteps.Current as DataMigration.Step;
+                    if (step != null && step.Columns == null) step.Columns = new List<DataMigration.Column>();
+                };                
 
                 tbSelectFrom.DataBindings.Add(new Binding("Text", bsSteps, nameof(DataMigration.Step.SourceFromWhere)));
                 tbSourceIdentityCol.DataBindings.Add(new Binding("Text", bsSteps, nameof(DataMigration.Step.SourceIdentityColumn)));
                 tbDestIdentityCol.DataBindings.Add(new Binding("Text", bsSteps, nameof(DataMigration.Step.DestIdentityColumn)));
 
-                BindingSource bsColumns = new BindingSource();
+                BindingSource bsColumns = new BindingSource();                
                 bsColumns.DataSource = bsSteps;
                 bsColumns.DataMember = nameof(DataMigration.Step.Columns);
                 dgvColumns.DataSource = bsColumns;
@@ -128,6 +135,7 @@ namespace Zinger.Forms
 
         private async void frmMigrationBuilder_FormClosing(object sender, FormClosingEventArgs e)
         {
+            await _doc.SaveAsync();
             await _doc.FormClosingAsync(e);
         }
 
@@ -191,8 +199,15 @@ namespace Zinger.Forms
 
         private async void btnAddStepColumns_Click(object sender, EventArgs e)
         {
-            var step = (dgvSteps.DataSource as BindingSource).Current as DataMigration.Step;
-            await _migrator.AddStepColumnsAsync(_doc.Document, step);
+            try
+            {
+                var step = (dgvSteps.DataSource as BindingSource).Current as DataMigration.Step;
+                await _migrator.AddStepColumnsAsync(_doc.Document, step);
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
         }
 
         private async void btnImportKeyMap_Click(object sender, EventArgs e)
@@ -207,5 +222,11 @@ namespace Zinger.Forms
                 MessageBox.Show(exc.Message);
             }
         }
+
+        public async Task SaveAsync(string fileName)
+        {
+            _doc.Filename = fileName;
+            await _doc.SaveAsync();
+        }        
     }
 }

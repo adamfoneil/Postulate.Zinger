@@ -9,15 +9,17 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Zinger.Controls.Nodes;
+using Zinger.Interfaces;
 using Zinger.Models;
 using Zinger.Services;
 using Zinger.Services.Providers;
 
 namespace Zinger.Forms
 {
-    public partial class frmQuery : Form
+    public partial class frmQuery : Form, ISaveable
     {
         public string Filename { get; private set; }
 
@@ -43,6 +45,8 @@ namespace Zinger.Forms
         }
 
         public DataTable DataTable => queryEditor1.DataTable;
+
+        public string DefaultExtension => ".pqh";
 
         public frmQuery()
         {
@@ -382,5 +386,11 @@ namespace Zinger.Forms
                 MessageBox.Show(exc.Message);
             }
         }
+
+        public async Task SaveAsync(string fileName)
+        {
+            SaveQuery(fileName);
+            await Task.CompletedTask;
+        }        
     }
 }
