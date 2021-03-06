@@ -7,7 +7,7 @@ SELECT [Whatever], [DjangoValue], [MatriculationVector], [OscilliscopeRiskDate]
 FROM [dbo].[Ablative]
 WHERE blah blah blah
 ```
-Postulate Query Helper creates a C# class patterned after results like this:
+Zinger creates a C# class patterned after results like this:
 
 ```csharp
 public class MyQueryResult
