@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SqlIntegration.Library;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -31,8 +32,15 @@ namespace Zinger.Forms
         private void frmMigrationBuilder_Load(object sender, EventArgs e)
         {
             _migrator = new DataMigrator(SavedConnections);
+            _migrator.Progress += ShowProgress;
 
             InitBinding();
+        }
+
+        private void ShowProgress(object sender, SqlMigrator<int>.Progress e)
+        {
+            pbMain.Value = e.PercentComplete;
+            tslProgress.Text = $"{e.TotalRows:n0} total rows, {e.RowsMigrated:n0} migrated ({e.PercentComplete}%), {e.RowsSkipped:n0} skipped";
         }
 
         private void InitBinding()
@@ -137,6 +145,7 @@ namespace Zinger.Forms
         {
             try
             {
+                pbMain.Visible = true;
                 var step = (dgvSteps.DataSource as BindingSource).Current as DataMigration.Step;
 
                 pbValidation.Image = imageList1.Images["loading"];
@@ -153,6 +162,7 @@ namespace Zinger.Forms
             {
                 llSourceSql.Enabled = !string.IsNullOrEmpty(_migrationResult?.SourceSql);
                 llInsertSql.Enabled = !string.IsNullOrEmpty(_migrationResult?.InsertSql);
+                pbMain.Visible = false;
             }
         }
 

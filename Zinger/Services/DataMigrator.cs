@@ -28,6 +28,8 @@ namespace Zinger.Services
 
         public string CurrentFilename { get; set; }
 
+        public event EventHandler<SqlMigrator<int>.Progress> Progress;
+
         /// <summary>
         /// initialize a Step object by comparing columns from a source and destination table,
         /// </summary>
@@ -228,7 +230,7 @@ namespace Zinger.Services
                 WriteIndented = true
             });
             File.WriteAllText(fileName, json);
-        }       
+        }
 
         private async Task<SqlMigrator<int>> GetMigratorAsync(SqlConnection dest)
         {
@@ -239,14 +241,19 @@ namespace Zinger.Services
 
             // in AH4 when mapping from dbo.Customer, if the sourceId is negative, it's being used as a Folder.ParentId.
             // I didn't have a way to do this delcaratively within the migration model, so it's hardcoded into the migrator.
-            result.OnMappingException = async (exc, cn, obj, sourceId, txn) => 
-            {                
+            result.OnMappingException = async (exc, cn, obj, sourceId, txn) =>
+            {
                 if (sourceId < 0 && obj.Equals(DbObject.Parse("dbo.Customer")))
                 {
                     return await result.GetNewIdAsync(cn, obj, sourceId * -1, txn);
                 }
 
                 return default;
+            };
+
+            result.OnProgress += delegate (SqlMigrator<int>.Progress progress)
+            {
+                Progress?.Invoke(this, progress);
             };
 
             return result;
