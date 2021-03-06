@@ -26,16 +26,6 @@ namespace Zinger.Services
             _savedConnections = savedConnections;            
         }
 
-        /// <summary>
-        /// built-in actions we can take on rows before they get migrated.
-        /// This is because I don't know how to build expressions dynamically from text,
-        /// and all I really need is the ability to invert some Id values for root level AH folders
-        /// </summary>
-        private Dictionary<string, Action<SqlServerCmd, string, DataRow>> Transforms => new Dictionary<string, Action<SqlServerCmd, string, DataRow>>()
-        {
-            ["invert"] = (cmd, col, row) => cmd[col] = Convert.ToInt32(row[col]) * -1
-        };
-
         public string CurrentFilename { get; set; }
 
         /// <summary>
@@ -255,11 +245,6 @@ namespace Zinger.Services
             File.WriteAllText(fileName, json);
         }       
 
-        private Dictionary<string, Action<SqlServerCmd, string, DataRow>> GetTransforms(DataMigration.Step step) =>
-            step.Columns
-                .Where(col => !string.IsNullOrEmpty(ParseKeyMapExpression(col.KeyMapTable).transform) && !string.IsNullOrEmpty(col.Dest))
-                .ToDictionary(col => col.Dest, col => Transforms[ParseKeyMapExpression(col.KeyMapTable).transform]);                
-
         private async Task<SqlMigrator<int>> GetMigratorAsync(SqlConnection dest)
         {
             var result = await SqlMigrator<int>.InitializeAsync(dest);
@@ -267,6 +252,8 @@ namespace Zinger.Services
             // ignore PK violations, but throw all others
             result.OnInsertException = async (cn, dataRow, exc) => await Task.FromResult(exc.Message.Contains("duplicate key"));
 
+            // in AH4 when mapping from dbo.Customer, if the sourceId is negative, it's being used as a Folder.ParentId.
+            // I didn't have a way to do this delcaratively within the migration model, so it's hardcoded into the migrator.
             result.OnMappingException = async (exc, cn, obj, sourceId, txn) => 
             {                
                 if (sourceId < 0 && obj.Equals(DbObject.Parse("dbo.Customer")))
@@ -404,16 +391,14 @@ namespace Zinger.Services
         {            
             var intoTable = DbObject.Parse(step.DestTable);
             var mappings = GetForeignKeyMapping(step);
-            var inlineMappings = GetInlineMappings(step);
-            var transforms = GetTransforms(step);
+            var inlineMappings = GetInlineMappings(step);            
 
             try
             {
                 result.RowsCopied = await migrator.CopyRowsAsync(
                     dest, table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name,
                     mappings, onEachRow: (cmd, row) =>
-                    {
-                        //ApplyTransforms(cmd, row, transforms);
+                    {                        
                         ApplyInlineMapping(step, cmd, row, inlineMappings);
                     }, txn: txn, maxRows: maxRows);
                 result.Success = true;
@@ -423,14 +408,6 @@ namespace Zinger.Services
             catch (Exception exc)
             {
                 result.Message = exc.Message;
-            }
-        }
-
-        private void ApplyTransforms(SqlServerCmd cmd, DataRow row, Dictionary<string, Action<SqlServerCmd, string, DataRow>> transforms)
-        {
-            foreach (var t in transforms)
-            {
-                t.Value.Invoke(cmd, t.Key, row);
             }
         }
 

@@ -42,6 +42,7 @@ namespace Zinger.Forms
             this.btnSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnBuildColumns = new System.Windows.Forms.ToolStripButton();
+            this.btnImportKeyMap = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -74,7 +75,6 @@ namespace Zinger.Forms
             this.tbSelectFrom = new FastColoredTextBoxNS.FastColoredTextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.btnImportKeyMap = new System.Windows.Forms.ToolStripButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -214,6 +214,16 @@ namespace Zinger.Forms
             this.btnBuildColumns.Size = new System.Drawing.Size(84, 22);
             this.btnBuildColumns.Text = "Add Columns";
             this.btnBuildColumns.Click += new System.EventHandler(this.btnBuildColumns_Click);
+            // 
+            // btnImportKeyMap
+            // 
+            this.btnImportKeyMap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnImportKeyMap.Image = ((System.Drawing.Image)(resources.GetObject("btnImportKeyMap.Image")));
+            this.btnImportKeyMap.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnImportKeyMap.Name = "btnImportKeyMap";
+            this.btnImportKeyMap.Size = new System.Drawing.Size(126, 22);
+            this.btnImportKeyMap.Text = "Import Key Map Table";
+            this.btnImportKeyMap.Click += new System.EventHandler(this.btnImportKeyMap_Click);
             // 
             // splitContainer1
             // 
@@ -544,7 +554,6 @@ namespace Zinger.Forms
             this.tbSelectFrom.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbSelectFrom.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.tbSelectFrom.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbSelectFrom.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.tbSelectFrom.IsReplaceMode = false;
             this.tbSelectFrom.Language = FastColoredTextBoxNS.Language.SQL;
             this.tbSelectFrom.LeftBracket = '(';
@@ -574,16 +583,6 @@ namespace Zinger.Forms
             this.imageList1.Images.SetKeyName(0, "success");
             this.imageList1.Images.SetKeyName(1, "fail");
             this.imageList1.Images.SetKeyName(2, "loading");
-            // 
-            // btnImportKeyMap
-            // 
-            this.btnImportKeyMap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnImportKeyMap.Image = ((System.Drawing.Image)(resources.GetObject("btnImportKeyMap.Image")));
-            this.btnImportKeyMap.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnImportKeyMap.Name = "btnImportKeyMap";
-            this.btnImportKeyMap.Size = new System.Drawing.Size(126, 22);
-            this.btnImportKeyMap.Text = "Import Key Map Table";
-            this.btnImportKeyMap.Click += new System.EventHandler(this.btnImportKeyMap_Click);
             // 
             // frmMigrationBuilder
             // 
