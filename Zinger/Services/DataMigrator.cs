@@ -30,6 +30,8 @@ namespace Zinger.Services
 
         public event EventHandler<SqlMigrator<int>.Progress> Progress;
 
+        public Dictionary<string, object> KeyViolationValues { get; private set; }
+
         /// <summary>
         /// initialize a Step object by comparing columns from a source and destination table,
         /// </summary>
@@ -237,7 +239,7 @@ namespace Zinger.Services
             var result = await SqlMigrator<int>.InitializeAsync(dest);
 
             // ignore PK violations, but throw all others
-            result.OnInsertException = async (cn, dataRow, exc) => await Task.FromResult(exc.Message.Contains("duplicate key"));
+            result.OnInsertException = AnalyzeInsertExceptionAsync;
 
             // in AH4 when mapping from dbo.Customer, if the sourceId is negative, it's being used as a Folder.ParentId.
             // I didn't have a way to do this delcaratively within the migration model, so it's hardcoded into the migrator.
@@ -257,6 +259,13 @@ namespace Zinger.Services
             };
 
             return result;
+        }
+
+        private async Task<bool> AnalyzeInsertExceptionAsync(
+            SqlConnection connection, InsertExceptionType type, DataRow dataRow, Exception exception, Dictionary<string, object> values)
+        {
+            KeyViolationValues = values;
+            return await Task.FromResult(exception.Message.Contains("duplicate key"));
         }
 
         private Dictionary<string, Dictionary<int, int>> GetInlineMappings(DataMigration.Step step)

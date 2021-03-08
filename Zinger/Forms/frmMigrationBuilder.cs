@@ -153,6 +153,7 @@ namespace Zinger.Forms
         {
             try
             {
+                tslProgress.Text = "Querying...";
                 pbMain.Visible = true;
                 var step = (dgvSteps.DataSource as BindingSource).Current as DataMigration.Step;
 
@@ -171,6 +172,7 @@ namespace Zinger.Forms
                 llSourceSql.Enabled = !string.IsNullOrEmpty(_migrationResult?.SourceSql);
                 llInsertSql.Enabled = !string.IsNullOrEmpty(_migrationResult?.InsertSql);
                 pbMain.Visible = false;
+                tslProgress.Text = "Ready";
             }
         }
 
