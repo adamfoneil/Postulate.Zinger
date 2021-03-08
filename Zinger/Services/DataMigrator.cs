@@ -159,13 +159,19 @@ namespace Zinger.Services
 
         private async Task<(DataTable table, string sql)> QuerySourceTableAsync(SqlConnection cnSource, DataMigration.Step step, object parameters = null)
         {
+            const string columnToken = "{columns}";
+
             var columns = string.Join(", ", step.Columns
                 .Where(col => !string.IsNullOrWhiteSpace(col.Source) && !string.IsNullOrWhiteSpace(col.Dest))
                 .Select(col => (col.Source.StartsWith("=")) ? 
                     $"{col.Source.Substring(1)} AS [{col.Dest}]" : 
                     $"{SqlBuilder.ApplyDelimiter(col.Source, '[', ']')} AS [{col.Dest}]"));
 
-            var query = $"SELECT {columns}, {SqlBuilder.ApplyDelimiter(step.SourceIdentityColumn, '[', ']')} FROM {step.SourceFromWhere}";
+            string columnList = $"{columns}, {SqlBuilder.ApplyDelimiter(step.SourceIdentityColumn, '[', ']')}";
+
+            var query = (step.SourceFromWhere.Contains(columnToken)) ? 
+                step.SourceFromWhere.Replace(columnToken, columnList) :
+                $"SELECT {columnList} FROM {step.SourceFromWhere}";
 
             try
             {
