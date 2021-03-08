@@ -78,6 +78,7 @@ namespace Zinger.Forms
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.pbMain = new System.Windows.Forms.ToolStripProgressBar();
             this.tslProgress = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tslCancel = new System.Windows.Forms.ToolStripStatusLabel();
             this.tableLayoutPanel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -607,7 +608,8 @@ namespace Zinger.Forms
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.pbMain,
-            this.tslProgress});
+            this.tslProgress,
+            this.tslCancel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 410);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(832, 22);
@@ -625,6 +627,15 @@ namespace Zinger.Forms
             this.tslProgress.Name = "tslProgress";
             this.tslProgress.Size = new System.Drawing.Size(39, 17);
             this.tslProgress.Text = "Ready";
+            // 
+            // tslCancel
+            // 
+            this.tslCancel.IsLink = true;
+            this.tslCancel.Name = "tslCancel";
+            this.tslCancel.Size = new System.Drawing.Size(41, 17);
+            this.tslCancel.Text = "cancel";
+            this.tslCancel.Visible = false;
+            this.tslCancel.Click += new System.EventHandler(this.tslCancel_Click);
             // 
             // frmMigrationBuilder
             // 
@@ -723,5 +734,6 @@ namespace Zinger.Forms
         private System.Windows.Forms.ToolStripStatusLabel tslProgress;
         private System.Windows.Forms.SplitContainer splitContainer3;
         private FastColoredTextBoxNS.FastColoredTextBox tbSelectFrom;
+        private System.Windows.Forms.ToolStripStatusLabel tslCancel;
     }
 }

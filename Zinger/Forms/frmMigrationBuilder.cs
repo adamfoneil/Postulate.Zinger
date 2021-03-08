@@ -43,7 +43,7 @@ namespace Zinger.Forms
         }
 
         private void ShowProgress(object sender, SqlMigrator<int>.Progress e)
-        {
+        {            
             pbMain.Value = e.PercentComplete;
             tslProgress.Text = $"{e.TotalRows:n0} total rows, {e.RowsMigrated:n0} migrated ({e.PercentComplete}%), {e.RowsSkipped:n0} skipped";
         }
@@ -154,7 +154,8 @@ namespace Zinger.Forms
             try
             {
                 tslProgress.Text = "Querying...";
-                pbMain.Visible = true;
+                tslCancel.Visible = true;
+                pbMain.Visible = true;                
                 var step = (dgvSteps.DataSource as BindingSource).Current as DataMigration.Step;
 
                 pbValidation.Image = imageList1.Images["loading"];
@@ -173,6 +174,7 @@ namespace Zinger.Forms
                 llInsertSql.Enabled = !string.IsNullOrEmpty(_migrationResult?.InsertSql);
                 pbMain.Visible = false;
                 tslProgress.Text = "Ready";
+                tslCancel.Visible = false;
             }
         }
 
@@ -229,6 +231,11 @@ namespace Zinger.Forms
         {
             _doc.Filename = fileName;
             await _doc.SaveAsync();
-        }        
+        }
+
+        private void tslCancel_Click(object sender, EventArgs e)
+        {
+            _migrator?.Cancel();
+        }
     }
 }

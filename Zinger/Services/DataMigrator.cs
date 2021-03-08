@@ -12,6 +12,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Zinger.Models;
 
@@ -19,11 +20,13 @@ namespace Zinger.Services
 {
     public class DataMigrator
     {
-        private readonly SavedConnections _savedConnections;        
+        private readonly SavedConnections _savedConnections;
+        
+        private CancellationTokenSource _cts;
 
         public DataMigrator(SavedConnections savedConnections)
         {
-            _savedConnections = savedConnections;            
+            _savedConnections = savedConnections;        
         }
 
         public string CurrentFilename { get; set; }
@@ -234,6 +237,11 @@ namespace Zinger.Services
             File.WriteAllText(fileName, json);
         }
 
+        public void Cancel()
+        {
+            _cts?.Cancel();
+        }
+
         private async Task<SqlMigrator<int>> GetMigratorAsync(SqlConnection dest)
         {
             var result = await SqlMigrator<int>.InitializeAsync(dest);
@@ -350,7 +358,7 @@ namespace Zinger.Services
         /// runs a step then rolls it back, collecting any error messages and SQL artifacts that result
         /// </summary>
         public async Task<MigrationResult> ValidateStepAsync(DataMigration.Step step, DataMigration migration, int maxRows = 10)
-        {
+        {            
             var result = new MigrationResult();
             result.Action = "tested";
 
@@ -392,12 +400,14 @@ namespace Zinger.Services
         {            
             var intoTable = DbObject.Parse(step.DestTable);
             var mappings = GetForeignKeyMapping(step);
-            var inlineMappings = GetInlineMappings(step);            
+            var inlineMappings = GetInlineMappings(step);
+            
+            _cts = new CancellationTokenSource();
 
             try
             {
                 result.RowsCopied = await migrator.CopyRowsAsync(
-                    dest, table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name,
+                    dest, table, step.DestIdentityColumn, intoTable.Schema, intoTable.Name, _cts,
                     mappings, onEachRow: (cmd, row) => ApplyInlineMapping(step, cmd, row, inlineMappings), 
                     txn: txn, maxRows: maxRows);
                 result.Success = true;
