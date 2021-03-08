@@ -23,8 +23,7 @@ namespace Zinger.Forms
         public frmMigrationBuilder()
         {
             InitializeComponent();
-            dgvSteps.AutoGenerateColumns = false;
-            dgvColumns.AutoGenerateColumns = false;
+            dgvSteps.AutoGenerateColumns = false;            
             dgvParams.AutoGenerateColumns = false;
         }
 
@@ -85,16 +84,9 @@ namespace Zinger.Forms
                     lblStepResult.Text = null;
                     var step = bsSteps.Current as DataMigration.Step;
                     if (step != null && step.Columns == null) step.Columns = new List<DataMigration.Column>();
-                };                
+                };
 
-                tbSelectFrom.DataBindings.Add(new Binding("Text", bsSteps, nameof(DataMigration.Step.SourceFromWhere)));
-                tbSourceIdentityCol.DataBindings.Add(new Binding("Text", bsSteps, nameof(DataMigration.Step.SourceIdentityColumn)));
-                tbDestIdentityCol.DataBindings.Add(new Binding("Text", bsSteps, nameof(DataMigration.Step.DestIdentityColumn)));
-
-                BindingSource bsColumns = new BindingSource();                
-                bsColumns.DataSource = bsSteps;
-                bsColumns.DataMember = nameof(DataMigration.Step.Columns);
-                dgvColumns.DataSource = bsColumns;
+                migrationStep1.InitBinding(bsSteps);
             }
 
             void InitParamsDataGridView()

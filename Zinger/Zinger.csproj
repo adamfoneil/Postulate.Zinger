@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\MigrationStep.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MigrationStep.Designer.cs">
+      <DependentUpon>MigrationStep.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Nodes\ColumnContainerNode.cs" />
     <Compile Include="Controls\Nodes\ColumnNode.cs" />
     <Compile Include="Controls\Nodes\FolderNode.cs" />
@@ -161,6 +167,9 @@
     <Compile Include="Services\ScriptGen\RebuildDisabledIndexes.cs" />
     <Compile Include="Services\TextBoxDelayHandler.cs" />
     <Compile Include="Static\JsonHelper.cs" />
+    <EmbeddedResource Include="Controls\MigrationStep.resx">
+      <DependentUpon>MigrationStep.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\QueryEditor.resx">
       <DependentUpon>QueryEditor.cs</DependentUpon>
     </EmbeddedResource>
