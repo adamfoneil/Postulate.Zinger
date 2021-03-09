@@ -455,14 +455,14 @@ namespace Zinger.Services
 
             (string cte, string body) ParseSource(string sourceFromWhere)
             {
-                var customQueryToken = Regex.Match(sourceFromWhere, @"SELECT\s{columns}\sFROM");
+                var customQueryToken = Regex.Match(sourceFromWhere, @"SELECT(\s*){columns}(\s*)FROM");
                
                 string body = (customQueryToken.Success) ?
                     sourceFromWhere.Substring(customQueryToken.Index + customQueryToken.Length) :
                     sourceFromWhere;
 
                 string cte = (customQueryToken.Success) ?
-                    sourceFromWhere.Substring("WITH ".Length, customQueryToken.Index) + ", " :
+                    sourceFromWhere.Substring("WITH ".Length, customQueryToken.Index - "WITH ".Length) + ", " :
                     string.Empty;
 
                 return (cte, body);
