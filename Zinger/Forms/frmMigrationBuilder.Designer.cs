@@ -444,8 +444,7 @@ namespace Zinger.Forms
             // 
             // lblStepResult
             // 
-            this.lblStepResult.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.lblStepResult.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStepResult.Location = new System.Drawing.Point(34, 42);
             this.lblStepResult.Name = "lblStepResult";
