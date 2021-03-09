@@ -12,6 +12,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Zinger.Models;
@@ -163,13 +164,13 @@ namespace Zinger.Services
 
             var columns = string.Join(", ", step.Columns
                 .Where(col => !string.IsNullOrWhiteSpace(col.Source) && !string.IsNullOrWhiteSpace(col.Dest))
-                .Select(col => (col.Source.StartsWith("=")) ? 
-                    $"{col.Source.Substring(1)} AS [{col.Dest}]" : 
+                .Select(col => (col.Source.StartsWith("=")) ?
+                    $"{col.Source.Substring(1)} AS [{col.Dest}]" :
                     $"{SqlBuilder.ApplyDelimiter(col.Source, '[', ']')} AS [{col.Dest}]"));
 
             string columnList = $"{columns}, {SqlBuilder.ApplyDelimiter(step.SourceIdentityColumn, '[', ']')}";
 
-            var query = (step.SourceFromWhere.Contains(columnToken)) ? 
+            var query = (step.SourceFromWhere.Contains(columnToken)) ?
                 step.SourceFromWhere.Replace(columnToken, columnList) :
                 $"SELECT {columnList} FROM {step.SourceFromWhere}";
 
@@ -399,6 +400,75 @@ namespace Zinger.Services
             return result;
         }
 
+        public async Task<IEnumerable<MappingProgress>> QueryMappingProgress(DataMigration migration)
+        {
+            List<MappingProgress> results = new List<MappingProgress>();
+
+            await ExecuteWithConnectionsAsync(migration, async (source, dest) =>
+            {
+                var migrator = await GetMigratorAsync(dest);
+                var keymapTable = migrator.KeyMapTable;
+                               
+                foreach (var step in migration.Steps)
+                {
+                    var destTable = DbObject.Parse(step.DestTable);
+                    var sql = BuildProgressQuery(step, keymapTable, destTable);
+                    var table = (await source.QueryTableAsync(sql, migration.GetParameters())).AsEnumerable().Select(row => new MappingProgress(row));
+                    results.AddRange(table); // it's also just one row however
+                }
+            });
+
+            return results;
+
+            string BuildProgressQuery(DataMigration.Step step, DbObject keymapTable, DbObject destTable)
+            {
+                var source = ParseSource(step.SourceFromWhere);
+
+                return $@"WITH {source.cte}[inner] AS (
+                    SELECT 
+                        [SourceId],
+                        [NewId]
+                    FROM (
+		                SELECT {SqlBuilder.ApplyDelimiter(step.SourceIdentityColumn, '[', ']')} AS [Id]
+		                FROM {source.body}
+	                ) AS [source]
+                    LEFT JOIN (
+                        SELECT [km].[SourceId], [km].[NewId]
+                        FROM [{keymapTable.Schema}].[{keymapTable.Name}] [km]
+		                WHERE [km].[Schema]='{destTable.Schema}' AND [km].[TableName]='{destTable.Name}'
+                    ) [map] ON [source].[Id]=[map].[SourceId]
+                ), [mapped] AS (
+                    SELECT COUNT(1) AS [MappedRows] FROM [inner]
+                ), [unmapped] AS (
+                    SELECT COUNT(1) AS [UnmappedRows] FROM [inner] WHERE [NewId] IS NULL
+                ) SELECT
+                    {step.Order} AS [Order],
+                    '{destTable.Schema}' AS [Schema],
+                    '{destTable.Name}' AS [Name],
+                    [mapped].[MappedRows],
+                    [unmapped].[UnmappedRows]
+                FROM
+                    [mapped],
+                    [unmapped]";
+            }
+                
+
+            (string cte, string body) ParseSource(string sourceFromWhere)
+            {
+                var customQueryToken = Regex.Match(sourceFromWhere, @"SELECT\s{columns}\sFROM");
+               
+                string body = (customQueryToken.Success) ?
+                    sourceFromWhere.Substring(customQueryToken.Index + customQueryToken.Length) :
+                    sourceFromWhere;
+
+                string cte = (customQueryToken.Success) ?
+                    sourceFromWhere.Substring("WITH ".Length, customQueryToken.Index) + ", " :
+                    string.Empty;
+
+                return (cte, body);
+            }
+        }
+
         private async Task RunStepInnerAsync(
             DataMigration.Step step, int maxRows, 
             SqlConnection dest, SqlMigrator<int> migrator, MigrationResult result, 
@@ -444,6 +514,34 @@ namespace Zinger.Services
             public int RowsCopied { get; set; }
             public int RowsSkipped { get; set; }
             public string Action { get; set; }            
+        }
+
+        public class MappingProgress
+        {
+            public MappingProgress()
+            {
+            }
+
+            public MappingProgress(DataRow row)
+            {
+                Order = row.Field<int>("Order");
+                Schema = row.Field<string>("Schema");
+                Name = row.Field<string>("Name");
+                MappedRows = row.Field<int>("MappedRows");
+                UnmappedRows = row.Field<int>("UnmappedRows");
+            }
+
+            public int Order { get; set; }
+            public string Schema { get; set; }
+            public string Name { get; set; }
+            /// <summary>
+            /// number of rows in the migrate.KeyMap table for this DestTable
+            /// </summary>
+            public int MappedRows { get; set; }
+            /// <summary>
+            /// number of rows that don't have a NewId
+            /// </summary>
+            public int UnmappedRows { get; set; }
         }
 
         public class QueryException : Exception

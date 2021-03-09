@@ -196,17 +196,6 @@
         TgDQASA1MVpwzwAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="btnRun.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        EwAACxMBAJqcGAAAAURJREFUOE9jwAa+bVEv+L7D4MaPvVY3fh5wvvHrmO+N36fCr/85l+QJVYIffNui
-        dg9owH+gAf9/HnT+DzTgP9CAH//PxMlBleAGnzZKqQMN+I/FgH6oEvzgy0aZfCwGfP5/LlQUqgQ/+LJB
-        Zju6AT+P+TZCpfGD//MVOIAGfMMw4KhP5+9TYTV/zyXW/L+c7QNVjgm+rBFyBxrwH0cY/Aca8P/vpexm
-        qHJM8Hm1UD8+A/6dTdjy/38DE1Q5Jvi8WnAD0IA/QAP+YDHg0v8bSbxQpfjBp81qIkAD/iAZ8PL/uSh5
-        qDRh8HWrajqSC378PuZvBZUiDgC9sA9uwCHnGKgwceDLRkVxoAF/QQZ832fVChUmHnzeIJsNioUfO/TX
-        /P/PwAgVJh4AY+EQ0IAz/zcbc0GFSANfNkiv+LZZTRrKJQAYGAAEQhAhVH1bPwAAAABJRU5ErkJggg==
-</value>
-  </data>
   <metadata name="colOrder.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -295,4 +284,15 @@
   <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>232, 17</value>
   </metadata>
+  <data name="btnRun.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EwAACxMBAJqcGAAAAURJREFUOE9jwAa+bVEv+L7D4MaPvVY3fh5wvvHrmO+N36fCr/85l+QJVYIffNui
+        dg9owH+gAf9/HnT+DzTgP9CAH//PxMlBleAGnzZKqQMN+I/FgH6oEvzgy0aZfCwGfP5/LlQUqgQ/+LJB
+        Zju6AT+P+TZCpfGD//MVOIAGfMMw4KhP5+9TYTV/zyXW/L+c7QNVjgm+rBFyBxrwH0cY/Aca8P/vpexm
+        qHJM8Hm1UD8+A/6dTdjy/38DE1Q5Jvi8WnAD0IA/QAP+YDHg0v8bSbxQpfjBp81qIkAD/iAZ8PL/uSh5
+        qDRh8HWrajqSC378PuZvBZUiDgC9sA9uwCHnGKgwceDLRkVxoAF/QQZ832fVChUmHnzeIJsNioUfO/TX
+        /P/PwAgVJh4AY+EQ0IAz/zcbc0GFSANfNkiv+LZZTRrKJQAYGAAEQhAhVH1bPwAAAABJRU5ErkJggg==
+</value>
+  </data>
 </root>

@@ -229,5 +229,11 @@ namespace Zinger.Forms
         {
             _migrator?.Cancel();
         }
+
+        private async void btnRefreshProgress_Click(object sender, EventArgs e)
+        {
+            var progress = await _migrator.QueryMappingProgress(_doc.Document);
+            dgvProgress.DataSource = progress;
+        }
     }
 }
