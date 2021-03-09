@@ -6,9 +6,9 @@ Zinger
 
 1.3.11.0
 TRUE
-44164
+44264
 C:\Users\adamo\Source\Repos\Postulate.Zinger\App.ico
-Copyright © 2020 Adam O'Neil
+Copyright © 2021 Adam O'Neil
 
 
 TRUE
@@ -112,6 +112,13 @@ Description of this component to help the user to determine if it should be inst
 1
 FALSE
 +
+C:\Users\adamo\Source\Repos\Postulate.Zinger\Zinger\bin\Release\AO.Models.dll
+3
+1
+TRUE
+TRUE
+FALSE
+FALSE
 C:\Users\adamo\Source\Repos\Postulate.Zinger\Zinger\bin\Release\AzDeploy.Client.dll
 3
 1
@@ -120,6 +127,13 @@ TRUE
 FALSE
 FALSE
 C:\Users\adamo\Source\Repos\Postulate.Zinger\Zinger\bin\Release\ClosedXML.dll
+3
+1
+TRUE
+TRUE
+FALSE
+FALSE
+C:\Users\adamo\Source\Repos\Postulate.Zinger\Zinger\bin\Release\Dapper.CX.SqlServer.dll
 3
 1
 TRUE
@@ -266,6 +280,48 @@ TRUE
 TRUE
 FALSE
 FALSE
+C:\Users\adamo\Source\Repos\Postulate.Zinger\Zinger\bin\Release\Microsoft.Identity.Client.dll
+3
+1
+TRUE
+TRUE
+FALSE
+FALSE
+C:\Users\adamo\Source\Repos\Postulate.Zinger\Zinger\bin\Release\Microsoft.IdentityModel.JsonWebTokens.dll
+3
+1
+TRUE
+TRUE
+FALSE
+FALSE
+C:\Users\adamo\Source\Repos\Postulate.Zinger\Zinger\bin\Release\Microsoft.IdentityModel.Logging.dll
+3
+1
+TRUE
+TRUE
+FALSE
+FALSE
+C:\Users\adamo\Source\Repos\Postulate.Zinger\Zinger\bin\Release\Microsoft.IdentityModel.Protocols.dll
+3
+1
+TRUE
+TRUE
+FALSE
+FALSE
+C:\Users\adamo\Source\Repos\Postulate.Zinger\Zinger\bin\Release\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+3
+1
+TRUE
+TRUE
+FALSE
+FALSE
+C:\Users\adamo\Source\Repos\Postulate.Zinger\Zinger\bin\Release\Microsoft.IdentityModel.Tokens.dll
+3
+1
+TRUE
+TRUE
+FALSE
+FALSE
 C:\Users\adamo\Source\Repos\Postulate.Zinger\Zinger\bin\Release\MySql.Data.dll
 3
 1
@@ -309,6 +365,13 @@ TRUE
 FALSE
 FALSE
 C:\Users\adamo\Source\Repos\Postulate.Zinger\Zinger\bin\Release\System.Data.SqlServerCe.dll
+3
+1
+TRUE
+TRUE
+FALSE
+FALSE
+C:\Users\adamo\Source\Repos\Postulate.Zinger\Zinger\bin\Release\System.IdentityModel.Tokens.Jwt.dll
 3
 1
 TRUE
