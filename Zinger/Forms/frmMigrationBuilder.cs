@@ -84,6 +84,7 @@ namespace Zinger.Forms
                     lblStepResult.Text = null;
                     var step = bsSteps.Current as DataMigration.Step;
                     if (step != null && step.Columns == null) step.Columns = new List<DataMigration.Column>();
+                    propertyGrid1.SelectedObject = null;
                 };
 
                 migrationStep1.InitBinding(bsSteps);
@@ -232,8 +233,19 @@ namespace Zinger.Forms
 
         private async void btnRefreshProgress_Click(object sender, EventArgs e)
         {
-            var progress = await _migrator.QueryMappingProgress(_doc.Document);
-            dgvProgress.DataSource = progress;
+            try
+            {
+                var step = (dgvSteps.DataSource as BindingSource).Current as DataMigration.Step;
+                var progress = await _migrator.QueryMappingProgress(_doc.Document, step);
+                propertyGrid1.SelectedObject = progress;
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }            
         }
+
+        private void llImportKeyMap_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) => btnImportKeyMap_Click(sender, new EventArgs());
+        
     }
 }

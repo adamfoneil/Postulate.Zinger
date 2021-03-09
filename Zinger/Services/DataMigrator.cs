@@ -8,6 +8,7 @@ using SqlIntegration.Library.Classes;
 using SqlIntegration.Library.Extensions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -215,7 +216,7 @@ namespace Zinger.Services
                 var createTable = await dest.SqlCreateTableAsync(result.Schema, result.Name, query);
                 await source.ExecuteAsync(createTable);
 
-                await BulkInsert.ExecuteAsync(data, source, result, 30, new BulkInsertOptions()
+                await BulkInsert.ExecuteAsync(data, source, result, 35, new BulkInsertOptions()
                 {
                     IdentityInsert = true
                 });
@@ -400,31 +401,30 @@ namespace Zinger.Services
             return result;
         }
 
-        public async Task<IEnumerable<MappingProgress>> QueryMappingProgress(DataMigration migration)
+        public async Task<MappingProgress> QueryMappingProgress(DataMigration migration, DataMigration.Step step)
         {
-            List<MappingProgress> results = new List<MappingProgress>();
+            MappingProgress result = null;
 
             await ExecuteWithConnectionsAsync(migration, async (source, dest) =>
             {
                 var migrator = await GetMigratorAsync(dest);
                 var keymapTable = migrator.KeyMapTable;
-                               
-                foreach (var step in migration.Steps)
-                {
-                    var destTable = DbObject.Parse(step.DestTable);
-                    var sql = BuildProgressQuery(step, keymapTable, destTable);
-                    var table = (await source.QueryTableAsync(sql, migration.GetParameters())).AsEnumerable().Select(row => new MappingProgress(row));
-                    results.AddRange(table); // it's also just one row however
-                }
+                                               
+                var destTable = DbObject.Parse(step.DestTable);
+                var sql = GetProgressQuery(step, keymapTable, destTable);
+                var table = (await source.QueryTableAsync(sql, migration.GetParameters())).AsEnumerable().Select(row => new MappingProgress(row));
+                result = table.FirstOrDefault();                
             });
 
-            return results;
+            return result;
+        }
 
-            string BuildProgressQuery(DataMigration.Step step, DbObject keymapTable, DbObject destTable)
-            {
-                var source = ParseSource(step.SourceFromWhere);
+        private string GetProgressQuery(DataMigration.Step step, DbObject keymapTable, DbObject destTable)
+        {
+            var source = ParseSource(step.SourceFromWhere);
 
-                return $@"WITH {source.cte}[inner] AS (
+            return 
+                $@"WITH {source.cte}[inner] AS (
                     SELECT 
                         [SourceId],
                         [NewId]
@@ -450,13 +450,11 @@ namespace Zinger.Services
                 FROM
                     [mapped],
                     [unmapped]";
-            }
-                
 
             (string cte, string body) ParseSource(string sourceFromWhere)
             {
                 var customQueryToken = Regex.Match(sourceFromWhere, @"SELECT(\s*){columns}(\s*)FROM");
-               
+
                 string body = (customQueryToken.Success) ?
                     sourceFromWhere.Substring(customQueryToken.Index + customQueryToken.Length) :
                     sourceFromWhere;
@@ -537,10 +535,12 @@ namespace Zinger.Services
             /// <summary>
             /// number of rows in the migrate.KeyMap table for this DestTable
             /// </summary>
+            [Category("Rows")]
             public int MappedRows { get; set; }
             /// <summary>
             /// number of rows that don't have a NewId
             /// </summary>
+            [Category("Rows")]
             public int UnmappedRows { get; set; }
         }
 
