@@ -66,12 +66,12 @@ namespace Zinger.Forms
             _doc.Controls.AddItems(cbSourceConnection,
                 setProperty: (dm) => dm.SourceConnection = (cbSourceConnection.SelectedItem as SavedConnection).Name,
                 setControl: (dm) => cbSourceConnection.Set<SavedConnection>(item => item.Name.Equals(dm.SourceConnection)),
-                SavedConnections.Connections);
+                SavedConnections.Connections.OrderBy(item => item.Name));
 
             _doc.Controls.AddItems(cbDestConnection,
                 setProperty: (dm) => dm.DestConnection = (cbDestConnection.SelectedItem as SavedConnection).Name,
                 setControl: (dm) => cbDestConnection.Set<SavedConnection>(item => item.Name.Equals(dm.DestConnection)),
-                SavedConnections.Connections);
+                SavedConnections.Connections.OrderBy(item => item.Name));
 
             void InitStepsDataGridView()
             {

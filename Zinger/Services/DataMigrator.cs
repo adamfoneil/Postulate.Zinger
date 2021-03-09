@@ -529,8 +529,12 @@ namespace Zinger.Services
                 UnmappedRows = row.Field<int>("UnmappedRows");
             }
 
+            [Browsable(false)]
             public int Order { get; set; }
+
+            [Category("DbObject")]
             public string Schema { get; set; }
+            [Category("DbObject")]
             public string Name { get; set; }
             /// <summary>
             /// number of rows in the migrate.KeyMap table for this DestTable

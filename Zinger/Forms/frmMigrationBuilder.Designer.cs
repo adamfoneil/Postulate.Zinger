@@ -476,7 +476,7 @@ namespace Zinger.Forms
             // 
             // btnAddStepColumns
             // 
-            this.btnAddStepColumns.Location = new System.Drawing.Point(37, 155);
+            this.btnAddStepColumns.Location = new System.Drawing.Point(37, 150);
             this.btnAddStepColumns.Name = "btnAddStepColumns";
             this.btnAddStepColumns.Size = new System.Drawing.Size(115, 23);
             this.btnAddStepColumns.TabIndex = 21;
