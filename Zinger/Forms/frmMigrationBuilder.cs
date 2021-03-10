@@ -236,7 +236,7 @@ namespace Zinger.Forms
             try
             {
                 var step = (dgvSteps.DataSource as BindingSource).Current as DataMigration.Step;
-                var progress = await _migrator.QueryMappingProgress(_doc.Document, step);
+                var progress = await _migrator.QueryMappingProgressAsync(_doc.Document, step);
                 propertyGrid1.SelectedObject = progress;
             }
             catch (Exception exc)
@@ -246,6 +246,14 @@ namespace Zinger.Forms
         }
 
         private void llImportKeyMap_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) => btnImportKeyMap_Click(sender, new EventArgs());
-        
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            SaveToClipboard(() =>
+            {
+                var step = (dgvSteps.DataSource as BindingSource).Current as DataMigration.Step;
+                return _migrator.GetUnmappedRowsQuery(step);
+            });
+        }
     }
 }

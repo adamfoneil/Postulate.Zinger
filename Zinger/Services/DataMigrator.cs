@@ -163,13 +163,7 @@ namespace Zinger.Services
         {
             const string columnToken = "{columns}";
 
-            var columns = string.Join(", ", step.Columns
-                .Where(col => !string.IsNullOrWhiteSpace(col.Source) && !string.IsNullOrWhiteSpace(col.Dest))
-                .Select(col => (col.Source.StartsWith("=")) ?
-                    $"{col.Source.Substring(1)} AS [{col.Dest}]" :
-                    $"{SqlBuilder.ApplyDelimiter(col.Source, '[', ']')} AS [{col.Dest}]"));
-
-            string columnList = $"{columns}, {SqlBuilder.ApplyDelimiter(step.SourceIdentityColumn, '[', ']')}";
+            var columnList = GetStepColumnList(step);
 
             var query = (step.SourceFromWhere.Contains(columnToken)) ?
                 step.SourceFromWhere.Replace(columnToken, columnList) :
@@ -186,6 +180,24 @@ namespace Zinger.Services
             }
         }
 
+        private string GetStepColumnList(DataMigration.Step step, string sourceIdAlias = null)
+        {
+            var columns = string.Join(", ", step.Columns
+                .Where(col => !string.IsNullOrWhiteSpace(col.Source) && !string.IsNullOrWhiteSpace(col.Dest))
+                .Select(col => (col.Source.StartsWith("=")) ?
+                    $"{col.Source.Substring(1)} AS [{col.Dest}]" :
+                    $"{SqlBuilder.ApplyDelimiter(col.Source, '[', ']')} AS [{col.Dest}]"));
+
+            string sourceId = SqlBuilder.ApplyDelimiter(step.SourceIdentityColumn, '[', ']');
+
+            if (!string.IsNullOrEmpty(sourceIdAlias))
+            {
+                sourceId += $" AS [{sourceIdAlias}]";
+            }
+
+            return $"{columns}, {sourceId}";
+        }
+
         /// <summary>
         /// copies the key map table from the dest connection to the source
         /// so you can do inspect and troubleshoot the mapping in the source connection
@@ -198,7 +210,7 @@ namespace Zinger.Services
             await ExecuteWithConnectionsAsync(dataMigration, async (source, dest) =>
             {
                 var migrator = await GetMigratorAsync(dest);
-                result = migrator.KeyMapTable;
+                result = SqlMigrator<int>.KeyMapTable;
 
                 if (await source.TableExistsAsync(result))
                 {
@@ -401,17 +413,14 @@ namespace Zinger.Services
             return result;
         }
 
-        public async Task<MappingProgress> QueryMappingProgress(DataMigration migration, DataMigration.Step step)
+        public async Task<MappingProgress> QueryMappingProgressAsync(DataMigration migration, DataMigration.Step step)
         {
             MappingProgress result = null;
 
             await ExecuteWithConnectionsAsync(migration, async (source, dest) =>
             {
-                var migrator = await GetMigratorAsync(dest);
-                var keymapTable = migrator.KeyMapTable;
-                                               
-                var destTable = DbObject.Parse(step.DestTable);
-                var sql = GetProgressQuery(step, keymapTable, destTable);
+                var migrator = await GetMigratorAsync(dest);                                                                               
+                var sql = GetProgressQuery(step, migrator);
                 var table = (await source.QueryTableAsync(sql, migration.GetParameters())).AsEnumerable().Select(row => new MappingProgress(row));
                 result = table.FirstOrDefault();                
             });
@@ -419,9 +428,12 @@ namespace Zinger.Services
             return result;
         }
 
-        private string GetProgressQuery(DataMigration.Step step, DbObject keymapTable, DbObject destTable)
+        private string GetProgressQuery(DataMigration.Step step, SqlMigrator<int> migrator)
         {
             var source = ParseSource(step.SourceFromWhere);
+
+            var destTable = DbObject.Parse(step.DestTable);
+            var keymapTable = SqlMigrator<int>.KeyMapTable;
 
             return 
                 $@"WITH {source.cte}[inner] AS (
@@ -450,22 +462,51 @@ namespace Zinger.Services
                 FROM
                     [mapped],
                     [unmapped]";
-
-            (string cte, string body) ParseSource(string sourceFromWhere)
-            {
-                var customQueryToken = Regex.Match(sourceFromWhere, @"SELECT(\s*){columns}(\s*)FROM");
-
-                string body = (customQueryToken.Success) ?
-                    sourceFromWhere.Substring(customQueryToken.Index + customQueryToken.Length) :
-                    sourceFromWhere;
-
-                string cte = (customQueryToken.Success) ?
-                    sourceFromWhere.Substring("WITH ".Length, customQueryToken.Index - "WITH ".Length) + ", " :
-                    string.Empty;
-
-                return (cte, body);
-            }
         }
+
+        public string GetUnmappedRowsQuery(DataMigration.Step step)
+        {
+            var source = ParseSource(step.SourceFromWhere);
+
+            var destTable = DbObject.Parse(step.DestTable);
+            var keymapTable = SqlMigrator<int>.KeyMapTable;
+
+            const string sourceIdAlias = "_src_id";
+
+            return
+                $@"WITH {source.cte}[source] AS (
+                    SELECT
+                        {GetStepColumnList(step, sourceIdAlias)}
+                    FROM 
+                        {source.body}                    
+                ) SELECT 
+                    [source].*
+                FROM 
+                    [source]
+                WHERE 
+                    NOT EXISTS(
+                        SELECT 1 FROM [{keymapTable.Schema}].[{keymapTable.Name}] [km]
+                        WHERE 
+                            [km].[Schema]='{destTable.Schema}' AND 
+                            [km].[TableName]='{destTable.Name}' AND
+                            [km].[SourceId]=[source].[{sourceIdAlias}]
+                        )";
+        }
+
+        private static (string cte, string body) ParseSource(string sourceFromWhere)
+        {
+            var customQueryToken = Regex.Match(sourceFromWhere, @"SELECT(\s*){columns}(\s*)FROM");
+
+            string body = (customQueryToken.Success) ?
+                sourceFromWhere.Substring(customQueryToken.Index + customQueryToken.Length) :
+                sourceFromWhere;
+
+            string cte = (customQueryToken.Success) ?
+                sourceFromWhere.Substring("WITH ".Length, customQueryToken.Index - "WITH ".Length) + ", " :
+                string.Empty;
+
+            return (cte, body);
+        }      
 
         private async Task RunStepInnerAsync(
             DataMigration.Step step, int maxRows, 

@@ -56,12 +56,13 @@ namespace Zinger.Forms
             this.colParamVal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.migrationStep1 = new Zinger.Controls.MigrationStep();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.pbMain = new System.Windows.Forms.ToolStripProgressBar();
-            this.tslProgress = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tslCancel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.llUnmappedRowsSql = new System.Windows.Forms.LinkLabel();
+            this.label3 = new System.Windows.Forms.Label();
             this.btnRefreshProgress = new System.Windows.Forms.Button();
+            this.llImportKeyMap = new System.Windows.Forms.LinkLabel();
             this.pbValidation = new System.Windows.Forms.PictureBox();
             this.btnRun = new System.Windows.Forms.Button();
             this.lblStepResult = new System.Windows.Forms.Label();
@@ -69,11 +70,11 @@ namespace Zinger.Forms
             this.llSourceSql = new System.Windows.Forms.LinkLabel();
             this.btnAddStepColumns = new System.Windows.Forms.Button();
             this.llInsertSql = new System.Windows.Forms.LinkLabel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.llImportKeyMap = new System.Windows.Forms.LinkLabel();
-            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.pbMain = new System.Windows.Forms.ToolStripProgressBar();
+            this.tslProgress = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tslCancel = new System.Windows.Forms.ToolStripStatusLabel();
             this.tableLayoutPanel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -89,10 +90,10 @@ namespace Zinger.Forms
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbValidation)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbValidation)).BeginInit();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -369,6 +370,160 @@ namespace Zinger.Forms
             this.migrationStep1.Size = new System.Drawing.Size(261, 386);
             this.migrationStep1.TabIndex = 0;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.propertyGrid1);
+            this.groupBox1.Controls.Add(this.panel1);
+            this.groupBox1.Location = new System.Drawing.Point(11, 166);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(249, 215);
+            this.groupBox1.TabIndex = 23;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Progress";
+            // 
+            // propertyGrid1
+            // 
+            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid1.HelpVisible = false;
+            this.propertyGrid1.Location = new System.Drawing.Point(3, 100);
+            this.propertyGrid1.Name = "propertyGrid1";
+            this.propertyGrid1.Size = new System.Drawing.Size(243, 112);
+            this.propertyGrid1.TabIndex = 25;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.llUnmappedRowsSql);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.btnRefreshProgress);
+            this.panel1.Controls.Add(this.llImportKeyMap);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(3, 16);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(243, 84);
+            this.panel1.TabIndex = 26;
+            // 
+            // llUnmappedRowsSql
+            // 
+            this.llUnmappedRowsSql.AutoSize = true;
+            this.llUnmappedRowsSql.Location = new System.Drawing.Point(7, 59);
+            this.llUnmappedRowsSql.Name = "llUnmappedRowsSql";
+            this.llUnmappedRowsSql.Size = new System.Drawing.Size(113, 13);
+            this.llUnmappedRowsSql.TabIndex = 25;
+            this.llUnmappedRowsSql.TabStop = true;
+            this.llUnmappedRowsSql.Text = "Unmapped Rows SQL";
+            this.llUnmappedRowsSql.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoEllipsis = true;
+            this.label3.Location = new System.Drawing.Point(7, 13);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(141, 46);
+            this.label3.TabIndex = 23;
+            this.label3.Text = "To get accurate progress info, make sure to import the latest Key Map table first" +
+    ".";
+            // 
+            // btnRefreshProgress
+            // 
+            this.btnRefreshProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRefreshProgress.Location = new System.Drawing.Point(151, 13);
+            this.btnRefreshProgress.Name = "btnRefreshProgress";
+            this.btnRefreshProgress.Size = new System.Drawing.Size(80, 23);
+            this.btnRefreshProgress.TabIndex = 22;
+            this.btnRefreshProgress.Text = "Refresh";
+            this.btnRefreshProgress.UseVisualStyleBackColor = true;
+            this.btnRefreshProgress.Click += new System.EventHandler(this.btnRefreshProgress_Click);
+            // 
+            // llImportKeyMap
+            // 
+            this.llImportKeyMap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.llImportKeyMap.AutoSize = true;
+            this.llImportKeyMap.Location = new System.Drawing.Point(150, 39);
+            this.llImportKeyMap.Name = "llImportKeyMap";
+            this.llImportKeyMap.Size = new System.Drawing.Size(81, 13);
+            this.llImportKeyMap.TabIndex = 24;
+            this.llImportKeyMap.TabStop = true;
+            this.llImportKeyMap.Text = "Import Key Map";
+            this.llImportKeyMap.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llImportKeyMap_LinkClicked);
+            // 
+            // pbValidation
+            // 
+            this.pbValidation.Location = new System.Drawing.Point(11, 42);
+            this.pbValidation.Name = "pbValidation";
+            this.pbValidation.Size = new System.Drawing.Size(17, 20);
+            this.pbValidation.TabIndex = 16;
+            this.pbValidation.TabStop = false;
+            // 
+            // btnRun
+            // 
+            this.btnRun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRun.Image = ((System.Drawing.Image)(resources.GetObject("btnRun.Image")));
+            this.btnRun.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnRun.Location = new System.Drawing.Point(190, 11);
+            this.btnRun.Name = "btnRun";
+            this.btnRun.Size = new System.Drawing.Size(71, 23);
+            this.btnRun.TabIndex = 20;
+            this.btnRun.Text = "Run";
+            this.btnRun.UseVisualStyleBackColor = true;
+            this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
+            // 
+            // lblStepResult
+            // 
+            this.lblStepResult.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblStepResult.Location = new System.Drawing.Point(34, 42);
+            this.lblStepResult.Name = "lblStepResult";
+            this.lblStepResult.Size = new System.Drawing.Size(227, 53);
+            this.lblStepResult.TabIndex = 15;
+            this.lblStepResult.Text = "label6";
+            // 
+            // btnValidateStep
+            // 
+            this.btnValidateStep.Location = new System.Drawing.Point(11, 11);
+            this.btnValidateStep.Name = "btnValidateStep";
+            this.btnValidateStep.Size = new System.Drawing.Size(71, 23);
+            this.btnValidateStep.TabIndex = 17;
+            this.btnValidateStep.Text = "Test";
+            this.btnValidateStep.UseVisualStyleBackColor = true;
+            this.btnValidateStep.Click += new System.EventHandler(this.btnValidateStep_Click);
+            // 
+            // llSourceSql
+            // 
+            this.llSourceSql.AutoSize = true;
+            this.llSourceSql.Location = new System.Drawing.Point(34, 106);
+            this.llSourceSql.Name = "llSourceSql";
+            this.llSourceSql.Size = new System.Drawing.Size(65, 13);
+            this.llSourceSql.TabIndex = 18;
+            this.llSourceSql.TabStop = true;
+            this.llSourceSql.Text = "Source SQL";
+            this.llSourceSql.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llSourceSql_LinkClicked);
+            // 
+            // btnAddStepColumns
+            // 
+            this.btnAddStepColumns.Location = new System.Drawing.Point(37, 127);
+            this.btnAddStepColumns.Name = "btnAddStepColumns";
+            this.btnAddStepColumns.Size = new System.Drawing.Size(115, 23);
+            this.btnAddStepColumns.TabIndex = 21;
+            this.btnAddStepColumns.Text = "Add Columns";
+            this.btnAddStepColumns.UseVisualStyleBackColor = true;
+            this.btnAddStepColumns.Click += new System.EventHandler(this.btnAddStepColumns_Click);
+            // 
+            // llInsertSql
+            // 
+            this.llInsertSql.AutoSize = true;
+            this.llInsertSql.Location = new System.Drawing.Point(105, 106);
+            this.llInsertSql.Name = "llInsertSql";
+            this.llInsertSql.Size = new System.Drawing.Size(57, 13);
+            this.llInsertSql.TabIndex = 19;
+            this.llInsertSql.TabStop = true;
+            this.llInsertSql.Text = "Insert SQL";
+            this.llInsertSql.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llInsertSql_LinkClicked);
+            // 
             // imageList1
             // 
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
@@ -410,148 +565,6 @@ namespace Zinger.Forms
             this.tslCancel.Visible = false;
             this.tslCancel.Click += new System.EventHandler(this.tslCancel_Click);
             // 
-            // btnRefreshProgress
-            // 
-            this.btnRefreshProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRefreshProgress.Location = new System.Drawing.Point(151, 13);
-            this.btnRefreshProgress.Name = "btnRefreshProgress";
-            this.btnRefreshProgress.Size = new System.Drawing.Size(80, 23);
-            this.btnRefreshProgress.TabIndex = 22;
-            this.btnRefreshProgress.Text = "Refresh";
-            this.btnRefreshProgress.UseVisualStyleBackColor = true;
-            this.btnRefreshProgress.Click += new System.EventHandler(this.btnRefreshProgress_Click);
-            // 
-            // pbValidation
-            // 
-            this.pbValidation.Location = new System.Drawing.Point(11, 42);
-            this.pbValidation.Name = "pbValidation";
-            this.pbValidation.Size = new System.Drawing.Size(17, 20);
-            this.pbValidation.TabIndex = 16;
-            this.pbValidation.TabStop = false;
-            // 
-            // btnRun
-            // 
-            this.btnRun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRun.Image = ((System.Drawing.Image)(resources.GetObject("btnRun.Image")));
-            this.btnRun.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRun.Location = new System.Drawing.Point(190, 11);
-            this.btnRun.Name = "btnRun";
-            this.btnRun.Size = new System.Drawing.Size(71, 23);
-            this.btnRun.TabIndex = 20;
-            this.btnRun.Text = "Run";
-            this.btnRun.UseVisualStyleBackColor = true;
-            this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
-            // 
-            // lblStepResult
-            // 
-            this.lblStepResult.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblStepResult.Location = new System.Drawing.Point(34, 42);
-            this.lblStepResult.Name = "lblStepResult";
-            this.lblStepResult.Size = new System.Drawing.Size(227, 81);
-            this.lblStepResult.TabIndex = 15;
-            this.lblStepResult.Text = "label6";
-            // 
-            // btnValidateStep
-            // 
-            this.btnValidateStep.Location = new System.Drawing.Point(11, 11);
-            this.btnValidateStep.Name = "btnValidateStep";
-            this.btnValidateStep.Size = new System.Drawing.Size(71, 23);
-            this.btnValidateStep.TabIndex = 17;
-            this.btnValidateStep.Text = "Test";
-            this.btnValidateStep.UseVisualStyleBackColor = true;
-            this.btnValidateStep.Click += new System.EventHandler(this.btnValidateStep_Click);
-            // 
-            // llSourceSql
-            // 
-            this.llSourceSql.AutoSize = true;
-            this.llSourceSql.Location = new System.Drawing.Point(34, 129);
-            this.llSourceSql.Name = "llSourceSql";
-            this.llSourceSql.Size = new System.Drawing.Size(65, 13);
-            this.llSourceSql.TabIndex = 18;
-            this.llSourceSql.TabStop = true;
-            this.llSourceSql.Text = "Source SQL";
-            this.llSourceSql.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llSourceSql_LinkClicked);
-            // 
-            // btnAddStepColumns
-            // 
-            this.btnAddStepColumns.Location = new System.Drawing.Point(37, 150);
-            this.btnAddStepColumns.Name = "btnAddStepColumns";
-            this.btnAddStepColumns.Size = new System.Drawing.Size(115, 23);
-            this.btnAddStepColumns.TabIndex = 21;
-            this.btnAddStepColumns.Text = "Add Columns";
-            this.btnAddStepColumns.UseVisualStyleBackColor = true;
-            this.btnAddStepColumns.Click += new System.EventHandler(this.btnAddStepColumns_Click);
-            // 
-            // llInsertSql
-            // 
-            this.llInsertSql.AutoSize = true;
-            this.llInsertSql.Location = new System.Drawing.Point(105, 129);
-            this.llInsertSql.Name = "llInsertSql";
-            this.llInsertSql.Size = new System.Drawing.Size(57, 13);
-            this.llInsertSql.TabIndex = 19;
-            this.llInsertSql.TabStop = true;
-            this.llInsertSql.Text = "Insert SQL";
-            this.llInsertSql.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llInsertSql_LinkClicked);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.propertyGrid1);
-            this.groupBox1.Controls.Add(this.panel1);
-            this.groupBox1.Location = new System.Drawing.Point(11, 196);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(249, 183);
-            this.groupBox1.TabIndex = 23;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Progress";
-            // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.AutoEllipsis = true;
-            this.label3.Location = new System.Drawing.Point(7, 13);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(141, 46);
-            this.label3.TabIndex = 23;
-            this.label3.Text = "To get accurate progress info, make sure to import the latest Key Map table first" +
-    ".";
-            // 
-            // llImportKeyMap
-            // 
-            this.llImportKeyMap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.llImportKeyMap.AutoSize = true;
-            this.llImportKeyMap.Location = new System.Drawing.Point(150, 39);
-            this.llImportKeyMap.Name = "llImportKeyMap";
-            this.llImportKeyMap.Size = new System.Drawing.Size(81, 13);
-            this.llImportKeyMap.TabIndex = 24;
-            this.llImportKeyMap.TabStop = true;
-            this.llImportKeyMap.Text = "Import Key Map";
-            this.llImportKeyMap.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llImportKeyMap_LinkClicked);
-            // 
-            // propertyGrid1
-            // 
-            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGrid1.HelpVisible = false;
-            this.propertyGrid1.Location = new System.Drawing.Point(3, 85);
-            this.propertyGrid1.Name = "propertyGrid1";
-            this.propertyGrid1.Size = new System.Drawing.Size(243, 95);
-            this.propertyGrid1.TabIndex = 25;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.btnRefreshProgress);
-            this.panel1.Controls.Add(this.llImportKeyMap);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(3, 16);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(243, 69);
-            this.panel1.TabIndex = 26;
-            // 
             // frmMigrationBuilder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -584,12 +597,12 @@ namespace Zinger.Forms
             this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbValidation)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbValidation)).EndInit();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -640,5 +653,6 @@ namespace Zinger.Forms
         private System.Windows.Forms.LinkLabel llImportKeyMap;
         private System.Windows.Forms.PropertyGrid propertyGrid1;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.LinkLabel llUnmappedRowsSql;
     }
 }
