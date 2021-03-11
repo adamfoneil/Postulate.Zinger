@@ -35,6 +35,8 @@ namespace Zinger.Services
 
         public event EventHandler<SqlMigrator<int>.Progress> Progress;
 
+        public event EventHandler<string> ConsoleMessage;
+
         public Dictionary<string, object> KeyViolationValues { get; private set; }
 
         /// <summary>
@@ -272,12 +274,13 @@ namespace Zinger.Services
             // in AH4 when mapping from dbo.Customer, if the sourceId is negative, it's being used as a Folder.ParentId.
             // I didn't have a way to do this delcaratively within the migration model, so it's hardcoded into the migrator.
             result.OnMappingException = async (exc, cn, obj, sourceId, txn) =>
-            {
+            {                
                 if (sourceId < 0 && obj.Equals(DbObject.Parse("dbo.Customer")))
                 {
                     return await result.GetNewIdAsync(cn, obj, sourceId * -1, txn);
                 }
 
+                ConsoleMessage?.Invoke(this, $"Mapping exception: {exc.Message}");
                 return default;
             };
 
@@ -290,9 +293,11 @@ namespace Zinger.Services
         }
 
         private async Task<bool> AnalyzeInsertExceptionAsync(
-            SqlConnection connection, InsertExceptionType type, DataRow dataRow, Exception exception, Dictionary<string, object> values)
+            SqlConnection connection, InsertExceptionType type, DataRow dataRow, 
+            Exception exception, Dictionary<string, object> values)
         {
             KeyViolationValues = values;
+            ConsoleMessage?.Invoke(this, $"Insert exception: {exception.Message}");
             return await Task.FromResult(exception.Message.Contains("duplicate key"));
         }
 

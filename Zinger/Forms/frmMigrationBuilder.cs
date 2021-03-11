@@ -18,7 +18,7 @@ namespace Zinger.Forms
         JsonSDI<DataMigration> _doc = new JsonSDI<DataMigration>(".json", "Json Files|*.json", "Save changes?");
         
         private DataMigrator _migrator;
-        private DataMigrator.MigrationResult _migrationResult;
+        private DataMigrator.MigrationResult _migrationResult;        
 
         public frmMigrationBuilder()
         {
@@ -37,6 +37,10 @@ namespace Zinger.Forms
         {
             _migrator = new DataMigrator(SavedConnections);
             _migrator.Progress += ShowProgress;
+            _migrator.ConsoleMessage += delegate (object sender2, string message)
+            {
+                consoleTextBox1.Insert(message);
+            };
 
             InitBinding();
         }
@@ -146,6 +150,7 @@ namespace Zinger.Forms
         {
             try
             {
+                consoleTextBox1.Clear();
                 tslProgress.Text = "Querying...";
                 tslCancel.Visible = true;
                 pbMain.Visible = true;                

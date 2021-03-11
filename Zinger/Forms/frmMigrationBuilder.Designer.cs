@@ -55,7 +55,8 @@ namespace Zinger.Forms
             this.colParamName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colParamVal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.migrationStep1 = new Zinger.Controls.MigrationStep();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -75,6 +76,8 @@ namespace Zinger.Forms
             this.pbMain = new System.Windows.Forms.ToolStripProgressBar();
             this.tslProgress = new System.Windows.Forms.ToolStripStatusLabel();
             this.tslCancel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.migrationStep1 = new Zinger.Controls.MigrationStep();
+            this.consoleTextBox1 = new Zinger.Controls.ConsoleTextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -90,6 +93,10 @@ namespace Zinger.Forms
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbValidation)).BeginInit();
@@ -346,7 +353,7 @@ namespace Zinger.Forms
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.migrationStep1);
+            this.splitContainer2.Panel1.Controls.Add(this.splitContainer3);
             // 
             // splitContainer2.Panel2
             // 
@@ -362,13 +369,35 @@ namespace Zinger.Forms
             this.splitContainer2.SplitterDistance = 261;
             this.splitContainer2.TabIndex = 14;
             // 
-            // migrationStep1
+            // splitContainer3
             // 
-            this.migrationStep1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.migrationStep1.Location = new System.Drawing.Point(0, 0);
-            this.migrationStep1.Name = "migrationStep1";
-            this.migrationStep1.Size = new System.Drawing.Size(261, 386);
-            this.migrationStep1.TabIndex = 0;
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.migrationStep1);
+            this.splitContainer3.Panel1.Controls.Add(this.label4);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.consoleTextBox1);
+            this.splitContainer3.Size = new System.Drawing.Size(261, 386);
+            this.splitContainer3.SplitterDistance = 281;
+            this.splitContainer3.TabIndex = 1;
+            // 
+            // label4
+            // 
+            this.label4.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label4.Location = new System.Drawing.Point(0, 258);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(261, 23);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Console (max 100 messages)";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // groupBox1
             // 
@@ -565,6 +594,28 @@ namespace Zinger.Forms
             this.tslCancel.Visible = false;
             this.tslCancel.Click += new System.EventHandler(this.tslCancel_Click);
             // 
+            // migrationStep1
+            // 
+            this.migrationStep1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.migrationStep1.Location = new System.Drawing.Point(0, 0);
+            this.migrationStep1.Name = "migrationStep1";
+            this.migrationStep1.Size = new System.Drawing.Size(261, 258);
+            this.migrationStep1.TabIndex = 0;
+            // 
+            // consoleTextBox1
+            // 
+            this.consoleTextBox1.BackColor = System.Drawing.SystemColors.Window;
+            this.consoleTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.consoleTextBox1.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.consoleTextBox1.Location = new System.Drawing.Point(0, 0);
+            this.consoleTextBox1.MaxLines = 100;
+            this.consoleTextBox1.Multiline = true;
+            this.consoleTextBox1.Name = "consoleTextBox1";
+            this.consoleTextBox1.ReadOnly = true;
+            this.consoleTextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.consoleTextBox1.Size = new System.Drawing.Size(261, 101);
+            this.consoleTextBox1.TabIndex = 0;
+            // 
             // frmMigrationBuilder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -597,6 +648,11 @@ namespace Zinger.Forms
             this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            this.splitContainer3.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -654,5 +710,8 @@ namespace Zinger.Forms
         private System.Windows.Forms.PropertyGrid propertyGrid1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.LinkLabel llUnmappedRowsSql;
+        private System.Windows.Forms.SplitContainer splitContainer3;
+        private System.Windows.Forms.Label label4;
+        private Controls.ConsoleTextBox consoleTextBox1;
     }
 }
