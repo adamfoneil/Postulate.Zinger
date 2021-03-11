@@ -418,9 +418,8 @@ namespace Zinger.Services
             MappingProgress result = null;
 
             await ExecuteWithConnectionsAsync(migration, async (source, dest) =>
-            {
-                var migrator = await GetMigratorAsync(dest);                                                                               
-                var sql = GetProgressQuery(step, migrator);
+            {                
+                var sql = GetProgressQuery(step);
                 var table = (await source.QueryTableAsync(sql, migration.GetParameters())).AsEnumerable().Select(row => new MappingProgress(row));
                 result = table.FirstOrDefault();                
             });
@@ -428,7 +427,7 @@ namespace Zinger.Services
             return result;
         }
 
-        private string GetProgressQuery(DataMigration.Step step, SqlMigrator<int> migrator)
+        private string GetProgressQuery(DataMigration.Step step)
         {
             var source = ParseSource(step.SourceFromWhere);
 
@@ -449,19 +448,23 @@ namespace Zinger.Services
                         FROM [{keymapTable.Schema}].[{keymapTable.Name}] [km]
 		                WHERE [km].[Schema]='{destTable.Schema}' AND [km].[TableName]='{destTable.Name}'
                     ) [map] ON [source].[Id]=[map].[SourceId]
-                ), [mapped] AS (
-                    SELECT COUNT(1) AS [MappedRows] FROM [inner]
+                ), [source_total] AS (
+                    SELECT COUNT(1) AS [SourceRows] FROM [inner]
                 ), [unmapped] AS (
                     SELECT COUNT(1) AS [UnmappedRows] FROM [inner] WHERE [NewId] IS NULL
+                ), [mapped] AS (
+                    SELECT COUNT(1) AS [MappedRows] FROM [inner] WHERE [SourceId] IS NOT NULL
                 ) SELECT
                     {step.Order} AS [Order],
                     '{destTable.Schema}' AS [Schema],
                     '{destTable.Name}' AS [Name],
+                    [source_total].[SourceRows],
                     [mapped].[MappedRows],
                     [unmapped].[UnmappedRows]
                 FROM
                     [mapped],
-                    [unmapped]";
+                    [unmapped],
+                    [source_total]";
         }
 
         public string GetUnmappedRowsQuery(DataMigration.Step step)
@@ -566,6 +569,7 @@ namespace Zinger.Services
                 Order = row.Field<int>("Order");
                 Schema = row.Field<string>("Schema");
                 Name = row.Field<string>("Name");
+                SourceRows = row.Field<int>("SourceRows");
                 MappedRows = row.Field<int>("MappedRows");
                 UnmappedRows = row.Field<int>("UnmappedRows");
             }
@@ -587,6 +591,11 @@ namespace Zinger.Services
             /// </summary>
             [Category("Rows")]
             public int UnmappedRows { get; set; }
+            /// <summary>
+            /// total number of rows in the source query
+            /// </summary>
+            [Category("Rows")]
+            public int SourceRows { get; set; }
         }
 
         public class QueryException : Exception
