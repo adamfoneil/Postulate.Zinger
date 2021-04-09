@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Postulate Query Helper")]
+[assembly: AssemblyTitle("Zinger")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Adam O'Neil Software")]
-[assembly: AssemblyProduct("Postulate Query Helper")]
+[assembly: AssemblyProduct("Zinger")]
 [assembly: AssemblyCopyright("Copyright © Adam O'Neil Software 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -154,6 +154,7 @@
     <Compile Include="Services\Providers\MySqlQueryProvider.cs" />
     <Compile Include="Services\Providers\OleDbQueryProvider.cs" />
     <Compile Include="Services\Parameter.cs" />
+    <Compile Include="Services\Providers\SqliteQueryProvider.cs" />
     <Compile Include="Services\QueryProvider.cs" />
     <Compile Include="Models\SavedConnection.cs" />
     <Compile Include="Models\SavedQuery.cs" />
@@ -259,6 +260,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Data.SqlClient">
       <Version>2.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Data.Sqlite.Core">
+      <Version>5.0.5</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.SqlServer.Compact">
       <Version>4.0.8876.1</Version>

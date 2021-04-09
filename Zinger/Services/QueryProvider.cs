@@ -13,7 +13,8 @@ namespace Zinger.Services
         MySql,
         SqlServer,
         OleDb,
-        SqlCe
+        SqlCe,
+        Sqlite
     }
 
     public abstract class QueryProvider
