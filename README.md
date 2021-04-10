@@ -18,9 +18,9 @@ public class MyQueryResult
     public DateTime OscilliscopeRiskDate { get; set; }
 }
 ```
-Postulate Query Helper infers the property types from the underlying table column types in the backend database. SQL Server, MySQL, and OleDb data sources are supported.
+Zinger infers the property types from the underlying table column types in the backend database. SQL Server, MySQL, and OleDb data sources are supported.
 
-In addition to generating POCO result classes, you can also use Postulate Query Helper to debug and create [Dapper.QX Query](https://github.com/adamfoneil/Dapper.QX) instances. This is how I handle inline SQL in my applications -- allowing me to balance the productivity and convenience of inline SQL with its inherent liabilities.
+In addition to generating POCO result classes, you can also use Zinger to debug and create [Dapper.QX Query](https://github.com/adamfoneil/Dapper.QX) instances. This is how I handle inline SQL in my applications -- allowing me to balance the productivity and convenience of inline SQL with its inherent liabilities.
 
 ("Zinger" was kind of a code name I was using for this during development. It's not one of my better code names, though, and it never stuck. Some of the source assets use this name, and it's too much trouble to rename it.)
 
@@ -54,7 +54,7 @@ Next, click the **C#** tab to see the C# outputs. Here you set the **Query Name*
 
 ![img](https://github.com/adamosoftware/Postulate.Zinger/blob/master/result-class.png)
 
-Click the **Query Class** tab to see the class generated that's compatible with the Postulate Query&lt;T&gt; type. For more info on this, see the Postulate [Query wiki](https://github.com/adamosoftware/Postulate/wiki/Using-the-Query-class) page as well as the [source](https://github.com/adamosoftware/Postulate/blob/master/Postulate.Base/Query_base.cs).
+Click the **Query Class** tab to see the class generated that's compatible with the Dapper.QX Query&lt;T&gt; type. For more info on this, see the [Dapper.QX project](https://github.com/adamfoneil/Dapper.QX).
   
 ![img](https://github.com/adamosoftware/Postulate.Zinger/blob/master/query-class.png)
 
