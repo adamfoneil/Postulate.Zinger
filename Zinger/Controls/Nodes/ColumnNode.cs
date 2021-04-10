@@ -25,6 +25,7 @@ namespace Zinger.Controls.Nodes
             ImageKey =
                 (column.InPrimaryKey) ? "primaryKey" :
                 (IsForeignKey(column, foreignKeys, out _, out _)) ? "shortcut" :
+                (column.IsCalculated) ? "calculated" :
                 (column.Name.Equals(identityColumn)) ? "unique" :
                 "column";
 
@@ -33,6 +34,15 @@ namespace Zinger.Controls.Nodes
             if (IsForeignKey(column, foreignKeys, out Table referencedTable, out string referencedColumn))
             {
                 Nodes.Add(new TableNode(referencedTable, referencedColumn));
+            }
+
+            if (column.IsCalculated)
+            {
+                Nodes.Add(new TreeNode(column.Expression)
+                {
+                    ImageKey = "calculated",
+                    SelectedImageKey = "calculated"
+                });
             }
         }
 

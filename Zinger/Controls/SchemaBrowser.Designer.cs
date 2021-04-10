@@ -38,12 +38,12 @@
             this.createModelClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setAliasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeAliasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buildInsertStatementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buildClassInitializerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tbSearch = new System.Windows.Forms.TextBox();
             this.statusStrip2 = new System.Windows.Forms.StatusStrip();
             this.pbLoading = new System.Windows.Forms.ToolStripProgressBar();
             this.llRefresh = new System.Windows.Forms.ToolStripStatusLabel();
-            this.buildInsertStatementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buildClassInitializerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.statusStrip2.SuspendLayout();
             this.SuspendLayout();
@@ -63,6 +63,7 @@
             this.imlSmallIcons.Images.SetKeyName(8, "view");
             this.imlSmallIcons.Images.SetKeyName(9, "table-function");
             this.imlSmallIcons.Images.SetKeyName(10, "param-in");
+            this.imlSmallIcons.Images.SetKeyName(11, "calculated");
             // 
             // tvwObjects
             // 
@@ -89,7 +90,7 @@
             this.buildInsertStatementToolStripMenuItem,
             this.buildClassInitializerToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(191, 180);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(191, 158);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // selectColumnsToolStripMenuItem
@@ -128,6 +129,20 @@
             this.removeAliasToolStripMenuItem.Text = "Remove Alias...";
             this.removeAliasToolStripMenuItem.Click += new System.EventHandler(this.removeAliasToolStripMenuItem_Click);
             // 
+            // buildInsertStatementToolStripMenuItem
+            // 
+            this.buildInsertStatementToolStripMenuItem.Name = "buildInsertStatementToolStripMenuItem";
+            this.buildInsertStatementToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.buildInsertStatementToolStripMenuItem.Text = "Build Insert Statement";
+            this.buildInsertStatementToolStripMenuItem.Click += new System.EventHandler(this.buildInsertStatementToolStripMenuItem_Click);
+            // 
+            // buildClassInitializerToolStripMenuItem
+            // 
+            this.buildClassInitializerToolStripMenuItem.Name = "buildClassInitializerToolStripMenuItem";
+            this.buildClassInitializerToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.buildClassInitializerToolStripMenuItem.Text = "Build Class Initializer";
+            this.buildClassInitializerToolStripMenuItem.Click += new System.EventHandler(this.buildClassInitializerToolStripMenuItem_Click);
+            // 
             // tbSearch
             // 
             this.tbSearch.Dock = System.Windows.Forms.DockStyle.Top;
@@ -164,20 +179,6 @@
             this.llRefresh.Text = "Refresh";
             this.llRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.llRefresh.Click += new System.EventHandler(this.llRefresh_Click);
-            // 
-            // buildInsertStatementToolStripMenuItem
-            // 
-            this.buildInsertStatementToolStripMenuItem.Name = "buildInsertStatementToolStripMenuItem";
-            this.buildInsertStatementToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
-            this.buildInsertStatementToolStripMenuItem.Text = "Build Insert Statement";
-            this.buildInsertStatementToolStripMenuItem.Click += new System.EventHandler(this.buildInsertStatementToolStripMenuItem_Click);
-            // 
-            // buildClassInitializerToolStripMenuItem
-            // 
-            this.buildClassInitializerToolStripMenuItem.Name = "buildClassInitializerToolStripMenuItem";
-            this.buildClassInitializerToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
-            this.buildClassInitializerToolStripMenuItem.Text = "Build Class Initializer";
-            this.buildClassInitializerToolStripMenuItem.Click += new System.EventHandler(this.buildClassInitializerToolStripMenuItem_Click);
             // 
             // SchemaBrowser
             // 

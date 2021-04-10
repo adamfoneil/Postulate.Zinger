@@ -270,7 +270,7 @@
       <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="SqlSchema.SqlServer">
-      <Version>1.0.4</Version>
+      <Version>1.0.5</Version>
     </PackageReference>
     <PackageReference Include="SqlServer.Util.Library">
       <Version>1.0.24</Version>
