@@ -34,6 +34,7 @@
             this.tvwObjects = new System.Windows.Forms.TreeView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.selectColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewDefinitionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rowCountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createModelClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setAliasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,6 +84,7 @@
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectColumnsToolStripMenuItem,
+            this.viewDefinitionToolStripMenuItem,
             this.rowCountToolStripMenuItem,
             this.createModelClassToolStripMenuItem,
             this.setAliasToolStripMenuItem,
@@ -90,7 +92,7 @@
             this.buildInsertStatementToolStripMenuItem,
             this.buildClassInitializerToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(191, 158);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(191, 202);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // selectColumnsToolStripMenuItem
@@ -99,6 +101,13 @@
             this.selectColumnsToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.selectColumnsToolStripMenuItem.Text = "Select Columns";
             this.selectColumnsToolStripMenuItem.Click += new System.EventHandler(this.selectColumnsToolStripMenuItem_Click);
+            // 
+            // viewDefinitionToolStripMenuItem
+            // 
+            this.viewDefinitionToolStripMenuItem.Name = "viewDefinitionToolStripMenuItem";
+            this.viewDefinitionToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.viewDefinitionToolStripMenuItem.Text = "View Definition";
+            this.viewDefinitionToolStripMenuItem.Click += new System.EventHandler(this.viewDefinitionToolStripMenuItem_Click);
             // 
             // rowCountToolStripMenuItem
             // 
@@ -214,5 +223,6 @@
         private System.Windows.Forms.ToolStripMenuItem removeAliasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem buildInsertStatementToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem buildClassInitializerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewDefinitionToolStripMenuItem;
     }
 }

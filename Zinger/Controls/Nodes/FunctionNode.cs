@@ -24,5 +24,6 @@ namespace Zinger.Controls.Nodes
         public override string SqlQuery => $"SELECT * FROM [{TableFunction.Schema}].[{TableFunction.Name}]()";
         public override string ModelClassName => TableFunction.Name;
         public override DbObject DbObject => TableFunction;
+        public override bool HasViewableDefinition => true;
     }
 }

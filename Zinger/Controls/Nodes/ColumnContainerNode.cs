@@ -30,5 +30,6 @@ namespace Zinger.Controls.Nodes
         public abstract string SqlQuery { get; }
         public abstract string ModelClassName { get; }        
         public abstract DbObject DbObject { get; }
+        public abstract bool HasViewableDefinition { get; }
     }
 }

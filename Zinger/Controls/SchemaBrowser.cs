@@ -1,4 +1,5 @@
 ﻿using SqlSchema.Library;
+using SqlSchema.Library.Interfaces;
 using SqlSchema.Library.Models;
 using SqlSchema.SqlServer;
 using System;
@@ -208,6 +209,7 @@ namespace Zinger.Controls
         {
             var hitTest = tvwObjects.HitTest(e.X, e.Y);
             _selectedObject = hitTest.Node as ColumnContainerNode;
+            viewDefinitionToolStripMenuItem.Enabled = _selectedObject?.DbObject is IDefinition;
 
             findTable(hitTest.Node);
 
@@ -381,6 +383,13 @@ namespace Zinger.Controls
             {
                 MessageBox.Show(exc.Message);
             }
+        }
+
+        private void viewDefinitionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmResolvedSQL dlg = new frmResolvedSQL();
+            dlg.SQL = (_selectedObject.DbObject as IDefinition).SqlDefinition;
+            dlg.ShowDialog();
         }
     }
 }
