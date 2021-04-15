@@ -401,11 +401,13 @@ namespace Zinger.Controls
             {
                 var tableNodes = ((tvwObjects.CheckBoxes) ?
                     tvwObjects.FindNodesOfType<TableNode>().Where(nd => nd.Checked) :
-                    tvwObjects.FindNodesOfType<TableNode>())
+                    tvwObjects.FindNodesOfType<TableNode>())                    
                     .ToArray();
 
                 //selected tables or all tables
-                var tables = tableNodes.Select(node => (node as TableNode).DbObject as Table);
+                var tables = tableNodes
+                    .Where(node => node.DbObject?.Type == DbObjectType.Table)
+                    .Select(node => node.DbObject as Table);
 
                 // foreign keys (we'll figure out later which ones apply)
                 var foreignKeys = _objects.OfType<ForeignKey>();

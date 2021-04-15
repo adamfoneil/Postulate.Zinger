@@ -28,7 +28,7 @@ namespace Zinger.Static
             return results;
         }
 
-        public static IEnumerable<TreeNode> FindNodesOfType<T>(this TreeView treeView) where T : TreeNode
+        public static IEnumerable<T> FindNodesOfType<T>(this TreeView treeView) where T : TreeNode
         {
             List<T> results = new List<T>();
             results.AddRange(FindNodesOfType<T>(treeView.Nodes.OfType<TreeNode>()));
