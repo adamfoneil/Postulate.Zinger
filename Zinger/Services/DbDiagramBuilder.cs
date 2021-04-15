@@ -1,5 +1,4 @@
 ﻿using SqlSchema.Library.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,11 +32,20 @@ namespace Zinger.Services
             return result;
         }
 
-        private IEnumerable<string> ColumnSyntax(Table tbl, IEnumerable<ForeignKey> foreignKeys)
-        {
-            throw new NotImplementedException();
+        private IEnumerable<string> ColumnSyntax(Table table, IEnumerable<ForeignKey> foreignKeys)
+        {            
             var foreignKeysByColumn = foreignKeys
-                .ToDictionary(item => string.Join("|", item.Columns.Select(col => col.ReferencingName)));
+                .ToDictionary(item => item.Columns.First().ReferencingName);
+
+            foreach (var col in table.Columns)
+            {
+                string result = $"{col.Name} {col.DataType}";
+                if (foreignKeysByColumn.ContainsKey(col.Name))
+                {
+                    result += $" [ref: > {foreignKeysByColumn[col.Name].ReferencedTable.Name}.{foreignKeysByColumn[col.Name].Columns.First().ReferencedName}]";
+                }
+                yield return result;
+            }
         }
     }
 }
