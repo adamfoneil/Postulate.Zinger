@@ -13,6 +13,7 @@ using Zinger.Controls.Nodes;
 using Zinger.Forms;
 using Zinger.Models;
 using Zinger.Services;
+using Zinger.Static;
 using Table = SqlSchema.Library.Models.Table;
 
 namespace Zinger.Controls
@@ -22,6 +23,7 @@ namespace Zinger.Controls
         private IEnumerable<DbObject> _objects;
         private readonly TextBoxDelayHandler _searchBox;
         private readonly AliasManager _aliasManager;
+        private readonly DbDiagramBuilder _diagramBuilder;
 
         private ProviderType _providerType;
         private Func<IDbConnection> _getConnection;
@@ -43,6 +45,7 @@ namespace Zinger.Controls
             _searchBox.DelayedTextChanged += tbSearch_TextChanged;
 
             _aliasManager = new AliasManager(new Options().Folder);
+            _diagramBuilder = new DbDiagramBuilder();
         }
 
         private Dictionary<ProviderType, Analyzer> Analyzers
@@ -390,6 +393,32 @@ namespace Zinger.Controls
             frmResolvedSQL dlg = new frmResolvedSQL();
             dlg.SQL = (_selectedObject.DbObject as IDefinition).SqlDefinition;
             dlg.ShowDialog();
+        }
+
+        private void getDbDiagramioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var tableNodes = ((tvwObjects.CheckBoxes) ?
+                    tvwObjects.FindNodesOfType<TableNode>().Where(nd => nd.Checked) :
+                    tvwObjects.FindNodesOfType<TableNode>())
+                    .ToArray();
+
+                //selected tables or all tables
+                var tables = tableNodes.Select(node => (node as TableNode).DbObject as Table);
+
+                // foreign keys (we'll figure out later which ones apply)
+                var foreignKeys = _objects.OfType<ForeignKey>();
+
+                var result = _diagramBuilder.GetSyntax(tables, foreignKeys);
+
+                Clipboard.SetText(result.ToString());
+                MessageBox.Show("Diagram syntax was copied to clipboard.");
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);                
+            }
         }
     }
 }

@@ -150,6 +150,7 @@
     <Compile Include="Models\DataMigration.cs" />
     <Compile Include="Models\ResolveJoinResult.cs" />
     <Compile Include="Services\DataMigrator.cs" />
+    <Compile Include="Services\DbDiagramBuilder.cs" />
     <Compile Include="Services\JoinResolver.cs" />
     <Compile Include="Services\Providers\MySqlQueryProvider.cs" />
     <Compile Include="Services\Providers\OleDbQueryProvider.cs" />
@@ -170,6 +171,7 @@
     <Compile Include="Services\ScriptGen\RebuildDisabledIndexes.cs" />
     <Compile Include="Services\TextBoxDelayHandler.cs" />
     <Compile Include="Static\JsonHelper.cs" />
+    <Compile Include="Static\TreeViewExtensions.cs" />
     <EmbeddedResource Include="Controls\MigrationStep.resx">
       <DependentUpon>MigrationStep.cs</DependentUpon>
     </EmbeddedResource>
