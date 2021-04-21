@@ -391,6 +391,22 @@ namespace Zinger.Forms
         {
             SaveQuery(fileName);
             await Task.CompletedTask;
-        }        
+        }
+
+        private ForeignKey queryEditor1_FindForeignKeyRequested(string columnName, string sql)
+        {
+            ForeignKey result = null;
+
+            try
+            {
+                result = schemaBrowser1.FindForeignKey(columnName, sql);
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+
+            return result;
+        }
     }
 }

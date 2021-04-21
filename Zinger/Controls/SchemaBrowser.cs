@@ -365,6 +365,11 @@ namespace Zinger.Controls
             }
         }
 
+        public ForeignKey FindForeignKey(string columnName, string sql)
+        {
+            throw new NotImplementedException();
+        }
+
         private void buildClassInitializerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try

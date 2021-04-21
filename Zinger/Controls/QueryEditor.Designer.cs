@@ -43,6 +43,9 @@
             this.tslQueryMetrics = new System.Windows.Forms.ToolStripStatusLabel();
             this.pbExecuting = new System.Windows.Forms.ToolStripProgressBar();
             this.tslResolvedSQL = new System.Windows.Forms.ToolStripStatusLabel();
+            this.cmDataTable = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.joinRelatedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyNameColumnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splcQueryAndResults)).BeginInit();
             this.splcQueryAndResults.Panel1.SuspendLayout();
             this.splcQueryAndResults.Panel2.SuspendLayout();
@@ -55,6 +58,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvParams)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            this.cmDataTable.SuspendLayout();
             this.SuspendLayout();
             // 
             // splcQueryAndResults
@@ -116,7 +120,6 @@
             this.tbQuery.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbQuery.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.tbQuery.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbQuery.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.tbQuery.IsReplaceMode = false;
             this.tbQuery.Language = FastColoredTextBoxNS.Language.SQL;
             this.tbQuery.LeftBracket = '(';
@@ -195,6 +198,8 @@
             this.dgvResults.ReadOnly = true;
             this.dgvResults.Size = new System.Drawing.Size(471, 130);
             this.dgvResults.TabIndex = 0;
+            this.dgvResults.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvResults_CellMouseDown);
+            this.dgvResults.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvResults_ColumnHeaderMouseClick);
             // 
             // statusStrip1
             // 
@@ -234,6 +239,27 @@
             this.tslResolvedSQL.Visible = false;
             this.tslResolvedSQL.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
             // 
+            // cmDataTable
+            // 
+            this.cmDataTable.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.joinRelatedToolStripMenuItem,
+            this.copyNameColumnToolStripMenuItem});
+            this.cmDataTable.Name = "cmDataTable";
+            this.cmDataTable.Size = new System.Drawing.Size(184, 70);
+            this.cmDataTable.Opening += new System.ComponentModel.CancelEventHandler(this.cmDataTable_Opening);
+            // 
+            // joinRelatedToolStripMenuItem
+            // 
+            this.joinRelatedToolStripMenuItem.Name = "joinRelatedToolStripMenuItem";
+            this.joinRelatedToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.joinRelatedToolStripMenuItem.Text = "Copy Related Join";
+            // 
+            // copyNameColumnToolStripMenuItem
+            // 
+            this.copyNameColumnToolStripMenuItem.Name = "copyNameColumnToolStripMenuItem";
+            this.copyNameColumnToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.copyNameColumnToolStripMenuItem.Text = "Copy Name Column";
+            // 
             // QueryEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -257,6 +283,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.cmDataTable.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -276,5 +303,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colExpression;
         private System.Windows.Forms.DataGridViewTextBoxColumn colParamValue;
         private System.Windows.Forms.ToolStripStatusLabel tslResolvedSQL;
+        private System.Windows.Forms.ContextMenuStrip cmDataTable;
+        private System.Windows.Forms.ToolStripMenuItem joinRelatedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyNameColumnToolStripMenuItem;
     }
 }

@@ -1,9 +1,11 @@
 ﻿using JsonSettings;
+using SqlSchema.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinForms.Library.Extensions;
 using Zinger.Forms;
@@ -12,11 +14,16 @@ using Zinger.Services;
 
 namespace Zinger.Controls
 {
+    public delegate ForeignKey FindForeignKeyHandler(string columnName, string sql);
+
     public partial class QueryEditor : UserControl
     {
         public event EventHandler Executed;
         public event EventHandler<string> JoinResolutionRequested;
         public event EventHandler Modified;
+        public event FindForeignKeyHandler FindForeignKeyRequested;
+
+        private ForeignKey _selectedFK = null;
 
         public QueryEditor()
         {
@@ -181,6 +188,44 @@ namespace Zinger.Controls
             if (e.KeyCode == Keys.J && e.Control && tbQuery.SelectedText.Length > 0)
             {
                 JoinResolutionRequested?.Invoke(this, tbQuery.SelectedText);
+            }
+        }
+
+        private void dgvResults_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            FindForeignKey(e);
+        }
+
+        private void dgvResults_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            FindForeignKey(e);
+        }
+
+        private void FindForeignKey(DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var column = (dgvResults.DataSource as DataTable).Columns[e.ColumnIndex];
+                if (FindForeignKeyRequested != null)
+                {
+                    _selectedFK = FindForeignKeyRequested.Invoke(column.ColumnName, tbQuery.Text);
+                }                
+            }
+        }
+
+        private void cmDataTable_Opening(object sender, CancelEventArgs e)
+        {
+            if (_selectedFK != null)
+            {
+
+            }
+            else
+            {
+                joinRelatedToolStripMenuItem.Text = "No Foreign Key";
+                joinRelatedToolStripMenuItem.Enabled = false;
+
+                copyNameColumnToolStripMenuItem.Text = "No Foreign Key";
+                copyNameColumnToolStripMenuItem.Enabled = false;
             }
         }
     }

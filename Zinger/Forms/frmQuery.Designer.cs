@@ -36,6 +36,7 @@
             this.btnDataToScript = new System.Windows.Forms.ToolStripButton();
             this.btnSchema = new System.Windows.Forms.ToolStripButton();
             this.btnImportExcel = new System.Windows.Forms.ToolStripButton();
+            this.btnScriptGen = new System.Windows.Forms.ToolStripDropDownButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.queryEditor1 = new Zinger.Controls.QueryEditor();
@@ -47,7 +48,6 @@
             this.tabNavigation = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.btnScriptGen = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -136,6 +136,16 @@
             this.btnImportExcel.Text = "Import Excel...";
             this.btnImportExcel.Click += new System.EventHandler(this.btnImportExcel_Click);
             // 
+            // btnScriptGen
+            // 
+            this.btnScriptGen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnScriptGen.Enabled = false;
+            this.btnScriptGen.Image = ((System.Drawing.Image)(resources.GetObject("btnScriptGen.Image")));
+            this.btnScriptGen.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnScriptGen.Name = "btnScriptGen";
+            this.btnScriptGen.Size = new System.Drawing.Size(74, 22);
+            this.btnScriptGen.Text = "Script Gen";
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
@@ -166,7 +176,6 @@
             this.queryEditor1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.queryEditor1.Location = new System.Drawing.Point(3, 3);
             this.queryEditor1.Name = "queryEditor1";
-            this.queryEditor1.Parameters = null;
             this.queryEditor1.Provider = null;
             this.queryEditor1.QueryName = null;
             this.queryEditor1.Size = new System.Drawing.Size(765, 425);
@@ -174,6 +183,7 @@
             this.queryEditor1.TabIndex = 0;
             this.queryEditor1.Executed += new System.EventHandler(this.queryEditor1_Executed);
             this.queryEditor1.Modified += new System.EventHandler(this.queryEditor1_Modified);
+            this.queryEditor1.FindForeignKeyRequested += new Zinger.Controls.FindForeignKeyHandler(this.queryEditor1_FindForeignKeyRequested);
             // 
             // tabPage2
             // 
@@ -181,7 +191,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 26);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(717, 431);
+            this.tabPage2.Size = new System.Drawing.Size(771, 431);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "C#";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -195,7 +205,7 @@
             this.resultClassBuilder1.QueryClass = "";
             this.resultClassBuilder1.QueryName = "";
             this.resultClassBuilder1.ResultClass = "";
-            this.resultClassBuilder1.Size = new System.Drawing.Size(711, 425);
+            this.resultClassBuilder1.Size = new System.Drawing.Size(765, 425);
             this.resultClassBuilder1.TabIndex = 0;
             this.resultClassBuilder1.QueryNameChanged += new System.EventHandler(this.resultClassBuilder1_QueryNameChanged);
             // 
@@ -276,16 +286,6 @@
             this.tabPage4.TabIndex = 1;
             this.tabPage4.Text = "Source Files";
             this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // btnScriptGen
-            // 
-            this.btnScriptGen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnScriptGen.Enabled = false;
-            this.btnScriptGen.Image = ((System.Drawing.Image)(resources.GetObject("btnScriptGen.Image")));
-            this.btnScriptGen.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnScriptGen.Name = "btnScriptGen";
-            this.btnScriptGen.Size = new System.Drawing.Size(74, 22);
-            this.btnScriptGen.Text = "Script Gen";
             // 
             // frmQuery
             // 
