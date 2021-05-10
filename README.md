@@ -27,6 +27,12 @@ In addition to generating POCO result classes, you can also use Zinger to debug 
 ## Downloads
 The latest release is now available [here](https://aosoftware.blob.core.windows.net/install/ZingerSetup.exe).
 
+There's also a NuGet package for the C# generation features:
+
+[![Nuget](https://img.shields.io/nuget/v/AO.Zinger.CSharp)](https://www.nuget.org/packages/AO.Zinger.CSharp/)
+
+built from the [Zinger.CSharp project](https://github.com/adamfoneil/Postulate.Zinger/tree/master/Zinger.CSharp)
+
 I'm not going to maintain GitHub releases anymore unless sporadically, so please use the installer download link above.
 
 ## How to use
