@@ -65,14 +65,15 @@ namespace Zinger.Services
             output.AppendLine("}"); // end class
 
             return output.ToString();
-
         }
 
         public string GetResultClass(
             DataTable schemaTable, string queryName, bool beautifyColumnNames, bool isResultClass = true, bool withAttributes = false, 
-            Action<StringBuilder> append = null, IEnumerable<string> ancestors = null)
+            Action<StringBuilder> insert = null, Action<StringBuilder> append = null, IEnumerable<string> ancestors = null)
         {
             StringBuilder output = new StringBuilder();
+
+            insert?.Invoke(output);
 
             output.AppendLine(ResultClassFirstLine(queryName, isResultClass, ancestors) + "\r\n{");
 
