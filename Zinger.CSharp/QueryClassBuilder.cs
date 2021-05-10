@@ -17,6 +17,10 @@ namespace Zinger.Services
             _getCommand = getCommand;
         }
 
+        public QueryClassBuilder()
+        {
+        }
+
         public static string ResultClassFirstLine(string queryName, bool isQueryClass = true)
         {
             string append = (isQueryClass) ? "Result" : string.Empty;
