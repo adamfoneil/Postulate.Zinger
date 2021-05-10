@@ -154,7 +154,6 @@
     <Compile Include="Services\JoinResolver.cs" />
     <Compile Include="Services\Providers\MySqlQueryProvider.cs" />
     <Compile Include="Services\Providers\OleDbQueryProvider.cs" />
-    <Compile Include="Services\Parameter.cs" />
     <Compile Include="Services\QueryProvider.cs" />
     <Compile Include="Models\SavedConnection.cs" />
     <Compile Include="Models\SavedQuery.cs" />
@@ -165,7 +164,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AliasManager.cs" />
     <Compile Include="Services\AppInstallHelper.cs" />
-    <Compile Include="Services\QueryClassBuilder.cs" />
     <Compile Include="Services\ScriptGenBase.cs" />
     <Compile Include="Services\ScriptGen\FindColumnLengths.cs" />
     <Compile Include="Services\ScriptGen\RebuildDisabledIndexes.cs" />
@@ -293,7 +291,12 @@
   <ItemGroup>
     <Content Include="App.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Zinger.CSharp\Zinger.CSharp.csproj">
+      <Project>{00238961-6211-49fa-ae88-d5fb87551d9a}</Project>
+      <Name>Zinger.CSharp</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>"C:\Users\Adamo\Source\Repos\AzDeploy\AzDeploy.Build\bin\Release\netcoreapp3.1\AzDeploy.Build.exe" "C:\Users\Adamo\Source\Repos\Postulate.Zinger\AzDeploy.json"</PostBuildEvent>

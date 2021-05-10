@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>AO.Zinger.CSharp</PackageId>
+    <Authors>Adam O'Neil</Authors>
+    <Company>Adam O'Neil</Company>
+    <Product>AO.Zinger.CSharp</Product>
+    <Copyright>Copyright (c) 2021 Adam O'Neil</Copyright>
+    <Description>C# generator for Zinger SQL Client</Description>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/adamfoneil/Postulate.Zinger</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/adamfoneil/Postulate.Zinger</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.CodeDom" Version="5.0.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
