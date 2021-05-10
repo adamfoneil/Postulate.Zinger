@@ -21,10 +21,17 @@ namespace Zinger.Services
         {
         }
 
-        public static string ResultClassFirstLine(string queryName, bool isQueryClass = true)
+        public static string ResultClassFirstLine(string queryName, bool isQueryClass = true, IEnumerable<string> ancestors = null)
         {
             string append = (isQueryClass) ? "Result" : string.Empty;
-            return $"public class {queryName}{append}";
+            string result = $"public class {queryName}{append}";
+
+            if (ancestors?.Any() ?? false)
+            {
+                result += $" : {string.Join(", ", ancestors)}";
+            }
+
+            return result;
         }
 
         public static string QueryClassFirstLine(string queryName, bool testable)
@@ -61,11 +68,13 @@ namespace Zinger.Services
 
         }
 
-        public string GetResultClass(DataTable schemaTable, string queryName, bool beautifyColumnNames, bool isResultClass = true, bool withAttributes = false)
+        public string GetResultClass(
+            DataTable schemaTable, string queryName, bool beautifyColumnNames, bool isResultClass = true, bool withAttributes = false, 
+            Action<StringBuilder> append = null, IEnumerable<string> ancestors = null)
         {
             StringBuilder output = new StringBuilder();
 
-            output.AppendLine(ResultClassFirstLine(queryName, isResultClass) + "\r\n{");
+            output.AppendLine(ResultClassFirstLine(queryName, isResultClass, ancestors) + "\r\n{");
 
             var columnInfo = CSharpPropertiesFromSchemaTable(schemaTable);
 
@@ -85,6 +94,8 @@ namespace Zinger.Services
 
                 output.AppendLine($"\tpublic {column.CSharpType} {prettyName} {{ get; set; }}");
             }
+
+            append?.Invoke(output);
 
             output.AppendLine("}"); // end class
 
