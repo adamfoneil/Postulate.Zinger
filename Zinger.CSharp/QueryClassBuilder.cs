@@ -166,7 +166,7 @@ namespace Zinger.Services
             return results;
         }
 
-        private static string CSharpTypeName(CSharpCodeProvider provider, Type type)
+        public static string CSharpTypeName(CSharpCodeProvider provider, Type type)
         {
             CodeTypeReference typeRef = new CodeTypeReference(type);
             return provider.GetTypeOutput(typeRef).Replace("System.", string.Empty);
