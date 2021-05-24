@@ -38,10 +38,16 @@ namespace Zinger.Services
 
         public Dictionary<string, string> Aliases { get => _aliases; }
 
-        public bool ContainsTable(Table table) => ContainsTable($"{table.Schema}.{table.Name}", out _);
+        public bool ContainsTable(Table table) => (table != null) ? ContainsTable($"{table.Schema}.{table.Name}", out _) : false;
 
         public bool ContainsTable(string tableName, out string alias)
         {
+            if (string.IsNullOrEmpty(tableName))
+            {
+                alias = default;
+                return false;
+            }
+
             var entry = _aliases.FirstOrDefault(kp => kp.Value.Equals(tableName));
             if (!default(KeyValuePair<string, string>).Equals(entry))
             {
