@@ -18,7 +18,7 @@ namespace Zinger.Services
             
             foreach (var tbl in tables)
             {
-                var columns = ColumnSyntax(tbl, foreignKeysByTable[tbl]);
+                var columns = ColumnSyntax(tbl, foreignKeysByTable[tbl], tables);
 
                 result.AppendLine($"table {tbl.Name} {{");
                 foreach (var col in columns)
@@ -32,9 +32,9 @@ namespace Zinger.Services
             return result;
         }
 
-        private IEnumerable<string> ColumnSyntax(Table table, IEnumerable<ForeignKey> foreignKeys)
+        private IEnumerable<string> ColumnSyntax(Table table, IEnumerable<ForeignKey> foreignKeys, IEnumerable<Table> tables)
         {            
-            var foreignKeysByColumn = foreignKeys
+            var foreignKeysByColumn = foreignKeys                
                 .ToDictionary(item => item.Columns.First().ReferencingName);
 
             foreach (var col in table.Columns)
@@ -42,7 +42,9 @@ namespace Zinger.Services
                 string result = $"{col.Name} {col.DataType}";
                 if (foreignKeysByColumn.ContainsKey(col.Name))
                 {
-                    result += $" [ref: > {foreignKeysByColumn[col.Name].ReferencedTable.Name}.{foreignKeysByColumn[col.Name].Columns.First().ReferencedName}]";
+                    var fk = foreignKeysByColumn[col.Name];
+                    var comment = (tables.Contains(fk.ReferencedTable)) ? string.Empty : "//";
+                    result += comment + $" [ref: > {fk.ReferencedTable.Name}.{fk.Columns.First().ReferencedName}]";
                 }
                 yield return result;
             }
