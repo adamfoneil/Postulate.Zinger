@@ -37,15 +37,24 @@ namespace Zinger.Services
             var foreignKeysByColumn = foreignKeys                
                 .ToDictionary(item => item.Columns.First().ReferencingName);
 
+            var indexes = table.Indexes.ToLookup(ndx => ndx.Type);
+            var pkColumns = (indexes.Contains(IndexType.PrimaryKey)) ?
+                indexes[IndexType.PrimaryKey].SelectMany(ndx => ndx.Columns).Select(col => col.Name) :
+                Enumerable.Empty<string>();
+            
             foreach (var col in table.Columns)
             {
                 string result = $"{col.Name} {col.DataType}";
+
+                if (pkColumns.Contains(col.Name)) result += " pk";
+
                 if (foreignKeysByColumn.ContainsKey(col.Name))
                 {
                     var fk = foreignKeysByColumn[col.Name];
                     var comment = (tables.Contains(fk.ReferencedTable)) ? string.Empty : "//";
                     result += comment + $" [ref: > {fk.ReferencedTable.Name}.{fk.Columns.First().ReferencedName}]";
                 }
+
                 yield return result;
             }
         }
