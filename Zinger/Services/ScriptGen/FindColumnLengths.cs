@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace Zinger.Services.ScriptGen
 {
@@ -18,9 +19,10 @@ namespace Zinger.Services.ScriptGen
             WHERE
 	            TYPE_NAME([col].[system_type_id]) LIKE '%varchar'";
 
-        protected override string GetScriptCommand(DataRow dataRow)
+        protected override async Task<string> GetScriptCommandAsync(IDbConnection connection, DataRow dataRow)
         {
-            return $"SELECT '{dataRow["Schema"]}' AS [Schema], '{dataRow["Table"]}' AS [Table], '{dataRow["Column"]}' AS [Column], MAX(LEN([{dataRow["Column"]}])) AS [Length] FROM [{dataRow["Schema"]}].[{dataRow["Table"]}]";
+            string result = $"SELECT '{dataRow["Schema"]}' AS [Schema], '{dataRow["Table"]}' AS [Table], '{dataRow["Column"]}' AS [Column], MAX(LEN([{dataRow["Column"]}])) AS [Length] FROM [{dataRow["Schema"]}].[{dataRow["Table"]}]";
+            return await Task.FromResult(result);        
         }
     }
 }

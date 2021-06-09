@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace Zinger.Services.ScriptGen
 {
@@ -20,9 +21,10 @@ namespace Zinger.Services.ScriptGen
 	            [t].[name], 
 	            SCHEMA_NAME([t].[schema_id])";
 
-        protected override string GetScriptCommand(DataRow dataRow)
+        protected override async Task<string> GetScriptCommandAsync(IDbConnection connection, DataRow dataRow)
         {
-            return $"ALTER INDEX ALL ON [{dataRow.Field<string>("Schema")}].[{dataRow.Field<string>("TableName")}] REBUILD;";
+            var result = $"ALTER INDEX ALL ON [{dataRow.Field<string>("Schema")}].[{dataRow.Field<string>("TableName")}] REBUILD;";
+            return await Task.FromResult(result);
         }
     }
 }

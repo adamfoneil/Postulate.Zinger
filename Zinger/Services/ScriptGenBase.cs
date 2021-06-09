@@ -2,6 +2,7 @@
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Zinger.Services
@@ -16,28 +17,31 @@ namespace Zinger.Services
 
         public abstract string Sql { get; }
 
-        protected abstract string GetScriptCommand(DataRow dataRow);
+        protected abstract Task<string> GetScriptCommandAsync(IDbConnection connection, DataRow dataRow);
 
-        public string Generate(QueryProvider queryProvider)
+        public async Task<string> GenerateAsync(QueryProvider queryProvider)
         {
             StringBuilder output = new StringBuilder();
             
-            var queryResult = queryProvider.Execute(Sql, nameof(ScriptGenBase), Enumerable.Empty<Parameter>());
-            
-            foreach (DataRow row in queryResult.DataTable.Rows)
+            using (var cn = queryProvider.GetConnection())
             {
-                output.AppendLine(GetScriptCommand(row));
-                output.AppendLine();
-            }
+                var queryResult = queryProvider.Execute(Sql, nameof(ScriptGenBase), Enumerable.Empty<Parameter>());
+
+                foreach (DataRow row in queryResult.DataTable.Rows)
+                {
+                    output.AppendLine(await GetScriptCommandAsync(cn, row));
+                    output.AppendLine();
+                }
+            }            
 
             return output.ToString();
         }
 
-        public void GenerateAndCopy(QueryProvider queryProvider)
+        public async Task GenerateAndCopyAsync(QueryProvider queryProvider)
         {
             try
             {
-                var result = Generate(queryProvider);
+                var result = await GenerateAsync(queryProvider);
                 Clipboard.SetText(result);
                 MessageBox.Show($"{Title} script copied to clipboard.");
             }

@@ -159,11 +159,11 @@ namespace Zinger.Forms
             {
                 var gen = Activator.CreateInstance(type) as ScriptGenBase;
                 ToolStripMenuItem btn = new ToolStripMenuItem(gen.Title) { DisplayStyle = ToolStripItemDisplayStyle.Text };
-                btn.Click += delegate (object sender, EventArgs args)
+                btn.Click += async delegate (object sender, EventArgs args)
                 {
                     try
                     {
-                        gen.GenerateAndCopy(queryEditor1.Provider);
+                        await gen.GenerateAndCopyAsync(queryEditor1.Provider);
                     }
                     catch (Exception exc)
                     {
