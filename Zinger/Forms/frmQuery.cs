@@ -158,6 +158,8 @@ namespace Zinger.Forms
             foreach (var type in scriptGenTypes)
             {
                 var gen = Activator.CreateInstance(type) as ScriptGenBase;
+                gen.OnGetParameters += () => queryEditor1.Parameters ?? Enumerable.Empty<Parameter>();  
+
                 ToolStripMenuItem btn = new ToolStripMenuItem(gen.Title) { DisplayStyle = ToolStripItemDisplayStyle.Text };
                 btn.Click += async delegate (object sender, EventArgs args)
                 {
