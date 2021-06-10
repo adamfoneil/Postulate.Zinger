@@ -46,6 +46,7 @@ namespace Zinger.Services.ScriptGen
                     [fk].[name] AS [ConstraintName], 
                     [fk].[object_id] AS [ObjectId],     
                     SCHEMA_NAME([ref_t].[schema_id]) AS [ReferencedSchema],
+                    [ref_t].[object_id] AS [ReferencedObjectId],
                     [ref_t].[name] AS [ReferencedTable],
                     [ref_col].[name] AS [ReferencedColumn],
                     SCHEMA_NAME([child_t].[schema_id]) AS [ReferencingSchema],
@@ -71,6 +72,7 @@ namespace Zinger.Services.ScriptGen
     {
         public string ConstraintName { get; set; }
         public int ObjectId { get; set; }
+        public int ReferencedObjectId { get; set; }
         public string ReferencedSchema { get; set; }
         public string ReferencedTable { get; set; }
         public string ReferencedColumn { get; set; }
