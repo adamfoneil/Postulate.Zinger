@@ -7,7 +7,7 @@
     <ProjectGuid>{55F2C937-19F3-4B11-92F7-BB3614402FAD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>QueryEditor</RootNamespace>
-    <AssemblyName>QueryEditor</AssemblyName>
+    <AssemblyName>Zinger.QueryEditor</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
