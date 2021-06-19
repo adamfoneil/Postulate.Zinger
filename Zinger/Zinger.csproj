@@ -140,11 +140,6 @@
     <Compile Include="Services\DataMigrator.cs" />
     <Compile Include="Services\DbDiagramBuilder.cs" />
     <Compile Include="Services\JoinResolver.cs" />
-    <Compile Include="Services\Providers\MySqlQueryProvider.cs" />
-    <Compile Include="Services\Providers\OleDbQueryProvider.cs" />
-    <Compile Include="Models\SavedConnection.cs" />
-    <Compile Include="Services\Providers\SqlCeQueryProvider.cs" />
-    <Compile Include="Services\Providers\SqlServerQueryProvider.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -280,6 +275,9 @@
       <Project>{55f2c937-19f3-4b11-92f7-bb3614402fad}</Project>
       <Name>Zinger.QueryEditor</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\Providers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

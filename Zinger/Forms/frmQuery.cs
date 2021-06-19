@@ -15,7 +15,6 @@ using Zinger.Controls.Nodes;
 using Zinger.Interfaces;
 using Zinger.Models;
 using Zinger.Services;
-using Zinger.Services.Providers;
 
 namespace Zinger.Forms
 {
