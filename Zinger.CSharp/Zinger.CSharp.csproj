@@ -12,10 +12,11 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/adamfoneil/Postulate.Zinger</PackageProjectUrl>
     <RepositoryUrl>https://github.com/adamfoneil/Postulate.Zinger</RepositoryUrl>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper.QX" Version="1.0.21" />
     <PackageReference Include="System.CodeDom" Version="5.0.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>

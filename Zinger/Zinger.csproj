@@ -68,12 +68,6 @@
     <Compile Include="Controls\Nodes\SchemaNode.cs" />
     <Compile Include="Controls\Nodes\TableNode.cs" />
     <Compile Include="Controls\Nodes\ViewNode.cs" />
-    <Compile Include="Controls\QueryEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\QueryEditor.Designer.cs">
-      <DependentUpon>QueryEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\ResultClassBuilder.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -128,12 +122,6 @@
     <Compile Include="Forms\frmQuery.Designer.cs">
       <DependentUpon>frmQuery.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmResolvedSQL.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\frmResolvedSQL.Designer.cs">
-      <DependentUpon>frmResolvedSQL.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\frmScriptData.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -154,9 +142,7 @@
     <Compile Include="Services\JoinResolver.cs" />
     <Compile Include="Services\Providers\MySqlQueryProvider.cs" />
     <Compile Include="Services\Providers\OleDbQueryProvider.cs" />
-    <Compile Include="Services\QueryProvider.cs" />
     <Compile Include="Models\SavedConnection.cs" />
-    <Compile Include="Models\SavedQuery.cs" />
     <Compile Include="Services\Providers\SqlCeQueryProvider.cs" />
     <Compile Include="Services\Providers\SqlServerQueryProvider.cs" />
     <Compile Include="Options.cs" />
@@ -172,9 +158,6 @@
     <Compile Include="Static\TreeViewExtensions.cs" />
     <EmbeddedResource Include="Controls\MigrationStep.resx">
       <DependentUpon>MigrationStep.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\QueryEditor.resx">
-      <DependentUpon>QueryEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ResultClassBuilder.resx">
       <DependentUpon>ResultClassBuilder.cs</DependentUpon>
@@ -202,9 +185,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmQuery.resx">
       <DependentUpon>frmQuery.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmResolvedSQL.resx">
-      <DependentUpon>frmResolvedSQL.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmScriptData.resx">
       <DependentUpon>frmScriptData.cs</DependentUpon>
@@ -295,6 +275,10 @@
     <ProjectReference Include="..\Zinger.CSharp\Zinger.CSharp.csproj">
       <Project>{00238961-6211-49fa-ae88-d5fb87551d9a}</Project>
       <Name>Zinger.CSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zinger.QueryEditor\Zinger.QueryEditor.csproj">
+      <Project>{55f2c937-19f3-4b11-92f7-bb3614402fad}</Project>
+      <Name>Zinger.QueryEditor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

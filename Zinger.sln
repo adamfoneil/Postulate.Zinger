@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zinger", "Zinger\Zinger.csproj", "{7E1893D2-CD2A-492E-9435-2B02682C4E9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zinger.CSharp", "Zinger.CSharp\Zinger.CSharp.csproj", "{00238961-6211-49FA-AE88-D5FB87551D9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zinger.CSharp", "Zinger.CSharp\Zinger.CSharp.csproj", "{00238961-6211-49FA-AE88-D5FB87551D9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zinger.QueryEditor", "Zinger.QueryEditor\Zinger.QueryEditor.csproj", "{55F2C937-19F3-4B11-92F7-BB3614402FAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{00238961-6211-49FA-AE88-D5FB87551D9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00238961-6211-49FA-AE88-D5FB87551D9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00238961-6211-49FA-AE88-D5FB87551D9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55F2C937-19F3-4B11-92F7-BB3614402FAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55F2C937-19F3-4B11-92F7-BB3614402FAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55F2C937-19F3-4B11-92F7-BB3614402FAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55F2C937-19F3-4B11-92F7-BB3614402FAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
