@@ -13,6 +13,8 @@ namespace Zinger.Forms
         public SavedConnections SavedConnections { get; internal set; }
         public string SavedConnectionFolder => SavedConnections.Filename;
 
+        public Func<SavedConnection, (bool result, string message)> OnTestConnection;
+
         public frmConnections()
         {
             InitializeComponent();
@@ -52,7 +54,7 @@ namespace Zinger.Forms
             // ignore
         }
 
-        private async void btnTest_Click(object sender, EventArgs e)
+        private void btnTest_Click(object sender, EventArgs e)
         {
             try
             {
@@ -63,11 +65,11 @@ namespace Zinger.Forms
 
                     row.ErrorText = null;
                     SavedConnection sc = row.DataBoundItem as SavedConnection;
-                    var result = await sc.TestAsync();
-                    if (!result.OpenedSuccessfully)
+                    var result = OnTestConnection?.Invoke(sc) ?? (false, "Testing not hooked up");
+                    if (!result.result)
                     {
                         anyErrors = true;
-                        row.ErrorText = result.ErrorMessage;
+                        row.ErrorText = result.message;
                     }
                 }
 

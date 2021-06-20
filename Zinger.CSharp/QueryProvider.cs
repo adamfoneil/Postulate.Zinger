@@ -35,6 +35,22 @@ namespace Zinger.Services
 
         public abstract ProviderType ProviderType { get; }
 
+        public (bool result, string message) TestConnection()
+        {
+            try
+            {
+                using (var cn = GetConnection())
+                {
+                    cn.Open();
+                    return (true, null);
+                }
+            }
+            catch (Exception exc)
+            {
+                return (false, exc.Message);
+            }
+        }
+
         public long Milleseconds { get; private set; }
 
         public string ResolvedQuery { get; private set; }

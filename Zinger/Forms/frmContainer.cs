@@ -7,6 +7,8 @@ using System.Windows.Forms;
 using WinForms.Library.Models;
 using Zinger.Interfaces;
 using Zinger.Models;
+using Zinger.Services;
+using Zinger.Services.Providers;
 
 namespace Zinger.Forms
 {
@@ -51,6 +53,7 @@ namespace Zinger.Forms
             try
             {
                 frmConnections dlg = new frmConnections();
+                dlg.OnTestConnection = TestConnection;
                 dlg.SavedConnections = GetSavedConnections();
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
@@ -64,6 +67,18 @@ namespace Zinger.Forms
             }
 
             return false;
+        }
+
+        private (bool result, string message) TestConnection(SavedConnection savedConnection)
+        {
+            var provider =
+                (savedConnection.ProviderType == ProviderType.OleDb) ? (QueryProvider)new OleDbQueryProvider(savedConnection.ConnectionString) :
+                (savedConnection.ProviderType == ProviderType.MySql) ? (QueryProvider)new MySqlQueryProvider(savedConnection.ConnectionString) :
+                (savedConnection.ProviderType == ProviderType.SqlCe) ? (QueryProvider)new SqlCeQueryProvider(savedConnection.ConnectionString) :
+                (savedConnection.ProviderType == ProviderType.SqlServer) ? (QueryProvider)new SqlServerQueryProvider(savedConnection.ConnectionString) :
+                throw new Exception($"Unknown provider type {savedConnection.ProviderType}");
+
+            return provider.TestConnection();
         }
 
         private void newQueryToolStripMenuItem_Click(object sender, EventArgs e)
