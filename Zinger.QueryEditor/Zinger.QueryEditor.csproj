@@ -58,6 +58,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmConnections.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmConnections.Designer.cs">
+      <DependentUpon>frmConnections.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmResolvedSQL.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,6 +81,9 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmConnections.resx">
+      <DependentUpon>frmConnections.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmResolvedSQL.resx">
       <DependentUpon>frmResolvedSQL.cs</DependentUpon>
     </EmbeddedResource>

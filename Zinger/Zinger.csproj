@@ -86,12 +86,6 @@
     <Compile Include="Forms\frmAbout.designer.cs">
       <DependentUpon>frmAbout.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmConnections.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\frmConnections.Designer.cs">
-      <DependentUpon>frmConnections.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\frmContainer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -166,9 +160,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmAbout.resx">
       <DependentUpon>frmAbout.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmConnections.resx">
-      <DependentUpon>frmConnections.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmContainer.resx">
       <DependentUpon>frmContainer.cs</DependentUpon>

@@ -10,7 +10,7 @@ namespace Zinger.Forms
 {
     public partial class frmConnections : Form
     {
-        public SavedConnections SavedConnections { get; internal set; }
+        public SavedConnections SavedConnections { get; set; }
         public string SavedConnectionFolder => SavedConnections.Filename;
 
         public Func<SavedConnection, (bool result, string message)> OnTestConnection;
