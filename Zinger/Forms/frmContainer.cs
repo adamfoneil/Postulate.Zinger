@@ -243,5 +243,12 @@ namespace Zinger.Forms
             frm.MdiParent = this;
             frm.Show();
         }
+
+        private void chartBuilderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmChartBuilder frm = new frmChartBuilder();
+            frm.MdiParent = this;
+            frm.Show();
+        }
     }
 }

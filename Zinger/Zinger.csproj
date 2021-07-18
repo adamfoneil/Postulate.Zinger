@@ -39,6 +39,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -86,6 +87,18 @@
     <Compile Include="Forms\frmAbout.designer.cs">
       <DependentUpon>frmAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmChartBuilder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmChartBuilder.Designer.cs">
+      <DependentUpon>frmChartBuilder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmConsole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmConsole.Designer.cs">
+      <DependentUpon>frmConsole.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmContainer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,8 +142,11 @@
       <DependentUpon>frmSetAlias.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ISaveable.cs" />
+    <Compile Include="Models\ChartConfiguration.cs" />
     <Compile Include="Models\DataMigration.cs" />
+    <Compile Include="Models\QuerySource.cs" />
     <Compile Include="Models\ResolveJoinResult.cs" />
+    <Compile Include="Services\ChartBuilder.cs" />
     <Compile Include="Services\DataMigrator.cs" />
     <Compile Include="Services\DbDiagramBuilder.cs" />
     <Compile Include="Services\JoinResolver.cs" />
@@ -160,6 +176,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmAbout.resx">
       <DependentUpon>frmAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmChartBuilder.resx">
+      <DependentUpon>frmChartBuilder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmConsole.resx">
+      <DependentUpon>frmConsole.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmContainer.resx">
       <DependentUpon>frmContainer.cs</DependentUpon>
