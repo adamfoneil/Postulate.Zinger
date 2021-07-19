@@ -23,6 +23,7 @@ namespace Zinger.Services
                     point.XValue = (config.ValueType.Equals("double")) ? 
                         valueRow.Field<double>(config.ValueColumn) : 
                         GetXValue(valueRow, config.ValueColumn, config.ValueType);
+                    point.YValues = new[] { 20d };
                     point.Label = valueRow.Field<string>(config.LabelColumn);
                     series.Points.Add(point);
                 }
