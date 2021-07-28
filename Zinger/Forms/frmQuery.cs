@@ -238,6 +238,7 @@ namespace Zinger.Forms
                     break;
 
                 case Keys.F3:
+                case Keys.OemPeriod when e.Control:
                     if (cbConnection.SelectedItem != null)
                     {
                         if (splitContainer1.Panel2Collapsed) splitContainer1.Panel2Collapsed = false;
