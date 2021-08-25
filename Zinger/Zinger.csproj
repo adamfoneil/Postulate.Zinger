@@ -65,6 +65,7 @@
     <Compile Include="Controls\Nodes\FunctionNode.cs" />
     <Compile Include="Controls\Nodes\ParameterNode.cs" />
     <Compile Include="Controls\Nodes\PlaceholderNode.cs" />
+    <Compile Include="Controls\Nodes\ProcedureNode.cs" />
     <Compile Include="Controls\Nodes\SchemaNode.cs" />
     <Compile Include="Controls\Nodes\TableNode.cs" />
     <Compile Include="Controls\Nodes\ViewNode.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Forms\frmSetAlias.Designer.cs">
       <DependentUpon>frmSetAlias.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IDbObject.cs" />
     <Compile Include="Interfaces\ISaveable.cs" />
     <Compile Include="Models\DataMigration.cs" />
     <Compile Include="Models\ResolveJoinResult.cs" />
@@ -240,7 +242,7 @@
       <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="SqlSchema.SqlServer">
-      <Version>1.0.6</Version>
+      <Version>1.0.7</Version>
     </PackageReference>
     <PackageReference Include="SqlServer.Util.Library">
       <Version>1.0.24</Version>

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Zinger.Interfaces;
 
 namespace Zinger.Controls.Nodes
 {
-    public abstract class ColumnContainerNode : TreeNode
+    public abstract class ColumnContainerNode : TreeNode, IDbObject
     {
         public ColumnContainerNode(string text, bool addPlaceholder = true) : base(text)
         {
@@ -28,8 +29,7 @@ namespace Zinger.Controls.Nodes
 
         public abstract bool SqlQueryEnabled { get; }
         public abstract string SqlQuery { get; }
-        public abstract string ModelClassName { get; }        
+        public abstract string ModelClassName { get; }
         public abstract DbObject DbObject { get; }
-        public abstract bool HasViewableDefinition { get; }
     }
 }

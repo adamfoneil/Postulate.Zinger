@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Zinger.Controls.Nodes;
 using Zinger.Forms;
+using Zinger.Interfaces;
 using Zinger.Models;
 using Zinger.Services;
 using Zinger.Static;
@@ -36,6 +37,7 @@ namespace Zinger.Controls
 
         private TableNode _selectedTable;
         private ColumnContainerNode _selectedObject;
+        private IDbObject _object;
 
         public SchemaBrowser()
         {
@@ -109,7 +111,7 @@ namespace Zinger.Controls
                 tvwObjects.Nodes.Clear();
 
                 var schemas = _objects
-                    .Where(obj => obj.IsSelectable && (search?.IsIncluded(obj) ?? true))
+                    .Where(obj => !string.IsNullOrEmpty(obj.Schema) && (search?.IsIncluded(obj) ?? true))
                     .GroupBy(obj => obj.Schema).OrderBy(grp => grp.Key);
 
                 FolderNode folderNode = null;
@@ -181,6 +183,18 @@ namespace Zinger.Controls
                         }
                     }
 
+                    var procs = schemaGrp.OfType<Procedure>().OrderBy(obj => obj.Name);
+                    if (procs.Any())
+                    {
+                        folderNode = new FolderNode("Procedures", procs.Count());
+                        schemaNode.Nodes.Add(folderNode);
+                        foreach (var proc in procs)
+                        {
+                            var procNode = new ProcedureNode(proc);
+                            folderNode.Nodes.Add(procNode);
+                        }
+                    }
+
                     schemaNode.Expand();
                 }
             }
@@ -212,7 +226,15 @@ namespace Zinger.Controls
         {
             var hitTest = tvwObjects.HitTest(e.X, e.Y);
             _selectedObject = hitTest.Node as ColumnContainerNode;
-            viewDefinitionToolStripMenuItem.Enabled = _selectedObject?.DbObject is IDefinition;
+            _object = hitTest.Node as IDbObject;
+            
+            bool viewDef = false;
+            if (_object != null)
+            {
+                viewDef = _object.DbObject is IDefinition;
+            }
+
+            viewDefinitionToolStripMenuItem.Enabled = viewDef;
 
             findTable(hitTest.Node);
 
@@ -391,7 +413,7 @@ namespace Zinger.Controls
         private void viewDefinitionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             frmResolvedSQL dlg = new frmResolvedSQL();
-            dlg.SQL = (_selectedObject.DbObject as IDefinition).SqlDefinition;
+            dlg.SQL = (_object.DbObject as IDefinition).SqlDefinition;
             dlg.ShowDialog();
         }
 

@@ -18,7 +18,6 @@ namespace Zinger.Controls.Nodes
         public override string SqlQuery => $"SELECT * FROM [{View.Schema}].[{View.Name}]";
         public override bool SqlQueryEnabled => true;
         public override string ModelClassName => View.Name;
-        public override DbObject DbObject => View;
-        public override bool HasViewableDefinition => true;
+        public override DbObject DbObject => View;        
     }
 }
