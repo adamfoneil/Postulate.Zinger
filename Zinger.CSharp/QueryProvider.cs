@@ -64,6 +64,7 @@ namespace Zinger.Services
                 cn.Open();
                 using (var cmd = GetCommand(query, cn))
                 {
+                    cmd.CommandTimeout = 120;
                     Parameter.AddToQuery(parameters?.Where(p => !p.IsArray()), cmd);
                     using (var reader = cmd.ExecuteReader())
                     {
