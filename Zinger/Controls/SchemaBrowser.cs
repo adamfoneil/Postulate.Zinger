@@ -271,7 +271,7 @@ namespace Zinger.Controls
                 {
                     { () => SchemaName, (value) => dbObject.Schema.ToLower().Equals(value.ToLower()) },
                     { () => TableName, (value) => dbObject.Name.ToLower().Contains(value.ToLower()) },
-                    { () => ColumnName, (value) => dbObject.Columns.Any(col => col.Name.ToLower().Contains(value.ToLower())) }
+                    { () => ColumnName, (value) => dbObject.Columns?.Any(col => col.Name.ToLower().Contains(value.ToLower())) ?? false }
                 };
 
                 return criteria.Where(kp => !string.IsNullOrEmpty(kp.Key.Invoke())).All(kp => kp.Value.Invoke(kp.Key.Invoke()));
