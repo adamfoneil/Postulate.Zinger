@@ -87,27 +87,40 @@ namespace Zinger.Services
                 {
                     Parameter.AddToQuery(parameters.Where(p => !p.IsArray()), cmd);
 
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        var schemaTable = reader.GetSchemaTable();
-                        result.ResultClass = _classBuilder.GetResultClass(schemaTable, queryName, BeautifyColumnNames);
-                    }
-
-                    result.QueryClass = _classBuilder.GetQueryClass(cn, query, queryName, parameters, true);
-
-                    var adapter = GetAdapter(cmd);
                     try
                     {
-                        DataSet dataSet = new DataSet();
-                        Stopwatch sw = Stopwatch.StartNew();
-                        adapter.Fill(dataSet);
-                        sw.Stop();
-                        Milleseconds = sw.ElapsedMilliseconds;
-                        result.DataTable = dataSet.Tables[0];
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            var schemaTable = reader.GetSchemaTable();
+                            result.ResultClass = _classBuilder.GetResultClass(schemaTable, queryName, BeautifyColumnNames);
+                        }
+
+                        result.QueryClass = _classBuilder.GetQueryClass(cn, query, queryName, parameters, true);
+
+                        var adapter = GetAdapter(cmd);
+                        try
+                        {
+                            DataSet dataSet = new DataSet();
+                            Stopwatch sw = Stopwatch.StartNew();
+                            adapter.Fill(dataSet);
+                            sw.Stop();
+                            Milleseconds = sw.ElapsedMilliseconds;
+                            result.DataTable = dataSet.Tables[0];
+                        }
+                        catch (Exception exc)
+                        {
+                            var message = $"Error running query: {exc.Message}";
+                            var append = AppendErrorMessage(exc);
+                            if (!string.IsNullOrWhiteSpace(append)) message += append;
+                            throw new Exception(message, exc);
+                        }
                     }
                     catch (Exception exc)
                     {
-                        throw new Exception($"Error running query: {exc.Message}", exc);
+                        var message = $"Error getting schema table: {exc.Message}";
+                        var append = AppendErrorMessage(exc);
+                        if (!string.IsNullOrWhiteSpace(append)) message += append;
+                        throw new Exception(message, exc);
                     }
                 }
             }
@@ -129,6 +142,8 @@ namespace Zinger.Services
 
             return RegexHelper.RemovePlaceholders(result);
         }
+
+        protected virtual string AppendErrorMessage(Exception exc) => null;
 
         public class ExecuteResult
         {

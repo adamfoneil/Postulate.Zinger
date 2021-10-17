@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
 using WinForms.Library.Extensions;
@@ -67,7 +68,7 @@ namespace Zinger.Controls
                 Executed?.Invoke(result, new EventArgs());
             }
             catch (Exception exc)
-            {
+            {                                
                 tslQueryMetrics.Text = $"Error: {exc.Message}";
                 string fullMessage = GetFullError(exc);
                 MessageBox.Show(fullMessage);

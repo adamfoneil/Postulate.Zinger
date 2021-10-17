@@ -116,7 +116,6 @@
             this.tbQuery.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbQuery.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.tbQuery.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbQuery.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.tbQuery.IsReplaceMode = false;
             this.tbQuery.Language = FastColoredTextBoxNS.Language.SQL;
             this.tbQuery.LeftBracket = '(';
@@ -227,7 +226,7 @@
             // 
             this.tslResolvedSQL.IsLink = true;
             this.tslResolvedSQL.Name = "tslResolvedSQL";
-            this.tslResolvedSQL.Size = new System.Drawing.Size(415, 17);
+            this.tslResolvedSQL.Size = new System.Drawing.Size(282, 17);
             this.tslResolvedSQL.Spring = true;
             this.tslResolvedSQL.Text = "Resolved SQL";
             this.tslResolvedSQL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
