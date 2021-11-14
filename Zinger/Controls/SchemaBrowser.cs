@@ -444,5 +444,38 @@ namespace Zinger.Controls
                 MessageBox.Show(exc.Message);                
             }
         }
+
+        private void getTableVariableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var table = _selectedTable.Table;
+
+                var sql = 
+$@"DECLARE @{table.Name} TABLE (
+    {string.Join(",\r\n\t", table.Columns.Select(col => SqlSyntax(col)))}
+)";
+
+                Clipboard.SetText(sql);
+                MessageBox.Show("Table variable syntax copied to clipboard.");
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+        }
+
+        private string SqlSyntax(Column col)
+        {
+            string typeSyntax = col.DataType;
+            
+            if (col.DataType.StartsWith("nvar") || col.DataType.StartsWith("var"))
+            {
+                var max = (col.MaxLength == -1) ? "max" : col.MaxLength.ToString();
+                typeSyntax += $"({max})";
+            }
+
+            return $"[{col.Name}] {typeSyntax} {(col.IsNullable ? "NULL" : "NOT NULL")}";
+        }
     }
 }

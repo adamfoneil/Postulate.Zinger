@@ -47,6 +47,7 @@
             this.statusStrip2 = new System.Windows.Forms.StatusStrip();
             this.pbLoading = new System.Windows.Forms.ToolStripProgressBar();
             this.llRefresh = new System.Windows.Forms.ToolStripStatusLabel();
+            this.getTableVariableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.statusStrip2.SuspendLayout();
             this.SuspendLayout();
@@ -93,11 +94,12 @@
             this.setAliasToolStripMenuItem,
             this.removeAliasToolStripMenuItem,
             this.buildInsertStatementToolStripMenuItem,
+            this.getTableVariableToolStripMenuItem,
             this.buildClassInitializerToolStripMenuItem,
             this.toolStripSeparator1,
             this.getDbDiagramioToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(207, 208);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(207, 252);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // selectColumnsToolStripMenuItem
@@ -206,6 +208,13 @@
             this.llRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.llRefresh.Click += new System.EventHandler(this.llRefresh_Click);
             // 
+            // getTableVariableToolStripMenuItem
+            // 
+            this.getTableVariableToolStripMenuItem.Name = "getTableVariableToolStripMenuItem";
+            this.getTableVariableToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.getTableVariableToolStripMenuItem.Text = "Build Table Variable";
+            this.getTableVariableToolStripMenuItem.Click += new System.EventHandler(this.getTableVariableToolStripMenuItem_Click);
+            // 
             // SchemaBrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -243,5 +252,6 @@
         private System.Windows.Forms.ToolStripMenuItem viewDefinitionToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem getDbDiagramioToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem getTableVariableToolStripMenuItem;
     }
 }
