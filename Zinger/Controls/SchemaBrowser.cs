@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Zinger.Controls.Nodes;
@@ -477,5 +478,43 @@ $@"DECLARE @{table.Name} TABLE (
 
             return $"[{col.Name}] {typeSyntax} {(col.IsNullable ? "NULL" : "NOT NULL")}";
         }
-    }
+
+        private void copyAllColumnNamesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_selectedObject is null) throw new Exception("No object selected.");                
+
+                int length = 0;
+                List<CopyColumnInfo> columns = new List<CopyColumnInfo>();
+                _selectedObject.Columns.ForEach(col =>
+                {
+                    length += col.ColumnName.Length;
+                    columns.Add(new CopyColumnInfo()
+                    {
+                        ColumnName = col.ColumnName,
+                        TotalLength = length
+                    });
+                });
+
+                // assuming 75 character lines...
+                var output = string.Join(",\r\n", columns
+                    .GroupBy(col => col.TotalLength / 75)
+                    .Select(grp => string.Join(", ", grp.Select(item => $"[{item.ColumnName}]"))));
+
+                Clipboard.SetText(output);
+                MessageBox.Show("Column names copied to clipboard.");
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+        }
+
+        private class CopyColumnInfo
+        {
+            public string ColumnName { get; set; }
+            public int TotalLength { get; set; }
+        }
+    }    
 }

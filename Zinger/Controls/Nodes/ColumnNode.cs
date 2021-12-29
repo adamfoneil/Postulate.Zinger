@@ -12,12 +12,16 @@ namespace Zinger.Controls.Nodes
         {
             ImageKey = "column";
             SelectedImageKey = "column";
+            ColumnName = column.Name;
         }
+
+        public string ColumnName { get; }
 
         public ColumnNode(ForeignKeyColumn column) : base($"{column.ReferencingName} = {column.ReferencedName}")
         {
             ImageKey = "shortcut";
             SelectedImageKey = "shortcut";
+            ColumnName = column.ReferencingName;
         }
 
         public ColumnNode(Column column, IEnumerable<ForeignKey> foreignKeys, string identityColumn) : base(GetNodeText(column))
@@ -44,6 +48,8 @@ namespace Zinger.Controls.Nodes
                     SelectedImageKey = "calculated"
                 });
             }
+
+            ColumnName = column.Name;
         }
 
         protected static bool IsForeignKey(Column column, IEnumerable<ForeignKey> foreignKeys, out Table referencedTable, out string referencedColumn)

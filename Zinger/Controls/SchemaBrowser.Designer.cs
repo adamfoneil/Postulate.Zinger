@@ -40,6 +40,7 @@
             this.setAliasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeAliasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buildInsertStatementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.getTableVariableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buildClassInitializerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.getDbDiagramioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,7 +48,7 @@
             this.statusStrip2 = new System.Windows.Forms.StatusStrip();
             this.pbLoading = new System.Windows.Forms.ToolStripProgressBar();
             this.llRefresh = new System.Windows.Forms.ToolStripStatusLabel();
-            this.getTableVariableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyAllColumnNamesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.statusStrip2.SuspendLayout();
             this.SuspendLayout();
@@ -91,6 +92,7 @@
             this.viewDefinitionToolStripMenuItem,
             this.rowCountToolStripMenuItem,
             this.createModelClassToolStripMenuItem,
+            this.copyAllColumnNamesToolStripMenuItem,
             this.setAliasToolStripMenuItem,
             this.removeAliasToolStripMenuItem,
             this.buildInsertStatementToolStripMenuItem,
@@ -99,7 +101,7 @@
             this.toolStripSeparator1,
             this.getDbDiagramioToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(207, 252);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(207, 274);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // selectColumnsToolStripMenuItem
@@ -151,6 +153,13 @@
             this.buildInsertStatementToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.buildInsertStatementToolStripMenuItem.Text = "Build Insert Statement";
             this.buildInsertStatementToolStripMenuItem.Click += new System.EventHandler(this.buildInsertStatementToolStripMenuItem_Click);
+            // 
+            // getTableVariableToolStripMenuItem
+            // 
+            this.getTableVariableToolStripMenuItem.Name = "getTableVariableToolStripMenuItem";
+            this.getTableVariableToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.getTableVariableToolStripMenuItem.Text = "Build Table Variable";
+            this.getTableVariableToolStripMenuItem.Click += new System.EventHandler(this.getTableVariableToolStripMenuItem_Click);
             // 
             // buildClassInitializerToolStripMenuItem
             // 
@@ -208,12 +217,12 @@
             this.llRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.llRefresh.Click += new System.EventHandler(this.llRefresh_Click);
             // 
-            // getTableVariableToolStripMenuItem
+            // copyAllColumnNamesToolStripMenuItem
             // 
-            this.getTableVariableToolStripMenuItem.Name = "getTableVariableToolStripMenuItem";
-            this.getTableVariableToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.getTableVariableToolStripMenuItem.Text = "Build Table Variable";
-            this.getTableVariableToolStripMenuItem.Click += new System.EventHandler(this.getTableVariableToolStripMenuItem_Click);
+            this.copyAllColumnNamesToolStripMenuItem.Name = "copyAllColumnNamesToolStripMenuItem";
+            this.copyAllColumnNamesToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.copyAllColumnNamesToolStripMenuItem.Text = "Copy All Column Names";
+            this.copyAllColumnNamesToolStripMenuItem.Click += new System.EventHandler(this.copyAllColumnNamesToolStripMenuItem_Click);
             // 
             // SchemaBrowser
             // 
@@ -253,5 +262,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem getDbDiagramioToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem getTableVariableToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyAllColumnNamesToolStripMenuItem;
     }
 }
