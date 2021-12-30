@@ -483,7 +483,9 @@ $@"DECLARE @{table.Name} TABLE (
         {
             try
             {
-                if (_selectedObject is null) throw new Exception("No object selected.");                
+                if (_selectedObject is null) throw new Exception("No object selected.");
+
+                var alias = (_selectedObject is TableNode tableNode) ? tableNode.Alias : default;
 
                 int length = 0;
                 List<CopyColumnInfo> columns = new List<CopyColumnInfo>();
@@ -500,7 +502,7 @@ $@"DECLARE @{table.Name} TABLE (
                 // assuming 75 character lines...
                 var output = string.Join(",\r\n", columns
                     .GroupBy(col => col.TotalLength / 75)
-                    .Select(grp => string.Join(", ", grp.Select(item => $"[{item.ColumnName}]"))));
+                    .Select(grp => string.Join(", ", grp.Select(item => (!string.IsNullOrEmpty(alias)) ? $"[{alias}].[{item.ColumnName}]" : $"[{item.ColumnName}]"))));
 
                 Clipboard.SetText(output);
                 MessageBox.Show("Column names copied to clipboard.");
