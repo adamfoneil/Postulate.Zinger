@@ -499,10 +499,12 @@ $@"DECLARE @{table.Name} TABLE (
                     });
                 });
 
-                // assuming 75 character lines...
+                // assuming 65 character lines...
                 var output = string.Join(",\r\n", columns
-                    .GroupBy(col => col.TotalLength / 75)
-                    .Select(grp => string.Join(", ", grp.Select(item => (!string.IsNullOrEmpty(alias)) ? $"[{alias}].[{item.ColumnName}]" : $"[{item.ColumnName}]"))));
+                    .GroupBy(col => col.TotalLength / 65)
+                    .Select(grp => string.Join(", ", grp.Select(item => (!string.IsNullOrEmpty(alias)) ? 
+                        $"[{alias}].[{item.ColumnName}]" : 
+                        $"[{item.ColumnName}]"))));
 
                 Clipboard.SetText(output);
                 MessageBox.Show("Column names copied to clipboard.");
