@@ -132,8 +132,13 @@ namespace Zinger.Services
         {
             var expressionParams = parameters?.Where(p => p.Value != null && p.Expression != null).ToArray() ?? Enumerable.Empty<Parameter>().ToArray();
 
-            string result = QueryHelper.ResolveInjectedCriteria(query, expressionParams.Select(p => p.Expression));
-
+            var scopes = RegexHelper.GetWhereScopes(query);
+            var result = query;
+            foreach (var scope in scopes)
+            {
+                result = QueryHelper.ResolveInjectedCriteria(result, QueryHelper.GlobalScope, expressionParams.Select(p => p.Expression));
+            }
+            
             var arrayParams = parameters?.Where(p => p.IsArray()) ?? Enumerable.Empty<Parameter>();
             foreach (var arrayParam in arrayParams)
             {
