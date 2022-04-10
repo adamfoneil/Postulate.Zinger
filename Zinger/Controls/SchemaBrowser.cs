@@ -311,13 +311,13 @@ namespace Zinger.Controls
                 rowCountToolStripMenuItem.Visible = true;
                 rowCountToolStripMenuItem.Text = $"{_selectedTable.RowCount:n0} rows";
                 removeAliasToolStripMenuItem.Visible = (_aliasManager.ContainsTable(_selectedTable.Table));
-                buildInsertStatementToolStripMenuItem.Enabled = true;
+                insertStatementToolStripMenuItem.Enabled = true;
                 buildClassInitializerToolStripMenuItem.Enabled = true;
             }
             else
             {
                 rowCountToolStripMenuItem.Visible = false;
-                buildInsertStatementToolStripMenuItem.Enabled = false;
+                insertStatementToolStripMenuItem.Enabled = false;
                 buildClassInitializerToolStripMenuItem.Enabled = false;
             }
 
@@ -371,16 +371,58 @@ namespace Zinger.Controls
             try
             {
                 var table = _selectedTable.Table;
-                var columns = table.Columns.Where(col => !col.IsNullable && !col.Name.Equals(table.IdentityColumn));
+                var columnGroups = table.Columns.Where(col => !col.Name.Equals(table.IdentityColumn)).ToLookup(col => col.IsNullable);
+
+                var columns = new[]
+                {
+                    string.Join(", ", columnGroups[false].Select(col => $"[{col.Name}]")),
+                    "/* " + string.Join(", ", columnGroups[true].Select(col => $"[{col.Name}]")) + " */"
+                };
+
+                var values = new[]
+                {
+                    string.Join(", ", columnGroups[false].Select(col => $"@{col.Name}")),
+                    "/* " + string.Join(", ", columnGroups[true].Select(col => $"@{col.Name}")) + " */"
+                };
 
                 string sql = $@"INSERT INTO [{table.Schema}].[{table.Name}] (
-                    {string.Join(", ", columns.Select(col => $"[{col.Name}]"))}
+                    {string.Join(", ", columns)}
                 ) VALUES (
-                    {string.Join(", ", columns.Select(col => $"@{col.Name}"))}
+                    {string.Join(", ", values)}
                 )";
 
                 Clipboard.SetText(sql);
                 MessageBox.Show("Insert statement copied to clipboard.");
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+        }
+
+        private void updateStatementToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var table = _selectedTable.Table;
+
+                var columnGroups = table.Columns
+                    .Where(col => !col.IsCalculated)
+                    .ToLookup(col => col.Name.Equals(table.IdentityColumn));
+
+                var setColumns = string.Join(", \r\n", columnGroups[false].Select(col => $"[{col.Name}] = @{col.Name}{IsOptional(col)}"));
+
+                var identity = columnGroups[true].First().Name;
+                var whereIdentity = $"[{identity}]=@{identity}";
+
+                string sql = $@"UPDATE [{table.Schema}].[{table.Name}] SET
+{setColumns} 
+WHERE {whereIdentity}";
+
+                Clipboard.SetText(sql);
+                MessageBox.Show("Update statement copied to clipboard.");
+
+                string IsOptional(Column col) => (col.IsNullable) ? " /* optional */" : string.Empty;
             }
             catch (Exception exc)
             {

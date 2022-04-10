@@ -39,8 +39,6 @@
             this.createModelClassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setAliasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeAliasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buildInsertStatementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.getTableVariableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buildClassInitializerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.getDbDiagramioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,7 +46,11 @@
             this.statusStrip2 = new System.Windows.Forms.StatusStrip();
             this.pbLoading = new System.Windows.Forms.ToolStripProgressBar();
             this.llRefresh = new System.Windows.Forms.ToolStripStatusLabel();
-            this.copyAllColumnNamesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buildSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.insertStatementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.updateStatementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tableVariableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyColumnNamesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.statusStrip2.SuspendLayout();
             this.SuspendLayout();
@@ -92,16 +94,14 @@
             this.viewDefinitionToolStripMenuItem,
             this.rowCountToolStripMenuItem,
             this.createModelClassToolStripMenuItem,
-            this.copyAllColumnNamesToolStripMenuItem,
             this.setAliasToolStripMenuItem,
             this.removeAliasToolStripMenuItem,
-            this.buildInsertStatementToolStripMenuItem,
-            this.getTableVariableToolStripMenuItem,
+            this.buildSQLToolStripMenuItem,
             this.buildClassInitializerToolStripMenuItem,
             this.toolStripSeparator1,
             this.getDbDiagramioToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(207, 274);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(207, 230);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // selectColumnsToolStripMenuItem
@@ -146,20 +146,6 @@
             this.removeAliasToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.removeAliasToolStripMenuItem.Text = "Remove Alias...";
             this.removeAliasToolStripMenuItem.Click += new System.EventHandler(this.removeAliasToolStripMenuItem_Click);
-            // 
-            // buildInsertStatementToolStripMenuItem
-            // 
-            this.buildInsertStatementToolStripMenuItem.Name = "buildInsertStatementToolStripMenuItem";
-            this.buildInsertStatementToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.buildInsertStatementToolStripMenuItem.Text = "Build Insert Statement";
-            this.buildInsertStatementToolStripMenuItem.Click += new System.EventHandler(this.buildInsertStatementToolStripMenuItem_Click);
-            // 
-            // getTableVariableToolStripMenuItem
-            // 
-            this.getTableVariableToolStripMenuItem.Name = "getTableVariableToolStripMenuItem";
-            this.getTableVariableToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.getTableVariableToolStripMenuItem.Text = "Build Table Variable";
-            this.getTableVariableToolStripMenuItem.Click += new System.EventHandler(this.getTableVariableToolStripMenuItem_Click);
             // 
             // buildClassInitializerToolStripMenuItem
             // 
@@ -217,12 +203,44 @@
             this.llRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.llRefresh.Click += new System.EventHandler(this.llRefresh_Click);
             // 
-            // copyAllColumnNamesToolStripMenuItem
+            // buildSQLToolStripMenuItem
             // 
-            this.copyAllColumnNamesToolStripMenuItem.Name = "copyAllColumnNamesToolStripMenuItem";
-            this.copyAllColumnNamesToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.copyAllColumnNamesToolStripMenuItem.Text = "Copy All Column Names";
-            this.copyAllColumnNamesToolStripMenuItem.Click += new System.EventHandler(this.copyAllColumnNamesToolStripMenuItem_Click);
+            this.buildSQLToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.insertStatementToolStripMenuItem,
+            this.updateStatementToolStripMenuItem,
+            this.tableVariableToolStripMenuItem,
+            this.copyColumnNamesToolStripMenuItem});
+            this.buildSQLToolStripMenuItem.Name = "buildSQLToolStripMenuItem";
+            this.buildSQLToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.buildSQLToolStripMenuItem.Text = "Build SQL";
+            // 
+            // insertStatementToolStripMenuItem
+            // 
+            this.insertStatementToolStripMenuItem.Name = "insertStatementToolStripMenuItem";
+            this.insertStatementToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.insertStatementToolStripMenuItem.Text = "Insert Statement";
+            this.insertStatementToolStripMenuItem.Click += new System.EventHandler(this.buildInsertStatementToolStripMenuItem_Click);
+            // 
+            // updateStatementToolStripMenuItem
+            // 
+            this.updateStatementToolStripMenuItem.Name = "updateStatementToolStripMenuItem";
+            this.updateStatementToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.updateStatementToolStripMenuItem.Text = "Update Statement";
+            this.updateStatementToolStripMenuItem.Click += new System.EventHandler(this.updateStatementToolStripMenuItem_Click);
+            // 
+            // tableVariableToolStripMenuItem
+            // 
+            this.tableVariableToolStripMenuItem.Name = "tableVariableToolStripMenuItem";
+            this.tableVariableToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.tableVariableToolStripMenuItem.Text = "Table Variable";
+            this.tableVariableToolStripMenuItem.Click += new System.EventHandler(this.getTableVariableToolStripMenuItem_Click);
+            // 
+            // copyColumnNamesToolStripMenuItem
+            // 
+            this.copyColumnNamesToolStripMenuItem.Name = "copyColumnNamesToolStripMenuItem";
+            this.copyColumnNamesToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.copyColumnNamesToolStripMenuItem.Text = "Copy Column Names";
+            this.copyColumnNamesToolStripMenuItem.Click += new System.EventHandler(this.copyAllColumnNamesToolStripMenuItem_Click);
             // 
             // SchemaBrowser
             // 
@@ -256,12 +274,14 @@
         private System.Windows.Forms.ToolStripMenuItem createModelClassToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setAliasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeAliasToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem buildInsertStatementToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem buildClassInitializerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewDefinitionToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem getDbDiagramioToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem getTableVariableToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem copyAllColumnNamesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buildSQLToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem insertStatementToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem updateStatementToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tableVariableToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyColumnNamesToolStripMenuItem;
     }
 }
