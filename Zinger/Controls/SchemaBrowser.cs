@@ -196,6 +196,18 @@ namespace Zinger.Controls
                         }
                     }
 
+                    var synonyms = schemaGrp.OfType<Synonym>().OrderBy(obj => obj.Name);
+                    if (synonyms.Any())
+                    {
+                        folderNode = new FolderNode("Synonyms", synonyms.Count());
+                        schemaNode.Nodes.Add(folderNode);
+                        foreach (var syn in synonyms)
+                        {
+                            var synNode = new SynonymNode(syn);
+                            folderNode.Nodes.Add(synNode);
+                        }
+                    }
+
                     schemaNode.Expand();
                 }
             }
