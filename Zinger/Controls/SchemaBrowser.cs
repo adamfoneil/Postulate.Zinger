@@ -39,16 +39,19 @@ namespace Zinger.Controls
         private TableNode _selectedTable;
         private ColumnContainerNode _selectedObject;
         private IDbObject _object;
+        private bool _lineEndCommas = true;
 
         public SchemaBrowser()
-        {
+        {            
             InitializeComponent();
+
+            lineendCommasToolStripMenuItem.Checked = true;
 
             _searchBox = new TextBoxDelayHandler(tbSearch, 300);
             _searchBox.DelayedTextChanged += tbSearch_TextChanged;
 
             _aliasManager = new AliasManager(new Options().Folder);
-            _diagramBuilder = new DbDiagramBuilder();
+            _diagramBuilder = new DbDiagramBuilder();            
         }
 
         private Dictionary<ProviderType, Analyzer> Analyzers
@@ -500,39 +503,15 @@ WHERE {whereIdentity}";
             }
         }
 
-        private void getTableVariableToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var table = _selectedTable.Table;
-
-                var sql = 
+        private void getTableVariableToolStripMenuItem_Click(object sender, EventArgs e) =>
+            BuildSyntax(
+                col => $"[{col.Name}] {col.TypeSyntax()} {col.NullableSyntax()}", 
+                "Table variable syntax copied to clipboard.",
+                (table, cols) => 
 $@"DECLARE @{table.Name} TABLE (
-    {string.Join(",\r\n\t", table.Columns.Select(col => SqlSyntax(col)))}
-)";
-
-                Clipboard.SetText(sql);
-                MessageBox.Show("Table variable syntax copied to clipboard.");
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message);
-            }
-        }
-
-        private string SqlSyntax(Column col)
-        {
-            string typeSyntax = col.DataType;
-            
-            if (col.DataType.StartsWith("nvar") || col.DataType.StartsWith("var"))
-            {
-                var max = (col.MaxLength == -1) ? "max" : col.MaxLength.ToString();
-                typeSyntax += $"({max})";
-            }
-
-            return $"[{col.Name}] {typeSyntax} {(col.IsNullable ? "NULL" : "NOT NULL")}";
-        }
-
+{cols}
+)");
+        
         private void copyAllColumnNamesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -573,6 +552,40 @@ $@"DECLARE @{table.Name} TABLE (
         {
             public string ColumnName { get; set; }
             public int TotalLength { get; set; }
+        }
+
+        private void paramDeclarationsToolStripMenuItem_Click(object sender, EventArgs e) =>
+            BuildSyntax(col => $"@{col.Name} {col.TypeSyntax()}", "Param declarations copied to clipboard.");
+        
+        private void paramListToolStripMenuItem_Click(object sender, EventArgs e) => 
+            BuildSyntax(col => $"@{col.Name}", "Param list copied to clipboard.");
+        
+        private void lineendCommasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _lineEndCommas = !_lineEndCommas;
+            lineendCommasToolStripMenuItem.Checked = _lineEndCommas;
+        }
+
+        private void BuildSyntax(Func<Column, string> columnTemplate, string message, Func<Table, string, string> outerTemplate = null)
+        {
+            try
+            {
+                var table = _selectedTable.Table;
+                var separator = _lineEndCommas ? ",\r\n\t" : "\r\n\t,";
+                var output = string.Join(separator, table.Columns.Select(columnTemplate));
+
+                if (outerTemplate != null)
+                {
+                    output = outerTemplate.Invoke(table, output);
+                }
+
+                Clipboard.SetText(output);
+                MessageBox.Show(message);
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
         }
     }    
 }
