@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +41,9 @@ namespace Zinger.Controls
         private ColumnContainerNode _selectedObject;
         private IDbObject _object;
         private bool _lineEndCommas = true;
+        private bool _padBetweenNamesAndTypes = false;
+
+        private const string PaddingMacro = "%padding%";
 
         public SchemaBrowser()
         {            
@@ -505,7 +509,7 @@ WHERE {whereIdentity}";
 
         private void getTableVariableToolStripMenuItem_Click(object sender, EventArgs e) =>
             BuildSyntax(
-                col => $"[{col.Name}] {col.TypeSyntax()} {col.NullableSyntax()}", 
+                (col, padding) => $"[{col.Name}] {new string(' ', padding)}{col.TypeSyntax()} {col.NullableSyntax()}", 
                 "Table variable syntax copied to clipboard.",
                 (table, cols) => 
 $@"DECLARE @{table.Name} TABLE (
@@ -555,10 +559,10 @@ $@"DECLARE @{table.Name} TABLE (
         }
 
         private void paramDeclarationsToolStripMenuItem_Click(object sender, EventArgs e) =>
-            BuildSyntax(col => $"@{col.Name} {col.TypeSyntax()}", "Param declarations copied to clipboard.");
+            BuildSyntax((col, padding) => $"@{col.Name} {new string(' ', padding)}{col.TypeSyntax()}", "Param declarations copied to clipboard.");
         
         private void paramListToolStripMenuItem_Click(object sender, EventArgs e) => 
-            BuildSyntax(col => $"@{col.Name}", "Param list copied to clipboard.");
+            BuildSyntax((col, padding) => $"@{col.Name}", "Param list copied to clipboard.");
         
         private void lineendCommasToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -566,13 +570,18 @@ $@"DECLARE @{table.Name} TABLE (
             lineendCommasToolStripMenuItem.Checked = _lineEndCommas;
         }
 
-        private void BuildSyntax(Func<Column, string> columnTemplate, string message, Func<Table, string, string> outerTemplate = null)
+        private void BuildSyntax(Func<Column, int, string> columnTemplate, string message, Func<Table, string, string> outerTemplate = null)
         {
             try
             {
                 var table = _selectedTable.Table;
+                var maxColLength = table.Columns.Max(col => col.Name.Length);
                 var separator = _lineEndCommas ? ",\r\n\t" : "\r\n\t,";
-                var output = string.Join(separator, table.Columns.Select(columnTemplate));
+                var output = string.Join(separator, table.Columns.Select(col =>
+                {
+                    int padding = (_padBetweenNamesAndTypes) ? maxColLength - col.Name.Length : 0;
+                    return columnTemplate.Invoke(col, padding);
+                }));
 
                 if (outerTemplate != null)
                 {
@@ -586,6 +595,12 @@ $@"DECLARE @{table.Name} TABLE (
             {
                 MessageBox.Show(exc.Message);
             }
+        }
+
+        private void columnAlignmentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _padBetweenNamesAndTypes = !_padBetweenNamesAndTypes;
+            columnAlignmentToolStripMenuItem.Checked = _padBetweenNamesAndTypes;
         }
     }    
 }
