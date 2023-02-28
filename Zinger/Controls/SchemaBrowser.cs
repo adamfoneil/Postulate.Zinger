@@ -424,6 +424,7 @@ namespace Zinger.Controls
             try
             {
                 var table = _selectedTable.Table;
+                
 
                 var columnGroups = table.Columns
                     .Where(col => !col.IsCalculated)
@@ -431,7 +432,7 @@ namespace Zinger.Controls
 
                 var setColumns = string.Join(", \r\n", columnGroups[false].Select(col => $"[{col.Name}] = @{col.Name}{IsOptional(col)}"));
 
-                var identity = columnGroups[true].First().Name;
+                var identity = columnGroups[true].FirstOrDefault()?.Name ?? "<no identity>";
                 var whereIdentity = $"[{identity}]=@{identity}";
 
                 string sql = $@"UPDATE [{table.Schema}].[{table.Name}] SET
