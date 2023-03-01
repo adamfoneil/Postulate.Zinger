@@ -31,6 +31,12 @@ namespace Zinger.Controls
             set { tbQueryClass.Text = value; }
         }
 
+        public bool LineEndCommas => chkLineEndCommas.Checked;
+
+        public bool PaddingBetweenNamesAndTypes => chkPadding.Checked;
+
+        public string TableVariable { get => fctbTableVar.Text; set => fctbTableVar.Text = value; }
+
         private void btnCopy_Click(object sender, EventArgs e)
         {
             try
@@ -43,6 +49,10 @@ namespace Zinger.Controls
 
                     case 1:
                         Clipboard.SetText(QueryClass);
+                        return;
+
+                    case 3:
+                        Clipboard.SetText(TableVariable);
                         return;
                 }
             }

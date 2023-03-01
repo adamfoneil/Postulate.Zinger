@@ -258,8 +258,22 @@ namespace Zinger.Forms
             var results = sender as QueryProvider.ExecuteResult;
             resultClassBuilder1.ResultClass = results.ResultClass;
             resultClassBuilder1.QueryClass = results.QueryClass;
+            Table table = FromDataTable(results.SchemaTable);
+            resultClassBuilder1.TableVariable = SyntaxBuilder.GenerateTableVariable(table, resultClassBuilder1.PaddingBetweenNamesAndTypes, resultClassBuilder1.LineEndCommas);
             //queryEditor1.Provider.ResolvedQuery
         }
+
+        private Table FromDataTable(DataTable schemaTable) => new Table()
+        {
+            Name = "tableVar",
+            Columns = schemaTable.AsEnumerable().Select(row => new Column()
+            {
+                Name = row.Field<string>("ColumnName"),
+                DataType = row.Field<string>("DataTypeName"),
+                IsNullable = row.Field<bool>("AllowDbNull")
+            }).ToArray()
+        };
+        
 
         private void btnRunQuery_Click(object sender, EventArgs e)
         {

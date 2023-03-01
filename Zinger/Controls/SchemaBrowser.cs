@@ -509,13 +509,8 @@ WHERE {whereIdentity}";
         }
 
         private void getTableVariableToolStripMenuItem_Click(object sender, EventArgs e) =>
-            BuildSyntax(
-                (col, padding) => $"[{col.Name}] {new string(' ', padding)}{col.TypeSyntax()} {col.NullableSyntax()}", 
-                "Table variable syntax copied to clipboard.",
-                (table, cols) => 
-$@"DECLARE @{table.Name} TABLE (
-{cols}
-)");
+            SyntaxBuilder.GenerateAndCopyTableVariable(_selectedTable.Table,                
+                "Table variable syntax copied to clipboard.", _padBetweenNamesAndTypes, _lineEndCommas);
         
         private void copyAllColumnNamesToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -560,44 +555,17 @@ $@"DECLARE @{table.Name} TABLE (
         }
 
         private void paramDeclarationsToolStripMenuItem_Click(object sender, EventArgs e) =>
-            BuildSyntax((col, padding) => $"@{col.Name} {new string(' ', padding)}{col.TypeSyntax()}", "Param declarations copied to clipboard.");
+            SyntaxBuilder.GenerateAndCopy(_selectedTable.Table, (col, padding) => $"@{col.Name} {new string(' ', padding)}{col.TypeSyntax()}", "Param declarations copied to clipboard.", _padBetweenNamesAndTypes, _lineEndCommas);
         
-        private void paramListToolStripMenuItem_Click(object sender, EventArgs e) => 
-            BuildSyntax((col, padding) => $"@{col.Name}", "Param list copied to clipboard.");
+        private void paramListToolStripMenuItem_Click(object sender, EventArgs e) =>
+            SyntaxBuilder.GenerateAndCopy(_selectedTable.Table, (col, padding) => $"@{col.Name}", "Param list copied to clipboard.", _padBetweenNamesAndTypes, _lineEndCommas);
         
         private void lineendCommasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _lineEndCommas = !_lineEndCommas;
             lineendCommasToolStripMenuItem.Checked = _lineEndCommas;
         }
-
-        private void BuildSyntax(Func<Column, int, string> columnTemplate, string message, Func<Table, string, string> outerTemplate = null)
-        {
-            try
-            {
-                var table = _selectedTable.Table;
-                var maxColLength = table.Columns.Max(col => col.Name.Length);
-                var separator = _lineEndCommas ? ",\r\n\t" : "\r\n\t,";
-                var output = string.Join(separator, table.Columns.Select(col =>
-                {
-                    int padding = (_padBetweenNamesAndTypes) ? maxColLength - col.Name.Length : 0;
-                    return columnTemplate.Invoke(col, padding);
-                }));
-
-                if (outerTemplate != null)
-                {
-                    output = outerTemplate.Invoke(table, output);
-                }
-
-                Clipboard.SetText(output);
-                MessageBox.Show(message);
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message);
-            }
-        }
-
+       
         private void columnAlignmentToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _padBetweenNamesAndTypes = !_padBetweenNamesAndTypes;

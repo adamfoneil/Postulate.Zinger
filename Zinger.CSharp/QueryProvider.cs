@@ -93,6 +93,7 @@ namespace Zinger.Services
                         {
                             var schemaTable = reader.GetSchemaTable();
                             result.ResultClass = _classBuilder.GetResultClass(schemaTable, queryName, BeautifyColumnNames);
+                            result.SchemaTable = schemaTable;
                         }
 
                         result.QueryClass = _classBuilder.GetQueryClass(cn, query, queryName, parameters, true);
@@ -155,6 +156,7 @@ namespace Zinger.Services
             public DataTable DataTable { get; set; }
             public string ResultClass { get; set; }
             public string QueryClass { get; set; }
+            public DataTable SchemaTable { get; set; }
         }
     }
 }

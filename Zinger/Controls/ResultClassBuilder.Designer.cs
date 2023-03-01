@@ -40,10 +40,15 @@
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.tbQueryClass = new FastColoredTextBoxNS.FastColoredTextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.webUrlLinkLabel2 = new WinForms.Library.Controls.WebUrlLinkLabel();
             this.chkTestableQuery = new System.Windows.Forms.CheckBox();
             this.webUrlLinkLabel1 = new WinForms.Library.Controls.WebUrlLinkLabel();
             this.label1 = new System.Windows.Forms.Label();
-            this.webUrlLinkLabel2 = new WinForms.Library.Controls.WebUrlLinkLabel();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.fctbTableVar = new FastColoredTextBoxNS.FastColoredTextBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.chkLineEndCommas = new System.Windows.Forms.CheckBox();
+            this.chkPadding = new System.Windows.Forms.CheckBox();
             this.toolStrip2.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage5.SuspendLayout();
@@ -51,6 +56,9 @@
             this.tabPage6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbQueryClass)).BeginInit();
             this.panel1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fctbTableVar)).BeginInit();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip2
@@ -73,6 +81,7 @@
             // 
             // tbQueryName
             // 
+            this.tbQueryName.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tbQueryName.Name = "tbQueryName";
             this.tbQueryName.Size = new System.Drawing.Size(200, 25);
             this.tbQueryName.TextChanged += new System.EventHandler(this.tbQueryName_TextChanged);
@@ -91,6 +100,7 @@
             // 
             this.tabControl2.Controls.Add(this.tabPage5);
             this.tabControl2.Controls.Add(this.tabPage6);
+            this.tabControl2.Controls.Add(this.tabPage1);
             this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl2.Location = new System.Drawing.Point(0, 25);
             this.tabControl2.Name = "tabControl2";
@@ -132,6 +142,7 @@
             this.tbResultClass.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbResultClass.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.tbResultClass.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbResultClass.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.tbResultClass.IsReplaceMode = false;
             this.tbResultClass.Language = FastColoredTextBoxNS.Language.CSharp;
             this.tbResultClass.LeftBracket = '(';
@@ -174,7 +185,7 @@
         '\''};
             this.tbQueryClass.AutoIndentCharsPatterns = "\r\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;]+);\r\n^\\s*(case|default)\\s*[^:]" +
     "*(?<range>:)\\s*(?<range>[^;]+);\r\n";
-            this.tbQueryClass.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.tbQueryClass.AutoScrollMinSize = new System.Drawing.Size(2, 14);
             this.tbQueryClass.BackBrush = null;
             this.tbQueryClass.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
             this.tbQueryClass.CharHeight = 14;
@@ -182,6 +193,7 @@
             this.tbQueryClass.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbQueryClass.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.tbQueryClass.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbQueryClass.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.tbQueryClass.IsReplaceMode = false;
             this.tbQueryClass.Language = FastColoredTextBoxNS.Language.CSharp;
             this.tbQueryClass.LeftBracket = '(';
@@ -209,6 +221,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(468, 60);
             this.panel1.TabIndex = 1;
+            // 
+            // webUrlLinkLabel2
+            // 
+            this.webUrlLinkLabel2.AutoSize = true;
+            this.webUrlLinkLabel2.Location = new System.Drawing.Point(197, 35);
+            this.webUrlLinkLabel2.Name = "webUrlLinkLabel2";
+            this.webUrlLinkLabel2.Size = new System.Drawing.Size(70, 13);
+            this.webUrlLinkLabel2.TabIndex = 3;
+            this.webUrlLinkLabel2.TabStop = true;
+            this.webUrlLinkLabel2.Text = "learn more";
+            this.webUrlLinkLabel2.Url = "https://github.com/adamfoneil/Dapper.QX#testing";
             // 
             // chkTestableQuery
             // 
@@ -240,16 +263,81 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "This generated code is intended for use with Dapper.QX";
             // 
-            // webUrlLinkLabel2
+            // tabPage1
             // 
-            this.webUrlLinkLabel2.AutoSize = true;
-            this.webUrlLinkLabel2.Location = new System.Drawing.Point(197, 35);
-            this.webUrlLinkLabel2.Name = "webUrlLinkLabel2";
-            this.webUrlLinkLabel2.Size = new System.Drawing.Size(70, 13);
-            this.webUrlLinkLabel2.TabIndex = 3;
-            this.webUrlLinkLabel2.TabStop = true;
-            this.webUrlLinkLabel2.Text = "learn more";
-            this.webUrlLinkLabel2.Url = "https://github.com/adamfoneil/Dapper.QX#testing";
+            this.tabPage1.Controls.Add(this.fctbTableVar);
+            this.tabPage1.Controls.Add(this.panel2);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(474, 207);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "Table Variable";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // fctbTableVar
+            // 
+            this.fctbTableVar.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.fctbTableVar.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.fctbTableVar.BackBrush = null;
+            this.fctbTableVar.CharHeight = 14;
+            this.fctbTableVar.CharWidth = 8;
+            this.fctbTableVar.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.fctbTableVar.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.fctbTableVar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.fctbTableVar.Font = new System.Drawing.Font("Courier New", 9.75F);
+            this.fctbTableVar.IsReplaceMode = false;
+            this.fctbTableVar.Language = FastColoredTextBoxNS.Language.SQL;
+            this.fctbTableVar.Location = new System.Drawing.Point(3, 43);
+            this.fctbTableVar.Name = "fctbTableVar";
+            this.fctbTableVar.Paddings = new System.Windows.Forms.Padding(0);
+            this.fctbTableVar.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.fctbTableVar.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fctbTableVar.ServiceColors")));
+            this.fctbTableVar.Size = new System.Drawing.Size(468, 161);
+            this.fctbTableVar.TabIndex = 0;
+            this.fctbTableVar.Zoom = 100;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.chkPadding);
+            this.panel2.Controls.Add(this.chkLineEndCommas);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(3, 3);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(468, 40);
+            this.panel2.TabIndex = 1;
+            // 
+            // chkLineEndCommas
+            // 
+            this.chkLineEndCommas.AutoSize = true;
+            this.chkLineEndCommas.Checked = true;
+            this.chkLineEndCommas.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkLineEndCommas.Location = new System.Drawing.Point(12, 12);
+            this.chkLineEndCommas.Name = "chkLineEndCommas";
+            this.chkLineEndCommas.Size = new System.Drawing.Size(126, 17);
+            this.chkLineEndCommas.TabIndex = 0;
+            this.chkLineEndCommas.Text = "Line end commas";
+            this.chkLineEndCommas.UseVisualStyleBackColor = true;
+            // 
+            // chkPadding
+            // 
+            this.chkPadding.AutoSize = true;
+            this.chkPadding.Location = new System.Drawing.Point(144, 12);
+            this.chkPadding.Name = "chkPadding";
+            this.chkPadding.Size = new System.Drawing.Size(225, 17);
+            this.chkPadding.TabIndex = 1;
+            this.chkPadding.Text = "Padding between names and types";
+            this.chkPadding.UseVisualStyleBackColor = true;
             // 
             // ResultClassBuilder
             // 
@@ -269,6 +357,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbQueryClass)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.fctbTableVar)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -290,5 +382,10 @@
         private WinForms.Library.Controls.WebUrlLinkLabel webUrlLinkLabel1;
         private System.Windows.Forms.CheckBox chkTestableQuery;
         private WinForms.Library.Controls.WebUrlLinkLabel webUrlLinkLabel2;
+        private System.Windows.Forms.TabPage tabPage1;
+        private FastColoredTextBoxNS.FastColoredTextBox fctbTableVar;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.CheckBox chkPadding;
+        private System.Windows.Forms.CheckBox chkLineEndCommas;
     }
 }
