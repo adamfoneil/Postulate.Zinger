@@ -270,7 +270,8 @@ namespace Zinger.Forms
             {
                 Name = row.Field<string>("ColumnName"),
                 DataType = row.Field<string>("DataTypeName"),
-                IsNullable = row.Field<bool>("AllowDbNull")
+                IsNullable = row.Field<bool>("AllowDbNull"),
+                MaxLength = row.Field<int>("ColumnSize")
             }).ToArray()
         };
         
