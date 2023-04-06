@@ -345,8 +345,15 @@ namespace Zinger.Controls
 
         private async void llRefresh_Click(object sender, EventArgs e)
         {
-            _searchBox.Clear();
-            await RefreshAsync();
+            try
+            {
+				_searchBox.Clear();
+				await RefreshAsync();
+			}
+			catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
         }
 
         public ResolveJoinResult ResolveJoin(string aliasList) => _joinResolver.Execute(aliasList);
