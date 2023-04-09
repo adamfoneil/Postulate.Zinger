@@ -279,7 +279,7 @@
             // 
             this.llRefresh.IsLink = true;
             this.llRefresh.Name = "llRefresh";
-            this.llRefresh.Size = new System.Drawing.Size(83, 17);
+            this.llRefresh.Size = new System.Drawing.Size(216, 17);
             this.llRefresh.Spring = true;
             this.llRefresh.Text = "Refresh";
             this.llRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;

@@ -24,14 +24,34 @@ namespace Zinger.Controls.Nodes
             _queryEnabled = false;
         }
 
-        public TableNode(Table table) : base(table.Name)
+        public TableNode(Table table) : base(table.Name + DisplayAttributeStr(table))
         {
             Table = table;
             ImageKey = "table";
             SelectedImageKey = "table";
             Columns = new List<ColumnNode>();
             RowCount = table.RowCount;
+
+            var attr = DisplayAttributes(table);
+            if (attr.Any()) ToolTipText = string.Join(", ", attr.Select(a => a.Text));
+
             _queryEnabled = true;
+        }
+
+        private static string DisplayAttributeStr(Table table)
+        {
+            var attr = DisplayAttributes(table);
+            if (attr.Any()) return $" [ {string.Join(", ", attr.Select(item => item.Code))} ]";
+
+            return string.Empty;
+        }
+
+        private static IEnumerable<(string Code, string Text)> DisplayAttributes(Table table)
+        {
+            if (table.HasChangeTracking)
+            {
+                yield return ("ct", "Change Tracking");
+            }
         }
 
         public long RowCount { get; }
