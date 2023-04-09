@@ -245,7 +245,7 @@
       <Version>13.0.1</Version>
     </PackageReference>
     <PackageReference Include="SqlSchema.SqlServer">
-      <Version>1.0.15</Version>
+      <Version>1.0.17</Version>
     </PackageReference>
     <PackageReference Include="SqlServer.Util.Library">
       <Version>1.0.29</Version>

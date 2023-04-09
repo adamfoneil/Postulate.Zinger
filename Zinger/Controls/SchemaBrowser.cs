@@ -155,10 +155,15 @@ namespace Zinger.Controls
                                 var childFolderNode = new TreeNode($"Child Tables ({childFKs.Count()})") { ImageKey = "join", SelectedImageKey = "join" };
                                 tableNode.Nodes.Add(childFolderNode);
 
-                                foreach (var childFK in childFKs)
+                                foreach (var cardinalityGrp in childFKs.GroupBy(fk => fk.Cardinality))
                                 {
-                                    var fkNode = new TableNode(childFK);
-                                    childFolderNode.Nodes.Add(fkNode);
+                                    var cardinalityFolder = new FolderNode(CardinalityName(cardinalityGrp.Key), cardinalityGrp.Count());
+                                    var cardinalityNode = childFolderNode.Nodes.Add(cardinalityFolder);
+                                    foreach (var childFk in cardinalityGrp)
+                                    {
+                                        var fkNode = new TableNode(childFk);
+                                        cardinalityFolder.Nodes.Add(fkNode);
+                                    }                                    
                                 }
                             }
                         }
@@ -225,6 +230,11 @@ namespace Zinger.Controls
                 OperationEnded?.Invoke(this, new EventArgs());
             }
         }
+
+        private string CardinalityName(JoinCardinality key) =>
+            (key == JoinCardinality.OneToOne) ? "1:1" :
+            (key == JoinCardinality.OneToMany) ? "1:Many" :
+            "Unknown Cardinality";
 
         private bool IsUniqueMultiColumn(Table table, Column col)
         {
