@@ -1,5 +1,4 @@
-﻿using Renci.SshNet.Messages;
-using SqlSchema.Library.Models;
+﻿using SqlSchema.Library.Models;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -7,7 +6,7 @@ using Zinger.Static;
 
 namespace Zinger.Services
 {
-    public static class SyntaxBuilder
+	public static class SyntaxBuilder
     {
         public static void GenerateAndCopy(Table table, Func<Column, int, string> columnTemplate, string message, bool padBetweenNamesAndTypes = false, bool lineEndCommas = true, Func<Table, string, string> outerTemplate = null)
         {

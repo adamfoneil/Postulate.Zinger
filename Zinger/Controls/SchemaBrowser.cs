@@ -42,6 +42,7 @@ namespace Zinger.Controls
         private IDbObject _object;
         private bool _lineEndCommas = true;
         private bool _padBetweenNamesAndTypes = false;
+        private bool _oneLinePerItem = false;
 
         private const string PaddingMacro = "%padding%";
 
@@ -549,20 +550,30 @@ WHERE {whereIdentity}";
                     });
                 });
 
-                // assuming 65 character lines...
-                var output = string.Join(",\r\n", columns
-                    .GroupBy(col => col.TotalLength / 65)
-                    .Select(grp => string.Join(", ", grp.Select(item => (!string.IsNullOrEmpty(alias)) ? 
-                        $"[{alias}].[{item.ColumnName}]" : 
-                        $"[{item.ColumnName}]"))));
+                string output = string.Empty;
 
-                Clipboard.SetText(output);
+                if (_oneLinePerItem)
+                {
+					var separator = _lineEndCommas ? ",\r\n\t" : "\r\n\t,";
+                    output = string.Join(separator, columns.Select(Output));
+				}
+                else
+                {
+                    // assuming 65 character lines...
+                    output = string.Join(",\r\n", columns
+                        .GroupBy(col => col.TotalLength / 65)
+                        .Select(grp => string.Join(", ", grp.Select(Output))));
+				}
+
+				Clipboard.SetText(output);
                 MessageBox.Show("Column names copied to clipboard.");
-            }
-            catch (Exception exc)
+
+				string Output(CopyColumnInfo item) => (!string.IsNullOrEmpty(alias)) ? $"[{alias}].[{item.ColumnName}]" : $"[{item.ColumnName}]";
+			}
+			catch (Exception exc)
             {
                 MessageBox.Show(exc.Message);
-            }
+            }            
         }
 
         private class CopyColumnInfo
@@ -588,5 +599,11 @@ WHERE {whereIdentity}";
             _padBetweenNamesAndTypes = !_padBetweenNamesAndTypes;
             columnAlignmentToolStripMenuItem.Checked = _padBetweenNamesAndTypes;
         }
-    }    
+
+		private void oneLinePerItemToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+            _oneLinePerItem = !_oneLinePerItem;
+            oneLinePerItemToolStripMenuItem.Checked = _oneLinePerItem;
+		}
+	}    
 }
