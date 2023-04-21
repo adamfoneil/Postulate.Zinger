@@ -62,16 +62,5 @@ namespace Zinger.Controls.Nodes
         public override string SqlQuery => $"SELECT * FROM [{Table.Schema}].[{Table.Name}]";
         public override string ModelClassName => Table.Name;
         public override DbObject DbObject => Table;        
-
-        private string _alias;
-        public string Alias
-        {
-            get => _alias;
-            set
-            {
-                _alias = value;
-                Text = (!string.IsNullOrEmpty(_alias)) ? $"{Table.Name} - {_alias}" : Table.Name;
-            }
-        }
     }
 }

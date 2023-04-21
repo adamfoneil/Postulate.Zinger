@@ -6,9 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
-using System.Drawing.Text;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Zinger.Controls.Nodes;
@@ -21,7 +19,7 @@ using Table = SqlSchema.Library.Models.Table;
 
 namespace Zinger.Controls
 {
-    public partial class SchemaBrowser : UserControl
+	public partial class SchemaBrowser : UserControl
     {
         private IEnumerable<DbObject> _objects;
         private readonly TextBoxDelayHandler _searchBox;
@@ -37,7 +35,7 @@ namespace Zinger.Controls
         public event EventHandler<ColumnContainerNode> ModelClassRequested;
         public event EventHandler SchemaInspected;
 
-        private TableNode _selectedTable;
+        private TableNode _selectedTable;        
         private ColumnContainerNode _selectedObject;
         private IDbObject _object;
         private bool _lineEndCommas = true;
@@ -180,7 +178,8 @@ namespace Zinger.Controls
                         foreach (var view in views)
                         {
                             var viewNode = new ViewNode(view);
-                            folderNode.Nodes.Add(viewNode);
+							if (_aliasManager.ContainsTable(view.ToString(), out string alias)) viewNode.Alias = alias;
+							folderNode.Nodes.Add(viewNode);
                         }
                     }
 
@@ -376,16 +375,16 @@ namespace Zinger.Controls
 
         private void setAliasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (_selectedTable != null)
+            if (_selectedObject != null)
             {
                 var dlg = new frmSetAlias();
-                dlg.Table = _selectedTable.Table;
+                dlg.ObjectName = $"{_selectedObject.DbObject.Schema}.{_selectedObject.DbObject.Name}";
                 dlg.AliasManager = _aliasManager;
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
-                    _aliasManager.Aliases[dlg.Alias] = _selectedTable.Table.ToString();
+                    _aliasManager.Aliases[dlg.Alias] = _selectedObject.DbObject.ToString();
                     _aliasManager.Save();
-                    _selectedTable.Alias = dlg.Alias;
+                    _selectedObject.Alias = dlg.Alias;
                 }
             }
         }
@@ -536,7 +535,7 @@ WHERE {whereIdentity}";
             {
                 if (_selectedObject is null) throw new Exception("No object selected.");
 
-                var alias = (_selectedObject is TableNode tableNode) ? tableNode.Alias : default;
+                var alias = (_selectedObject is ColumnContainerNode node) ? node.Alias : default;
 
                 int length = 0;
                 List<CopyColumnInfo> columns = new List<CopyColumnInfo>();

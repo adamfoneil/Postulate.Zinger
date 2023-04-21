@@ -12,13 +12,13 @@ namespace Zinger.Forms
         }
 
         public AliasManager AliasManager { get; internal set; }
-        public Table Table { get; internal set; }
+        public string ObjectName { get; internal set; }
 
         public string Alias { get => textBox1.Text; }
 
         private void frmSetAlias_Load(object sender, System.EventArgs e)
         {
-            label1.Text = $"Alias for Table: {Table}";
+            label1.Text = $"Alias for {ObjectName}:";
             chkOverwrite.Visible = false;
         }
 

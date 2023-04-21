@@ -31,5 +31,16 @@ namespace Zinger.Controls.Nodes
         public abstract string SqlQuery { get; }
         public abstract string ModelClassName { get; }
         public abstract DbObject DbObject { get; }
-    }
+
+		private string _alias;
+		public string Alias
+		{
+			get => _alias;
+			set
+			{
+				_alias = value;
+				Text = (!string.IsNullOrEmpty(_alias)) ? $"{DbObject.Name} - {_alias}" : DbObject.Name;
+			}
+		}
+	}
 }
