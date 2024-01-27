@@ -16,8 +16,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper.QX" Version="1.0.32" />
-    <PackageReference Include="System.CodeDom" Version="5.0.0" />
+    <PackageReference Include="Dapper.QX" Version="1.1.5" />
+    <PackageReference Include="System.CodeDom" Version="8.0.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
 
