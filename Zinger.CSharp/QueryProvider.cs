@@ -25,7 +25,7 @@ namespace Zinger.Services
         public QueryProvider(string connectionString)
         {
             _connectionString = connectionString;
-            _classBuilder = new QueryClassBuilder(GetCommand);
+            _classBuilder = new QueryClassBuilder(GetCommand, ConvertParamValue);
         }
 
         public abstract IDbConnection GetConnection();
@@ -66,7 +66,7 @@ namespace Zinger.Services
                 using (var cmd = GetCommand(query, cn))
                 {
                     cmd.CommandTimeout = 360;
-                    Parameter.AddToQuery(parameters?.Where(p => !p.IsArray()), cmd);
+                    Parameter.AddToQuery(parameters?.Where(p => !p.IsArray()), cmd, ConvertParamValue);
                     using (var reader = cmd.ExecuteReader())
                     {
                         return reader.GetSchemaTable();
@@ -86,7 +86,7 @@ namespace Zinger.Services
                 ResolvedQuery = ResolveQuery(query, parameters);
                 using (var cmd = GetCommand(ResolvedQuery, cn))
                 {
-                    Parameter.AddToQuery(parameters.Where(p => !p.IsArray()), cmd);
+                    Parameter.AddToQuery(parameters.Where(p => !p.IsArray()), cmd, ConvertParamValue);
 
                     try
                     {
@@ -97,7 +97,7 @@ namespace Zinger.Services
                             result.SchemaTable = schemaTable;
                         }
 
-                        result.QueryClass = _classBuilder.GetQueryClass(cn, query, queryName, parameters, true);
+                        //result.QueryClass = _classBuilder.GetQueryClass(cn, query, queryName, parameters, true);
 
                         var adapter = GetAdapter(cmd);
                         try
@@ -151,6 +151,8 @@ namespace Zinger.Services
         }
 
         protected virtual string AppendErrorMessage(Exception exc) => null;
+
+        public virtual object ConvertParamValue(object @object, DbType dbType) => @object;
 
         public class ExecuteResult
         {

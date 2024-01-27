@@ -94,7 +94,7 @@ namespace Zinger.Forms
             var dlg = new frmCopyModelClass() { ObjectName = node.DbObject.ToString() };
             if (dlg.ShowDialog() == DialogResult.OK)
             {
-                var qcb = new QueryClassBuilder(queryEditor1.Provider.GetCommand);
+                var qcb = new QueryClassBuilder(queryEditor1.Provider.GetCommand, queryEditor1.Provider.ConvertParamValue);
                 var schemaTable = queryEditor1.Provider.GetSchemaTable(node.SqlQuery);
                 var modelClass = qcb.GetResultClass(schemaTable, node.ModelClassName, true, isResultClass: false, withAttributes: dlg.IncludeAttributes);
                 Clipboard.SetText(modelClass);
@@ -271,7 +271,7 @@ namespace Zinger.Forms
             {
                 Name = row.Field<string>("ColumnName"),
                 DataType = row.Field<string>("DataTypeName"),
-                IsNullable = row.Field<bool>("AllowDbNull"),
+                IsNullable = !row.IsNull("AllowDbNull") ? row.Field<bool>("AllowDbNull") : false,
                 MaxLength = row.Field<int>("ColumnSize")
             }).ToArray()
         };

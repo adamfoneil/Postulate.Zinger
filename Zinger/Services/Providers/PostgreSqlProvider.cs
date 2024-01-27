@@ -1,4 +1,5 @@
 ﻿using Npgsql;
+using System;
 using System.Data;
 
 namespace Zinger.Services.Providers
@@ -15,6 +16,14 @@ namespace Zinger.Services.Providers
 
         public override IDbConnection GetConnection() => new NpgsqlConnection(_connectionString);
 
-        protected override IDbDataAdapter GetAdapter(IDbCommand command) => new NpgsqlDataAdapter(command as NpgsqlCommand);        
+        protected override IDbDataAdapter GetAdapter(IDbCommand command) => new NpgsqlDataAdapter(command as NpgsqlCommand);
+
+        public override object ConvertParamValue(object @object, DbType dbType)
+        {
+            if (dbType == DbType.Int32) return Convert.ToInt32(@object);
+
+            return @object;
+        }
+        
     }
 }

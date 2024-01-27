@@ -11,10 +11,12 @@ namespace Zinger.Services
     public class QueryClassBuilder
     {
         private readonly Func<string, IDbConnection, IDbCommand> _getCommand;
+        private readonly Func<object, DbType, object> _paramValueConverter;
 
-        public QueryClassBuilder(Func<string, IDbConnection, IDbCommand> getCommand)
+        public QueryClassBuilder(Func<string, IDbConnection, IDbCommand> getCommand, Func<object, DbType, object> paramValueConverter)
         {
             _getCommand = getCommand;
+            _paramValueConverter = paramValueConverter;
         }
 
         public QueryClassBuilder()
@@ -152,7 +154,7 @@ namespace Zinger.Services
                     {
                         Name = columnName,
                         CSharpType = CSharpTypeName(provider, row.Field<Type>("DataType")),
-                        IsNullable = row.Field<bool>("AllowDBNull"),
+                        IsNullable = !row.IsNull("AllowDBNull") ? row.Field<bool>("AllowDBNull") : false,
                         Index = (dupColumns.ContainsKey(columnName)) ? dupColumns[columnName] : 0
                     };
 
@@ -182,7 +184,7 @@ namespace Zinger.Services
 
             using (var cmd = _getCommand.Invoke(dummyQuery, connection))
             {
-                Parameter.AddToQuery(includeParams, cmd);
+                Parameter.AddToQuery(includeParams, cmd, _paramValueConverter);
                 using (var reader = cmd.ExecuteReader())
                 {
                     var schemaTable = reader.GetSchemaTable();

@@ -59,7 +59,7 @@ namespace Zinger.Services
             return arrayString.Split(',', ';').Select(s => s.Trim()).ToArray();
         }
 
-        public static void AddToQuery(IEnumerable<Parameter> parameters, IDbCommand cmd)
+        public static void AddToQuery(IEnumerable<Parameter> parameters, IDbCommand cmd, Func<object, DbType, object> convertParamValue = null)
         {
             if (parameters == null) return;
 
@@ -68,7 +68,7 @@ namespace Zinger.Services
                 var param = cmd.CreateParameter();
                 param.ParameterName = p.Name;
                 param.DbType = p.DataType;
-                param.Value = p.Value ?? DBNull.Value;
+                param.Value = ((convertParamValue != null) ? convertParamValue.Invoke(p.Value, p.DataType) : p.Value) ?? DBNull.Value;
                 cmd.Parameters.Add(param);
             }
         }
