@@ -139,6 +139,7 @@
     <Compile Include="Services\JoinResolver.cs" />
     <Compile Include="Services\Providers\MySqlQueryProvider.cs" />
     <Compile Include="Services\Providers\OleDbQueryProvider.cs" />
+    <Compile Include="Services\Providers\PostgreSqlProvider.cs" />
     <Compile Include="Services\Providers\SqlCeQueryProvider.cs" />
     <Compile Include="Services\Providers\SqlServerQueryProvider.cs" />
     <Compile Include="Options.cs" />
@@ -244,6 +245,9 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
     </PackageReference>
+    <PackageReference Include="Npgsql">
+      <Version>8.0.1</Version>
+    </PackageReference>
     <PackageReference Include="SqlSchema.SqlServer">
       <Version>1.0.17</Version>
     </PackageReference>
@@ -278,6 +282,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"C:\Users\Adamo\Source\Repos\AzDeploy\AzDeploy.Build\bin\Release\netcoreapp3.1\AzDeploy.Build.exe" "C:\Users\Adamo\Source\Repos\Postulate.Zinger\AzDeploy.json"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

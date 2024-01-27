@@ -203,7 +203,8 @@ namespace Zinger.Forms
                     [ProviderType.SqlServer] = new SqlServerQueryProvider(sc.ConnectionString),
                     [ProviderType.MySql] = new MySqlQueryProvider(sc.ConnectionString),
                     [ProviderType.OleDb] = new OleDbQueryProvider(sc.ConnectionString),
-                    [ProviderType.SqlCe] = new SqlCeQueryProvider(sc.ConnectionString)
+                    [ProviderType.SqlCe] = new SqlCeQueryProvider(sc.ConnectionString),
+                    [ProviderType.PostgreSql] = new PostgreSqlProvider(sc.ConnectionString)
                 };
 
                 var provider = providers[sc.ProviderType];
