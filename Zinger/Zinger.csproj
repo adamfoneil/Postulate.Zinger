@@ -246,7 +246,7 @@
       <Version>13.0.3</Version>
     </PackageReference>
     <PackageReference Include="Npgsql">
-      <Version>8.0.1</Version>
+      <Version>8.0.3</Version>
     </PackageReference>
     <PackageReference Include="SqlSchema.SqlServer">
       <Version>1.0.17</Version>
